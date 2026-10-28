@@ -1,4 +1,4 @@
-// Musik und Klänge. Naturgeräusche (Eule, Wind, Fauchen) sind echte Aufnahmen aus sounds/
+// Musik und Klänge. Naturgeräusche (Eule, Wind, Fauchen, Miau) sind echte Aufnahmen aus sounds/
 // (Lizenzen: sounds/LIZENZEN.md), Melodien sind gezupfte Saiten (Karplus-Strong), alles mit Waldhall.
 // Fehlt eine Aufnahme, springt ein synthetischer Ersatzklang ein.
 
@@ -7,7 +7,7 @@
 // ---------------------------------------------------------------------------
 
 const MUSIC_VOLUME = 0.35;
-const SAMPLES = { owl1: 'sounds/owl1.m4a', owl2: 'sounds/owl2.m4a', wind: 'sounds/wind.m4a', hiss: 'sounds/hiss.m4a' };
+const SAMPLES = { owl1: 'sounds/owl1.m4a', owl2: 'sounds/owl2.m4a', wind: 'sounds/wind.m4a', hiss: 'sounds/hiss.m4a', meow: 'sounds/meow.m4a' };
 
 let audio, sfxBus, musicBus;
 const samples = {};
@@ -134,8 +134,16 @@ function harp(notes, { spacing = 0.09, gain = 0.3, to = sfxBus } = {}) {
 // Klänge
 // ---------------------------------------------------------------------------
 
-// Richtig: aufsteigende Harfe
-export const chime = safe(() => harp([587.33, 739.99, 880, 1174.66, 1479.98], { gain: 0.32 }));
+// Richtig: fröhliches Miau, dahinter leise die aufsteigende Harfe
+export const chime = safe(() => {
+  const now = ctx().currentTime;
+  if (samples.meow) {
+    play(samples.meow, now, { gain: 0.5 });
+    setTimeout(() => harp([587.33, 739.99, 880, 1174.66, 1479.98], { gain: 0.18 }), 350);
+    return;
+  }
+  harp([587.33, 739.99, 880, 1174.66, 1479.98], { gain: 0.32 });
+});
 
 // Falsch: Katzenfauchen (nur der Fauch-Teil der Aufnahme, etwas leiser)
 export const hiss = safe(() => {
