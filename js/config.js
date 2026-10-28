@@ -55,7 +55,7 @@ export const GAME = {
   stations: [
     {
       id: 'lager', token: 'lg4m', title: 'Das Lager', place: 'Zuhause',
-      map: { x: 275, y: 105 },
+      map: { x: 275, y: 80 },
       gm: { hide: 'Kein QR nötig – Start direkt in der App.', prep: 'Rollenkarten verteilen, bevor ihr startet.' },
       story: 'Lichtstern hat im Lager eine Botschaft in Pfotenschrift gefunden. Nur wer die alten Zeichen lesen kann, weiß, wo die Prüfung beginnt.',
       puzzle: {
@@ -72,7 +72,7 @@ export const GAME = {
     },
     {
       id: 'ausgang', token: 'q7xr', title: 'Der Lagerausgang', place: 'Haustür',
-      map: { x: 282, y: 142 },
+      map: { x: 275, y: 113 },
       gm: { hide: 'ANPASSEN: QR-Karte außen an die Haustür / unter die Fußmatte.', prep: '' },
       story: 'Bevor ihr das Lager verlasst, prüft der SternenClan, ob ihr wisst, wie Clankatzen leben.',
       puzzle: {
@@ -90,7 +90,7 @@ export const GAME = {
     },
     {
       id: 'donnerweg', token: 'm3kd', title: 'Am Donnerweg', place: 'Ende der Straße',
-      map: { x: 404, y: 176 },
+      map: { x: 404, y: 176, via: [[274, 146]] },
       gm: {
         hide: 'ANPASSEN: QR-Karte an Laternenpfahl / Schild, wo unsere Straße endet (Details: privat/ROUTE.md).',
         prep: 'ANPASSEN: Laternen vom Haus bis hier selbst zählen und unten bei answer eintragen!',
@@ -212,7 +212,7 @@ export const GAME = {
     },
     {
       id: 'heimkehr', token: 'v4lt', title: 'Heimkehr ins Lager', place: 'Zuhause',
-      map: { x: 275, y: 105, via: [[347, 645], [356, 551], [378, 384], [392, 285], [404, 174], [282, 142]] },
+      map: { x: 275, y: 80, via: [[347, 645], [356, 551], [378, 384], [392, 285], [404, 174], [274, 146]] },
       gm: { hide: 'QR-Karte an die Haustür oder auf den Tisch, an dem die Truhe geöffnet wird.', prep: 'Kuchen bereitstellen 🎂' },
       story: 'Ihr seid zurück im Lager! Lichtstern erwartet euch schon. Jetzt zeigt sich, ob ihr unterwegs gut aufgepasst habt: Unterwegs habt ihr Krallenzeichen gesammelt …',
       puzzle: { type: 'lock' },

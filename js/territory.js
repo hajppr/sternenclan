@@ -5,7 +5,7 @@ export const TERRITORY = {
   width: 600,
   height: 880,
   // Wo der Nebel schon zu Beginn gelichtet ist (das Lager)
-  start: { x: 275, y: 110 },
+  start: { x: 275, y: 85 },
   svg: `
     <defs>
       <pattern id="t-houses" width="18" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
@@ -81,7 +81,7 @@ export const TERRITORY = {
         <path d="M412 132 L404 174 L392 285 L378 384 L356 551 L347 645 L322 792 L316 880"/>
         <path d="M74 458 L219 504 L356 551"/>
       </g>
-      <path d="M274 107 L274 144" stroke="#7a5c34" stroke-width="2.5" stroke-dasharray="3 4"/>
+      <path d="M275 82 L274 144" stroke="#7a5c34" stroke-width="2.5" stroke-dasharray="3 4"/>
       <!-- Feldwege der Runde -->
       <path d="M347 645 L487 706 L455 833 L322 792" stroke="#8a6d45" stroke-width="3.5"/>
       <path d="M191 580 L338 699" stroke="#b39a6e" stroke-width="2.5"/>
@@ -89,14 +89,14 @@ export const TERRITORY = {
     </g>
 
     <!-- Lager -->
-    <g transform="translate(275 105)">
+    <g transform="translate(275 80)">
       <circle r="13" fill="#e8d6ae" stroke="#5a3d1b" stroke-width="2.5"/>
       <path d="M-7 5 L0 -7 L7 5 Z" fill="#5a3d1b"/>
     </g>
 
     <!-- Beschriftung -->
     <g font-family="Palatino Linotype, Palatino, Georgia, serif" fill="#4a3417" text-anchor="middle">
-      <text x="275" y="80" font-size="17" font-weight="bold">Lager</text>
+      <text x="275" y="56" font-size="17" font-weight="bold">Lager</text>
       <text x="200" y="330" font-size="20" font-style="italic" opacity="0.8">Zweibeinerort</text>
       <text x="320" y="164" font-size="12" font-style="italic" transform="rotate(9 320 164)">Donnerweg</text>
       <text x="393" y="345" font-size="12" font-style="italic" transform="rotate(-84 393 345)">Donnerweg</text>
