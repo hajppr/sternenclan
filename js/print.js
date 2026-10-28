@@ -96,7 +96,7 @@ const roleCards = players.map(p => {
         <p class="apprentice">${p.apprentice}</p>
         <div class="caps role-title">${r.title}</div>
         <p class="role-text">${r.text}</p>
-        <div class="secret">Deine geheime Zahl – erst zeigen, wenn der Clan sie braucht:
+        <div class="secret">Geheime Zahl – nur zeigen, wenn der Clan sie braucht:
           <div class="digit">${r.digit}</div>
         </div>
       </div>
@@ -170,7 +170,7 @@ const gmSheet = `
 const sections = [
   ['spielleitung', 'Spielleitung – nicht den Kindern zeigen!', gmSheet],
   ['qr-karten', 'QR-Karten für die Stationen', `<div class="grid">${stationCards}</div>`],
-  ['rollenkarten', 'Rollenkarten', `<div class="grid">${roleCards}</div>`],
+  ['rollenkarten', 'Rollenkarten', `<div class="grid two">${roleCards}</div>`],
   ['pfotenschrift', 'Pfotenschrift-Tafel (Station 2, an der Haustür verstecken)', pawTable],
   herbSheet && ['vorrat-der-heilerin', 'Vorrat der Heilerin (Station 7, zur QR-Karte)', herbSheet],
   preyCards && ['beutekarten', 'Beutekarten (Jagdgebiet)', `<div class="grid">${preyCards}</div>`],

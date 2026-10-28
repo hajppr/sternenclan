@@ -33,6 +33,16 @@
     section > h2 .pdf { margin-left: 8px; font: 600 0.8rem sans-serif; padding: 3px 10px; cursor: pointer; border: 1px solid var(--forest); border-radius: 6px; background: #fff; color: var(--forest); }
     body[data-only] section:not(.only) { display: none; }
     .grid { break-inside: avoid; }
+    /* Rollenkarten: 2 nebeneinander, 3 Reihen = eine A4-Seite */
+    .grid.two { grid-template-columns: repeat(2, 1fr); gap: 5mm 8mm; }
+    .grid.two .card { height: 88mm; }
+    .grid.two .band { padding: 3mm; }
+    .grid.two .eyes { width: 42%; }
+    .grid.two .body { padding: 2mm 6mm; }
+    .grid.two .symbol { font-size: 2.2rem; margin: 0; }
+    .grid.two .role-text { margin-bottom: 1.5mm; }
+    .grid.two .secret { padding-top: 1.5mm; }
+    .grid.two .digit { font-size: 2.1rem; }
     section > h2 { font: 600 0.9rem sans-serif; color: #777; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin: 0 0 5mm; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
 
@@ -69,7 +79,7 @@
       flex-direction: column;
     }
     .card .body { padding: 3mm 4mm; flex: 1; }
-    .card .forest { margin-top: auto; }
+    .card .forest { margin-top: auto; flex-shrink: 0; }
 
     /* QR-Karten: Code immer schwarz auf weiß */
     .qr { background: #fff; display: inline-block; padding: 1.5mm; border-radius: 1.5mm; }
