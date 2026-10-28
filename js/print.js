@@ -1,6 +1,7 @@
 import { GAME, lockCode } from './config.js';
 import { getPlayers } from './players.js';
 import { PAW_SCRIPT } from './puzzles.js';
+import { drawCertificate, loadCertificateFonts, certificateFileName, THEMES } from './certificate.js';
 
 const players = getPlayers();
 
@@ -134,18 +135,27 @@ const preyCards = preyStation ? preyStation.puzzle.prey.map(x => `
     ${forest}
   </div>`).join('') : '';
 
-const certificates = players.map(p => `
-  <div class="certificate">
-    ${band('Kriegerurkunde', { color: p.birthday ? DEFAULT_EYES : EYE_COLORS[p.role], sub: GAME.clan })}
-    <div class="content">
-      <p>Der SternenClan und ${GAME.leader.name}, ${GAME.leader.title} des ${GAME.clan}s, verkünden:</p>
-      <p>Die Schülerin <b>${p.apprentice}</b> hat am 4. Dezember die Prüfung des SternenClans bestanden und trägt von nun an den Kriegernamen</p>
-      <div class="warrior">${p.warrior}</div>
-      <p><i>${p.birthday ? 'Alles Gute zum 11. Geburtstag!' : 'Möge der SternenClan deine Pfade erleuchten.'}</i></p>
-      <div class="signature"><span>${GAME.leader.name}, ${GAME.leader.title}</span><span>${p.warrior}</span></div>
-    </div>
-    ${forest}
-  </div>`).join('');
+// Urkunden: als Fotos 15 × 10 cm (JPG) für den Fotokiosk, siehe certificate.js
+const certificates = `
+  <p class="screen-only-inline">Jede Urkunde ist ein Foto im Format <b>15 × 10 cm</b> (1800 × 1200 px, 300 dpi) – für den Fotokiosk z. B. bei Rossmann oder Budni.
+  <button type="button" id="all-certs">Alle herunterladen</button></p>
+  <div class="photos" id="certs">${players.map(() => '<figure class="photo"><div class="photo-wait">Urkunde wird gezeichnet …</div></figure>').join('')}</div>`;
+
+async function renderCertificates() {
+  await loadCertificateFonts();
+  const figures = [...document.querySelectorAll('#certs .photo')];
+  // Geburtstagskind: „Feuer“ (erster Band), die anderen bekommen die übrigen Cover-Farbwelten
+  let next = 1;
+  const themes = players.map(p => (p.birthday ? THEMES[0] : THEMES[next++ % THEMES.length] || THEMES[1]));
+  const links = await Promise.all(players.map(async (p, i) => {
+    const canvas = drawCertificate(p, themes[i]);
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.92));
+    const url = URL.createObjectURL(blob);
+    figures[i].innerHTML = `<img src="${url}" alt="Urkunde ${p.warrior}"><a class="download" href="${url}" download="${certificateFileName(p)}">⬇ ${certificateFileName(p)}</a>`;
+    return figures[i].querySelector('a');
+  }));
+  document.getElementById('all-certs').onclick = () => links.forEach((a, i) => setTimeout(() => a.click(), i * 400));
+}
 
 const gmSheet = `
   <table class="gm">
@@ -163,3 +173,5 @@ document.getElementById('out').innerHTML = `
   ${preyCards ? `<section><h2>Beutekarten (Jagdgebiet)</h2><div class="grid">${preyCards}</div></section>` : ''}
   <section><h2>Kriegerurkunden (in die Truhe)</h2>${certificates}</section>
   <section><h2>Start-QR (für Einladung oder Tisch)</h2><div class="grid"><div class="card">${band(GAME.title, { color: null })}<div class="body"><div class="qr">${qr(base)}</div></div>${forest}</div></div></section>`;
+
+renderCertificates();
