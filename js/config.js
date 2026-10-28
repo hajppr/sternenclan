@@ -111,7 +111,7 @@ export const GAME = {
     },
     {
       id: 'grenze', token: 'w8tn', title: 'Die Grenze', place: 'Feldrand',
-      map: { x: 398, y: 245 },
+      map: { x: 396, y: 245 },
       gm: { hide: 'ANPASSEN: QR-Karte am ersten Pfosten / Baum am Feldrand, gleich hinter den letzten Häusern.', prep: 'Tablet-Lautstärke voll aufdrehen.' },
       story: 'Hier beginnt das offene Land. Die Eule ist die Wächterin der Grenze – sie verrät euch, ob ihr weitergehen dürft. Seid ganz still und hört genau hin.',
       puzzle: {
@@ -125,7 +125,7 @@ export const GAME = {
     },
     {
       id: 'feld', token: 'j2pz', title: 'Das Jagdgebiet', place: 'Am Feld, auf Höhe des einsamen Baums',
-      map: { x: 365, y: 492 },
+      map: { x: 364, y: 492, via: [[392, 285], [378, 384]] },
       gm: {
         hide: 'ANPASSEN: QR-Karte an einen Pfosten / Baum am Wegrand, auf Höhe des Baums im Feld. Nicht ins Feld selbst (Acker)!',
         prep: 'Die 5 Beutekarten (print.html) im Umkreis von ca. 20 m am Wegrand verstecken. ANPASSEN: Steht am Waldrand keine Eiche, Buchstaben auf einen anderen Baum ändern (z. B. BIRKE, BUCHE).',
@@ -147,7 +147,7 @@ export const GAME = {
     },
     {
       id: 'waldrand', token: 'r5vb', title: 'Die Wächter-Eiche', place: 'Waldrand',
-      map: { x: 352, y: 556 },
+      map: { x: 355, y: 556, via: [[356, 551]] },
       gm: { hide: 'ANPASSEN: QR-Karte an einer Eiche (oder dem markantesten Baum) am Waldrand, Ecke Querstraße.', prep: '' },
       story: 'Das Tor zum Wald ist mit einem Krallen-Code verschlossen. Nur wenn jede Schülerin ihr Wissen teilt, öffnet es sich.',
       puzzle: {
@@ -161,7 +161,7 @@ export const GAME = {
     },
     {
       id: 'heilerbau', token: 'h6cs', title: 'Der Heilerbau', place: 'Hinter dem Bolzplatz',
-      map: { x: 332, y: 758 },
+      map: { x: 328, y: 758, via: [[347, 645]] },
       gm: { hide: 'ANPASSEN: QR-Karte an einem Baum am Weg zwischen Bolzplatz und Wegende (dort stehen Bäume auf beiden Seiten).', prep: 'Pergament „Vorrat der Heilerin“ (print.html) in Klarsichthülle zur QR-Karte legen.' },
       story: 'Die alte Heilerin des MondClans hat euch ihr Wissen hinterlassen. Vier Clankatzen brauchen Hilfe. Welches Kraut hilft wem?',
       puzzle: {
@@ -186,7 +186,7 @@ export const GAME = {
     },
     {
       id: 'verraeter', token: 'x9fa', title: 'Die falsche Spur', place: 'Ecke am Feldweg (Südosten)',
-      map: { x: 447, y: 826, via: [[322, 792]] },
+      map: { x: 452, y: 832, via: [[322, 792]] },
       gm: { hide: 'ANPASSEN: QR-Karte an der Ecke, wo der Feldweg nach Norden abbiegt (Pfosten / Baum).', prep: 'Die echten Botschaften beschreiben das Versteck der Truhe (Station 9).' },
       story: 'Drei Botschaften. Aber eine davon stammt vom Spion des SchattenClans! Welche ist falsch?',
       puzzle: {
@@ -205,7 +205,7 @@ export const GAME = {
     },
     {
       id: 'mondstein', token: 'z1mo', title: 'Der Mondstein', place: 'Wäldchen an der Nordost-Ecke',
-      map: { x: 478, y: 688 },
+      map: { x: 460, y: 694, via: [[455, 833], [487, 706]] },
       gm: { hide: 'ANPASSEN: Truhe mit Zahlenschloss im Wäldchen an der Ecke, wo der Weg nach Westen abbiegt (+ QR-Karte darauf).', prep: 'Truhe vorher verstecken, Urkunden + Überraschung hinein, Zahlenschloss zu!' },
       story: 'Im Schutz der Bäume liegt der Mondstein! Doch er ist versiegelt. Nur im Lager, im Kreis des ganzen Clans, lässt er sich öffnen.',
       puzzle: {
