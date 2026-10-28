@@ -81,16 +81,16 @@ export const GAME = {
       story: 'Am Lagerausgang hat jemand eine Botschaft in Pfotenschrift hinterlassen. Doch um sie zu lesen, braucht ihr die Pfotenschrift-Tafel – und die ist hier irgendwo versteckt!',
       puzzle: {
         type: 'cipher',
-        message: 'ZAEHLT ALLE LATERNEN',
+        message: 'WIE VIELE LATERNEN',
         printed: true, // Tafel liegt ausgedruckt versteckt bei der Station (print.html)
         question: 'Findet die Tafel und entschlüsselt die Botschaft: Schreibt unter jedes Zeichen den passenden Buchstaben.',
       },
       hints: [
         'Die Tafel ist ganz in der Nähe der Tür versteckt. Schaut unter, hinter und in Dinge!',
-        'Das erste Wort heißt ZAEHLT.',
-        'Die Botschaft lautet: ZAEHLT ALLE LATERNEN.',
+        'Das erste Wort heißt WIE.',
+        'Die Botschaft lautet: WIE VIELE LATERNEN?',
       ],
-      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende – und tut dabei, was die Pfotenschrift euch befohlen hat! Bleibt zusammen und überquert Donnerwege nur mit einer erwachsenen Kriegerin.',
+      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende – und findet unterwegs die Antwort auf die Frage der Pfotenschrift! Bleibt zusammen und überquert Donnerwege nur mit einer erwachsenen Kriegerin.',
     },
     {
       id: 'donnerweg', token: 'm3kd', title: 'Am Donnerweg', place: 'Ende der Straße',
