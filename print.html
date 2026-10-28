@@ -6,69 +6,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Druckvorlagen SternenClan</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap">
   <style>
-    :root { --ink: #2c2112; --gold: #b07a12; --line: #d9c8a0; --paper: #fbf5e6; }
-    * { box-sizing: border-box; }
-    body { margin: 0; padding: 16px; font-family: "Palatino Linotype", Palatino, Georgia, serif; color: var(--ink); background: #fff; }
-    h1 { font-size: 1.4rem; }
-    .screen-only { background: #fff6dc; border: 1px solid var(--line); padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-family: sans-serif; font-size: 0.95rem; }
+    :root {
+      --night: #121c18;
+      --forest: #1f3a2f;
+      --gold: #d4a64a;
+      --gold-ink: #8a6418;
+      --ink: #2a2116;
+      --paper: #fbf6e8;
+      --line: #d8c9a3;
+      --title: "Cinzel", "Trajan Pro", Georgia, serif;
+      --body: "EB Garamond", "Palatino Linotype", Palatino, Georgia, serif;
+    }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { margin: 0; padding: 16px; font-family: var(--body); color: var(--ink); background: #fff; font-size: 11pt; }
+
+    .screen-only { background: #fff6dc; border: 1px solid var(--line); padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-family: sans-serif; font-size: 0.95rem; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
     .screen-only code { background: #fff; padding: 1px 4px; }
-    section { page-break-after: always; break-after: page; }
-    section h2 { font-size: 1.1rem; font-family: sans-serif; border-bottom: 2px solid var(--line); padding-bottom: 4px; }
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10mm; }
-    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .screen-only label { white-space: nowrap; font-weight: 600; cursor: pointer; }
+
+    section { break-after: page; page-break-after: always; }
+    section > h2 { font: 600 0.9rem sans-serif; color: #777; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin: 0 0 5mm; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+
+    /* Gemeinsame Bausteine im Cover-Stil */
+    .cover-title { font-family: var(--title); font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; line-height: 1.05; }
+    .caps { font-family: var(--title); font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.72em; }
+
+    .band {
+      position: relative;
+      background:
+        radial-gradient(circle at 50% 60%, rgba(212, 166, 74, 0.28), transparent 60%),
+        radial-gradient(1px 1px at 12% 25%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 82% 18%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 70% 70%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 25% 75%, #fff 50%, transparent 51%),
+        linear-gradient(180deg, #0d1512, var(--forest));
+      color: var(--gold);
+      text-align: center;
+      padding: 4mm 3mm;
+    }
+    .band .cover-title { color: var(--gold); text-shadow: 0 1px 0 #000, 0 0 8px rgba(212, 166, 74, 0.5); }
+    .eyes { display: block; margin: 1mm auto 0; width: 70%; height: auto; }
+    .forest { display: block; width: 100%; height: 9mm; }
+    .forest path { fill: var(--forest); }
+
     .card {
-      border: 2px dashed var(--line);
-      border-radius: 6mm;
-      padding: 6mm;
-      text-align: center;
+      border: 0.6mm solid var(--forest);
+      border-radius: 3mm;
+      overflow: hidden;
       background: var(--paper);
-      break-inside: avoid;
-    }
-    .card .title { font-size: 1.15rem; color: var(--gold); margin: 0 0 3mm; }
-    .card .qr svg { width: 48mm; height: 48mm; }
-    .card .code { font-family: monospace; font-size: 1.1rem; letter-spacing: 2px; }
-    .card .small { font-size: 0.8rem; opacity: 0.75; }
-    .symbol { font-size: 3.4rem; line-height: 1.1; }
-    .digit { font-size: 2.6rem; font-weight: bold; color: var(--gold); }
-    .letter { font-size: 4.5rem; font-weight: bold; color: var(--gold); line-height: 1; }
-    .certificate {
-      border: 3mm double var(--gold);
-      padding: 14mm;
       text-align: center;
-      min-height: 120mm;
-      margin-bottom: 10mm;
-      background: var(--paper);
       break-inside: avoid;
+      display: flex;
+      flex-direction: column;
     }
-    .certificate .warrior { font-size: 2.6rem; color: var(--gold); margin: 6mm 0; }
-    .handout { border: 3mm double var(--gold); padding: 10mm; background: var(--paper); text-align: center; }
-    .handout-title { font-size: 1.8rem; color: var(--gold); margin: 0 0 2mm; }
-    .handout-sub { margin: 0 0 8mm; font-style: italic; }
-    .pawgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4mm; }
-    .pawgrid div { border: 1px solid var(--line); border-radius: 3mm; padding: 3mm 1mm; background: #fff; }
-    .pawgrid span { display: block; font-size: 2.4rem; line-height: 1.2; }
-    .pawgrid b { font-size: 1.6rem; }
-    .parchment { border: 3mm double var(--gold); padding: 12mm; background: var(--paper); font-size: 1.4rem; }
-    .parchment > b { display: block; font-size: 2rem; color: var(--gold); text-align: center; margin-bottom: 6mm; }
-    .herbs { list-style: none; padding: 0; margin: 0; }
+    .card .body { padding: 3mm 4mm; flex: 1; }
+    .card .forest { margin-top: auto; }
+
+    /* QR-Karten: Code immer schwarz auf weiß */
+    .qr { background: #fff; display: inline-block; padding: 1.5mm; border-radius: 1.5mm; }
+    .qr svg { width: 42mm; height: 42mm; display: block; }
+    .spurcode { font-family: var(--title); font-weight: 600; letter-spacing: 0.2em; margin: 2mm 0 0; }
+
+    /* Rollenkarten */
+    .symbol { font-size: 2.6rem; line-height: 1.1; margin-top: 1mm; }
+    .apprentice { font-family: var(--title); font-weight: 800; font-size: 1.15rem; margin: 1mm 0 0; letter-spacing: 0.06em; }
+    .role-title { margin: 0.5mm 0 2mm; color: var(--gold-ink); }
+    .role-text { font-style: italic; font-size: 0.95rem; margin: 0 0 2mm; }
+    .secret { border-top: 1px solid var(--line); padding-top: 2mm; font-size: 0.8rem; }
+    .digit { font-family: var(--title); font-weight: 800; font-size: 2.4rem; color: var(--gold-ink); line-height: 1.1; }
+
+    /* Beutekarten */
+    .letter { font-family: var(--title); font-weight: 800; font-size: 4.2rem; color: var(--gold-ink); line-height: 1; margin: 2mm 0; }
+
+    /* Aushänge (Pfotenschrift, Kräuter) */
+    .sheet { border: 0.8mm solid var(--forest); border-radius: 3mm; overflow: hidden; background: var(--paper); }
+    .sheet .band { padding: 7mm 5mm 5mm; }
+    .sheet .band .cover-title { font-size: 1.7rem; }
+    .sheet .band .eyes { width: 34%; }
+    .sheet .content { padding: 7mm 9mm; }
+    .sheet .lead { text-align: center; font-style: italic; margin: 0 0 6mm; font-size: 1.1rem; }
+    .pawgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm; }
+    .pawgrid div { border: 1px solid var(--line); border-radius: 2mm; padding: 2mm 1mm; background: #fff; text-align: center; }
+    .pawgrid span { display: block; font-size: 2.2rem; line-height: 1.2; }
+    .pawgrid b { font-family: var(--title); font-size: 1.4rem; }
+    .herbs { list-style: none; padding: 0; margin: 0; font-size: 1.3rem; }
     .herbs li { padding: 4mm 0; border-bottom: 1px dashed var(--line); }
     .herbs li:last-child { border-bottom: 0; }
-    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .gm td, .gm th { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: left; vertical-align: top; font-family: sans-serif; font-size: 0.85rem; }
+    .herbs b { font-family: var(--title); font-weight: 600; letter-spacing: 0.04em; }
+
+    /* Urkunden: zwei pro A4-Seite */
+    .certificate {
+      border: 0.8mm solid var(--forest);
+      outline: 0.4mm solid var(--gold);
+      outline-offset: -2.5mm;
+      border-radius: 3mm;
+      overflow: hidden;
+      background: var(--paper);
+      text-align: center;
+      margin-bottom: 8mm;
+      min-height: 128mm;
+      display: flex;
+      flex-direction: column;
+      break-inside: avoid;
+    }
+    .certificate .band { padding: 6mm 5mm 4mm; }
+    .certificate .band .cover-title { font-size: 1.9rem; }
+    .certificate .eyes { width: 38%; }
+    .certificate .content { padding: 4mm 12mm 0; flex: 1; font-size: 1.12rem; }
+    .certificate .warrior { font-family: var(--title); font-weight: 800; font-size: 2.6rem; color: var(--gold-ink); letter-spacing: 0.08em; margin: 3mm 0; }
+    .signature { display: flex; justify-content: space-around; margin-top: 6mm; font-size: 0.9rem; }
+    .signature span { border-top: 1px solid var(--ink); padding-top: 1mm; min-width: 45mm; }
+
+    /* Spielleitung */
+    .gm td, .gm th { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: left; vertical-align: top; font-family: sans-serif; font-size: 0.82rem; }
     .gm { border-collapse: collapse; width: 100%; }
+    h1 { font-family: var(--title); font-size: 1.3rem; }
+
+    /* Tinte sparen: keine dunklen Flächen */
+    body.eco .band { background: #fff; color: var(--gold-ink); border-bottom: 0.6mm solid var(--forest); }
+    body.eco .band .cover-title { color: var(--forest); text-shadow: none; }
+    body.eco .forest path { fill: #c9d3c2; }
+    body.eco .card, body.eco .sheet, body.eco .certificate { background: #fff; }
+
     @media print {
       .screen-only { display: none; }
       body { padding: 0; }
-      @page { margin: 12mm; }
+      @page { size: A4; margin: 10mm; }
     }
   </style>
 </head>
 <body>
   <div class="screen-only">
-    <b>Druckvorlagen.</b> Die QR-Codes zeigen auf <code id="base"></code> –
-    druck diese Seite also von der <b>veröffentlichten</b> Adresse aus (nicht von localhost), sonst funktionieren die Codes später nicht.
-    Tipp: QR-Karten laminieren oder in Klarsichthüllen stecken (Dezember = nass).
+    <span><b>Druckvorlagen.</b> Die QR-Codes zeigen auf <code id="base"></code> – von der <b>veröffentlichten</b> Adresse aus drucken. QR- und Beutekarten laminieren oder in Klarsichthüllen (Dezember = nass).</span>
+    <label><input type="checkbox" id="eco"> Tinte sparen (helle Kopfleisten)</label>
   </div>
   <div id="out"></div>
   <script src="js/lib/qrcode.js"></script>
