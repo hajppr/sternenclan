@@ -69,7 +69,7 @@ export const GAME = {
       },
       hints: ['Ihr dürft so oft raten, wie ihr wollt.', 'Schülerinnen heißen zum Beispiel Feuerpfote oder Rabenpfote.'],
       digit: 4,
-      next: 'Der SternenClan schickt euch ein Rätsel: „Man klopft an mich, doch ich bin kein Specht. Man öffnet mich, doch ich bin kein Geschenk. Jede Patrouille muss durch mich hindurch, wenn sie das Lager verlässt.“ Dort wartet die nächste Spur!',
+      next: 'Der SternenClan schickt euch ein Rätsel: „Man klopft an mich, doch ich bin kein Specht. Man öffnet mich, doch ich bin kein Geschenk. Jede Katze muss durch mich hindurch, wenn sie das Lager verlässt.“ Dort wartet die nächste Spur!',
     },
     {
       id: 'ausgang', token: 'q7xr', title: 'Der Lagerausgang', place: 'Haustür',
