@@ -30,7 +30,7 @@ function fail(el, feedback, text, { silent = false } = {}) {
 
 function answerForm(el, { question, check, onSolved, numeric }) {
   el.insertAdjacentHTML('beforeend', `
-    <form class="stack" data-answer>
+    <form class="stack answer-form" data-answer>
       <label class="story">${question}</label>
       <input ${numeric ? 'inputmode="numeric"' : ''} autocomplete="off" autocapitalize="off" spellcheck="false">
       <button class="btn block">Prüfen</button>
@@ -90,12 +90,15 @@ function slotInput(el, words, { numeric = false, onSolved }) {
   });
 }
 
-// Info liegt ausgedruckt bei der Station – in der App nur als zugeklappte Notlösung
-const paperFallback = html => `
-  <details class="paper-fallback">
-    <summary class="muted">Pergament verloren? Hier anzeigen</summary>
-    ${html}
-  </details>`;
+// Info liegt ausgedruckt bei der Station – in der App nur als zugeklappte Notlösung ganz unten auf der Seite
+function paperFallback(ctx, html) {
+  ctx.footer.innerHTML = `
+    <details class="paper-fallback">
+      <summary class="muted">Pergament verloren? Hier anzeigen</summary>
+      ${html}
+    </details>`;
+  return '';
+}
 
 export const herbList = info => `
   <div class="parchment" style="cursor:default">
@@ -118,7 +121,7 @@ const types = {
     slotInput(el, words, { onSolved: ctx.onSolved });
     const table = `<div class="keytable">${Object.entries(PAW_SCRIPT).map(([l, g]) => `<div>${g}<b>${l}</b></div>`).join('')}</div>`;
     el.insertAdjacentHTML('beforeend', p.printed
-      ? `<p class="paper-note">📜 Schaut auf eure Pfotenschrift-Tafel!</p>${paperFallback(table)}`
+      ? `<p class="paper-note">📜 Schaut auf eure Pfotenschrift-Tafel!</p>${paperFallback(ctx, table)}`
       : `<details style="margin-top:12px" open><summary class="muted">Pfotenschrift-Tafel</summary>${table}</details>`);
   },
 
@@ -202,7 +205,7 @@ const types = {
     el.innerHTML = `
       <h3>Kräuterkunde</h3>
       ${p.printed
-        ? `<p class="paper-note">📜 Lest im Vorrat der Heilerin nach!</p>${paperFallback(herbList(p.info))}`
+        ? `<p class="paper-note">📜 Lest im Vorrat der Heilerin nach!</p>${paperFallback(ctx, herbList(p.info))}`
         : herbList(p.info)}
       <div class="stack" style="margin-top:18px">${p.pairs.map(([patient], i) => `
         <div>

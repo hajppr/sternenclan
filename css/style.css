@@ -152,6 +152,16 @@ input, select {
   width: 100%;
 }
 input:focus, select:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 48px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23f2b544' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 14px 10px;
+}
+.answer-form { margin-top: 22px; }
 
 .slots { display: flex; flex-wrap: wrap; gap: 10px 6px; justify-content: center; }
 .word { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-right: 14px; }
@@ -333,7 +343,7 @@ input:focus, select:focus { outline: 2px solid var(--gold); outline-offset: 1px;
 .preview-end { background: none; border: 0; color: #d9c2ee; text-decoration: underline; font: inherit; font-size: 0.8rem; margin-top: 2px; cursor: pointer; }
 
 .paper-note { font-family: var(--serif); font-size: 1.2rem; color: var(--gold); text-align: center; margin: 14px 0 6px; }
-.paper-fallback { margin-top: 6px; }
+.paper-fallback { margin: 40px 0 0; text-align: center; }
 .paper-fallback summary { font-size: 0.85rem; cursor: pointer; }
 
 .gm-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }

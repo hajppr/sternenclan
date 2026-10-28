@@ -56,25 +56,7 @@ export const GAME = {
     {
       id: 'lager', token: 'lg4m', title: 'Das Lager', place: 'Zuhause',
       map: { x: 275, y: 80 },
-      gm: { hide: 'Kein QR nötig – Start direkt in der App.', prep: 'Rollenkarten verteilen. Pfotenschrift-Tafel (print.html) auf den Tisch legen.' },
-      story: 'Lichtstern hat im Lager eine Botschaft in Pfotenschrift gefunden. Nur wer die alten Zeichen lesen kann, weiß, wo die Prüfung beginnt.',
-      puzzle: {
-        type: 'cipher',
-        message: 'SUCHT AM LAGERAUSGANG',
-        printed: true, // Tafel liegt ausgedruckt bereit (print.html)
-        question: 'Entschlüsselt die Botschaft: Schreibt unter jedes Zeichen den passenden Buchstaben.',
-      },
-      hints: [
-        'Jedes Zeichen steht für einen Buchstaben. Schaut in der Tafel darunter nach.',
-        'Das erste Wort heißt SUCHT.',
-        'Die Botschaft lautet: SUCHT AM LAGERAUSGANG.',
-      ],
-      next: 'Der Lagerausgang ist unsere Haustür. Dort wartet die nächste Spur!',
-    },
-    {
-      id: 'ausgang', token: 'q7xr', title: 'Der Lagerausgang', place: 'Haustür',
-      map: { x: 306, y: 80 },
-      gm: { hide: 'ANPASSEN: QR-Karte außen an die Haustür / unter die Fußmatte.', prep: '' },
+      gm: { hide: 'Kein QR nötig – Start direkt in der App.', prep: 'Rollenkarten verteilen.' },
       story: 'Bevor ihr das Lager verlasst, prüft der SternenClan, ob ihr wisst, wie Clankatzen leben.',
       puzzle: {
         type: 'quiz',
@@ -87,7 +69,28 @@ export const GAME = {
       },
       hints: ['Ihr dürft so oft raten, wie ihr wollt.', 'Schülerinnen heißen zum Beispiel Feuerpfote oder Rabenpfote.'],
       digit: 4,
-      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende. Zählt unterwegs alle Laternen der Zweibeiner – ihr werdet die Zahl brauchen! Bleibt zusammen und überquert Donnerwege nur mit einer erwachsenen Kriegerin.',
+      next: 'Der SternenClan schickt euch ein Rätsel: „Ich habe eine Klinke, aber keine Hand. Ich habe ein Schloss, aber keinen König. Jeder Zweibeiner geht durch mich hinaus.“ Dort wartet die nächste Spur!',
+    },
+    {
+      id: 'ausgang', token: 'q7xr', title: 'Der Lagerausgang', place: 'Haustür',
+      map: { x: 306, y: 80 },
+      gm: {
+        hide: 'ANPASSEN: QR-Karte außen an die Haustür.',
+        prep: 'Pfotenschrift-Tafel (print.html) in der Nähe der Haustür verstecken – z. B. unter der Fußmatte, im Briefkasten oder hinter einem Blumentopf.',
+      },
+      story: 'Am Lagerausgang hat jemand eine Botschaft in Pfotenschrift hinterlassen. Doch um sie zu lesen, braucht ihr die Pfotenschrift-Tafel – und die ist hier irgendwo versteckt!',
+      puzzle: {
+        type: 'cipher',
+        message: 'ZAEHLT ALLE LATERNEN',
+        printed: true, // Tafel liegt ausgedruckt versteckt bei der Station (print.html)
+        question: 'Findet die Tafel und entschlüsselt die Botschaft: Schreibt unter jedes Zeichen den passenden Buchstaben.',
+      },
+      hints: [
+        'Die Tafel ist ganz in der Nähe der Tür versteckt. Schaut unter, hinter und in Dinge!',
+        'Das erste Wort heißt ZAEHLT.',
+        'Die Botschaft lautet: ZAEHLT ALLE LATERNEN.',
+      ],
+      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende – und tut dabei, was die Pfotenschrift euch befohlen hat! Bleibt zusammen und überquert Donnerwege nur mit einer erwachsenen Kriegerin.',
     },
     {
       id: 'donnerweg', token: 'm3kd', title: 'Am Donnerweg', place: 'Ende der Straße',

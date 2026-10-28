@@ -194,7 +194,8 @@ function viewStation(station) {
       <p class="story">${station.story}</p>
     </div>
     <div class="card" id="puzzle"></div>
-    <div id="after"></div>`;
+    <div id="after"></div>
+    <div id="footer"></div>`;
 
   const after = app.querySelector('#after');
   const showAfter = () => {
@@ -203,6 +204,7 @@ function viewStation(station) {
   };
 
   renderPuzzle(app.querySelector('#puzzle'), station, {
+    footer: app.querySelector('#footer'),
     solved: !!state.solved[station.id],
     state,
     onSolved() {

@@ -71,7 +71,7 @@ document.getElementById('out').innerHTML = `
   <section><h1>Spielleitung – nicht den Kindern zeigen!</h1>${gmSheet}</section>
   <section><h2>QR-Karten für die Stationen</h2><div class="grid three">${stationCards}</div></section>
   <section><h2>Rollenkarten</h2><div class="grid three">${roleCards}</div></section>
-  <section><h2>Pfotenschrift-Tafel (Station 1, auf den Tisch)</h2>${pawTable}</section>
+  <section><h2>Pfotenschrift-Tafel (Station 2, an der Haustür verstecken)</h2>${pawTable}</section>
   ${herbStation ? `<section><h2>Vorrat der Heilerin (Station 7, zur QR-Karte)</h2>${herbList(herbStation.puzzle.info)}</section>` : ''}
   ${preyCards ? `<section><h2>Beutekarten (Jagdgebiet)</h2><div class="grid three">${preyCards}</div></section>` : ''}
   <section><h2>Kriegerurkunden (in die Truhe)</h2>${certificates}</section>

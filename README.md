@@ -8,8 +8,8 @@ Sonnenuntergang am 4.12. ist gegen **16:15 Uhr** → gegen **14:00 Uhr** starten
 
 | Zeit | Station | Ort | Rätsel |
 |---|---|---|---|
-| 0:00 | 1 Das Lager | Zuhause | Einleitung, Rollenkarten, Pfotenschrift |
-| 0:12 | 2 Der Lagerausgang | Haustür | Clan-Quiz (nur Grundwissen, keine Spoiler) |
+| 0:00 | 1 Das Lager | Zuhause, am Tisch | Einleitung, Rollenkarten, Clan-Quiz → Rätsel „Klinke ohne Hand“ |
+| 0:12 | 2 Der Lagerausgang | Haustür | Versteckte Pfotenschrift-Tafel suchen, Botschaft „ZAEHLT ALLE LATERNEN“ |
 | 0:20 | 3 Am Donnerweg | Ende unserer Straße | Laternen unterwegs zählen |
 | 0:30 | 4 Die Grenze | Feldrand | Ruf der Eule: Eulenrufe zählen |
 | 0:40 | 5 Das Jagdgebiet | Weg am Feld, Höhe Baum im Feld | 5 versteckte Beutekarten → Wort „EICHE“ |
