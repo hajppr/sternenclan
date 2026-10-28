@@ -83,21 +83,40 @@
     /* Beutekarten */
     .letter { font-family: var(--title); font-weight: 800; font-size: 4.2rem; color: var(--gold-ink); line-height: 1; margin: 2mm 0; }
 
-    /* Aushänge (Pfotenschrift, Kräuter) */
-    .sheet { border: 0.8mm solid var(--forest); border-radius: 3mm; overflow: hidden; background: var(--paper); }
-    .sheet .band { padding: 7mm 5mm 5mm; }
-    .sheet .band .cover-title { font-size: 1.7rem; }
-    .sheet .band .eyes { width: 34%; }
-    .sheet .content { padding: 7mm 9mm; }
-    .sheet .lead { text-align: center; font-style: italic; margin: 0 0 6mm; font-size: 1.1rem; }
-    .pawgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm; }
-    .pawgrid div { border: 1px solid var(--line); border-radius: 2mm; padding: 2mm 1mm; background: #fff; text-align: center; }
-    .pawgrid span { display: block; font-size: 2.2rem; line-height: 1.2; }
-    .pawgrid b { font-family: var(--title); font-size: 1.4rem; }
-    .herbs { list-style: none; padding: 0; margin: 0; font-size: 1.3rem; }
-    .herbs li { padding: 4mm 0; border-bottom: 1px dashed var(--line); }
+    /* Aushänge (Pfotenschrift, Kräuter): ganze A4-Seite, hell */
+    .sheet {
+      border: 0.8mm solid var(--forest);
+      outline: 0.3mm solid var(--gold);
+      outline-offset: -3mm;
+      border-radius: 3mm;
+      background: #fff;
+      min-height: 265mm;
+      padding: 12mm 12mm 10mm;
+      display: flex;
+      flex-direction: column;
+    }
+    .sheet-head { text-align: center; color: var(--gold-ink); }
+    .sheet-head .cover-title { font-size: 2.6rem; color: var(--forest); margin-top: 1mm; }
+    .divider { display: flex; align-items: center; gap: 4mm; margin: 4mm 25mm 0; font-size: 1.2rem; }
+    .divider::before, .divider::after { content: ""; flex: 1; border-top: 0.4mm solid var(--gold); }
+    .sheet .lead { text-align: center; font-style: italic; margin: 5mm 0 6mm; font-size: 1.25rem; }
+    .pawgrid { flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); grid-auto-rows: 1fr; gap: 3.5mm; }
+    .pawgrid div { border: 0.4mm solid var(--line); border-radius: 2.5mm; background: var(--paper); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .pawgrid span { font-size: 3rem; line-height: 1.15; }
+    .pawgrid b { font-family: var(--title); font-size: 1.9rem; line-height: 1.1; }
+    .herbs { flex: 1; list-style: none; padding: 0; margin: 8mm 0 0; display: flex; flex-direction: column; justify-content: space-evenly; }
+    .herbs li { padding: 6mm 4mm; border-bottom: 0.3mm dashed var(--line); text-align: center; }
     .herbs li:last-child { border-bottom: 0; }
-    .herbs b { font-family: var(--title); font-weight: 600; letter-spacing: 0.04em; }
+    .herbs b { display: block; font-family: var(--title); font-weight: 800; font-size: 1.9rem; letter-spacing: 0.06em; color: var(--forest); }
+    .herbs span { display: block; font-size: 1.5rem; font-style: italic; margin-top: 1mm; }
+
+    /* Beutekarten quadratisch */
+    .card.square { aspect-ratio: 1; }
+    .card.square .band { padding: 2.5mm 3mm; }
+    .card.square .body { padding: 1mm 3mm 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .card.square .symbol { font-size: 2.6rem; margin: 0; }
+    .card.square .letter { font-size: 4.2rem; margin: 0; }
+    .card.square .forest { height: 7mm; }
 
     /* Urkunden als Fotos 15 × 10 cm */
     .photos { display: grid; gap: 6mm; justify-content: center; }
@@ -117,7 +136,8 @@
     body.eco .band { background: #fff; color: var(--gold-ink); border-bottom: 0.6mm solid var(--forest); }
     body.eco .band .cover-title { color: var(--forest); text-shadow: none; }
     body.eco .forest path { fill: #c9d3c2; }
-    body.eco .card, body.eco .sheet { background: #fff; }
+    body.eco .card { background: #fff; }
+    body.eco .pawgrid div { background: #fff; }
 
     @media print {
       .screen-only, .screen-only-inline, .photo .download { display: none; }

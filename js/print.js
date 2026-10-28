@@ -104,29 +104,31 @@ const roleCards = players.map(p => {
     </div>`;
 }).join('');
 
+// Aushänge: ganze A4-Seite, hell (werden zu Hause gedruckt)
+const sheetHead = (title, sub) => `
+  <header class="sheet-head">
+    <div class="caps">${sub}</div>
+    <div class="cover-title">${title}</div>
+    <div class="divider"><span>🐾</span></div>
+  </header>`;
+
 const pawTable = `
   <div class="sheet">
-    ${band('Die Pfotenschrift', { color: null, sub: `des ${GAME.clan}s` })}
-    <div class="content">
-      <p class="lead">Jedes Zeichen steht für einen Buchstaben.</p>
-      <div class="pawgrid">${Object.entries(PAW_SCRIPT).map(([l, g]) => `<div><span>${g}</span><b>${l}</b></div>`).join('')}</div>
-    </div>
-    ${forest}
+    ${sheetHead('Die Pfotenschrift', `des ${GAME.clan}s`)}
+    <p class="lead">Jedes Zeichen steht für einen Buchstaben.</p>
+    <div class="pawgrid">${Object.entries(PAW_SCRIPT).map(([l, g]) => `<div><span>${g}</span><b>${l}</b></div>`).join('')}</div>
   </div>`;
 
 const herbStation = GAME.stations.find(s => s.puzzle.type === 'match');
 const herbSheet = herbStation ? `
   <div class="sheet">
-    ${band('Vorrat der Heilerin', { color: EYE_COLORS.heilerin, sub: 'Das Wissen der Kräuter' })}
-    <div class="content">
-      <ul class="herbs">${herbStation.puzzle.info.map(([name, use]) => `<li><b>${name}</b> – ${use}</li>`).join('')}</ul>
-    </div>
-    ${forest}
+    ${sheetHead('Vorrat der Heilerin', 'Das Wissen der Kräuter')}
+    <ul class="herbs">${herbStation.puzzle.info.map(([name, use]) => `<li><b>${name}</b><span>${use}</span></li>`).join('')}</ul>
   </div>` : '';
 
 const preyStation = GAME.stations.find(s => s.puzzle.type === 'prey');
 const preyCards = preyStation ? preyStation.puzzle.prey.map(x => `
-  <div class="card">
+  <div class="card square">
     ${band('Beute', { color: null, sub: x.name })}
     <div class="body">
       <div class="symbol">${x.symbol}</div>
