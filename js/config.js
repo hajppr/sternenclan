@@ -72,7 +72,7 @@ export const GAME = {
     },
     {
       id: 'ausgang', token: 'q7xr', title: 'Der Lagerausgang', place: 'Haustür',
-      map: { x: 275, y: 113 },
+      map: { x: 306, y: 80 },
       gm: { hide: 'ANPASSEN: QR-Karte außen an die Haustür / unter die Fußmatte.', prep: '' },
       story: 'Bevor ihr das Lager verlasst, prüft der SternenClan, ob ihr wisst, wie Clankatzen leben.',
       puzzle: {
@@ -90,7 +90,7 @@ export const GAME = {
     },
     {
       id: 'donnerweg', token: 'm3kd', title: 'Am Donnerweg', place: 'Ende der Straße',
-      map: { x: 404, y: 176, via: [[274, 146]] },
+      map: { x: 404, y: 176, via: [[306, 151]] },
       gm: {
         hide: 'ANPASSEN: QR-Karte an Laternenpfahl / Schild, wo unsere Straße endet (Details: privat/ROUTE.md).',
         prep: 'ANPASSEN: Laternen vom Haus bis hier selbst zählen und unten bei answer eintragen!',
@@ -212,7 +212,7 @@ export const GAME = {
     },
     {
       id: 'heimkehr', token: 'v4lt', title: 'Heimkehr ins Lager', place: 'Zuhause',
-      map: { x: 275, y: 80, via: [[347, 645], [356, 551], [378, 384], [392, 285], [404, 174], [274, 146]] },
+      map: { x: 275, y: 80, via: [[347, 645], [356, 551], [378, 384], [392, 285], [404, 174], [306, 151], [306, 80]] },
       gm: { hide: 'QR-Karte an die Haustür oder auf den Tisch, an dem die Truhe geöffnet wird.', prep: 'Kuchen bereitstellen 🎂' },
       story: 'Ihr seid zurück im Lager! Lichtstern erwartet euch schon. Jetzt zeigt sich, ob ihr unterwegs gut aufgepasst habt: Unterwegs habt ihr Krallenzeichen gesammelt …',
       puzzle: { type: 'lock' },
