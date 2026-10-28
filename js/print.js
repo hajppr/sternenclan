@@ -121,7 +121,7 @@ const pawTable = `
 
 const herbStation = GAME.stations.find(s => s.puzzle.type === 'match');
 const herbSheet = herbStation ? `
-  <div class="sheet">
+  <div class="sheet half">
     ${sheetHead('Vorrat der Heilerin', 'Das Wissen der Kräuter')}
     <ul class="herbs">${herbStation.puzzle.info.map(([name, use]) => `<li><b>${name}</b><span>${use}</span></li>`).join('')}</ul>
   </div>` : '';
@@ -166,14 +166,38 @@ const gmSheet = `
   </table>
   <p style="font-family:sans-serif">Zahlenschloss-Code: <b>${lockCode()}</b> · Spielleitung in der App: <code>${base}#/gm</code> (PIN ${GAME.gmPin})</p>`;
 
-document.getElementById('out').innerHTML = `
-  <section><h1>Spielleitung – nicht den Kindern zeigen!</h1>${gmSheet}</section>
-  <section><h2>QR-Karten für die Stationen</h2><div class="grid">${stationCards}</div></section>
-  <section><h2>Rollenkarten</h2><div class="grid">${roleCards}</div></section>
-  <section><h2>Pfotenschrift-Tafel (Station 2, an der Haustür verstecken)</h2>${pawTable}</section>
-  ${herbSheet ? `<section><h2>Vorrat der Heilerin (Station 7, zur QR-Karte)</h2>${herbSheet}</section>` : ''}
-  ${preyCards ? `<section><h2>Beutekarten (Jagdgebiet)</h2><div class="grid">${preyCards}</div></section>` : ''}
-  <section><h2>Kriegerurkunden (in die Truhe)</h2>${certificates}</section>
-  <section><h2>Start-QR (für Einladung oder Tisch)</h2><div class="grid"><div class="card">${band(GAME.title, { color: null })}<div class="body"><div class="qr">${qr(base)}</div></div>${forest}</div></div></section>`;
+// Abschnitte: Titel, Dateiname für „Als PDF“, Inhalt
+const sections = [
+  ['spielleitung', 'Spielleitung – nicht den Kindern zeigen!', gmSheet],
+  ['qr-karten', 'QR-Karten für die Stationen', `<div class="grid">${stationCards}</div>`],
+  ['rollenkarten', 'Rollenkarten', `<div class="grid">${roleCards}</div>`],
+  ['pfotenschrift', 'Pfotenschrift-Tafel (Station 2, an der Haustür verstecken)', pawTable],
+  herbSheet && ['vorrat-der-heilerin', 'Vorrat der Heilerin (Station 7, zur QR-Karte)', herbSheet],
+  preyCards && ['beutekarten', 'Beutekarten (Jagdgebiet)', `<div class="grid">${preyCards}</div>`],
+  ['urkunden', 'Kriegerurkunden (in die Truhe)', certificates],
+  ['start-qr', 'Start-QR (für Einladung oder Tisch)', `<div class="grid"><div class="card">${band(GAME.title, { color: null })}<div class="body"><div class="qr">${qr(base)}</div></div>${forest}</div></div>`],
+].filter(Boolean);
+
+document.getElementById('out').innerHTML = sections.map(([id, title, html]) => `
+  <section id="${id}">
+    <h2>${title} <button type="button" class="pdf" data-pdf="${id}">📄 Als PDF</button></h2>
+    ${html}
+  </section>`).join('');
+
+// „Als PDF“: Druckdialog nur mit diesem Abschnitt (Ziel „Als PDF speichern“ wählen)
+document.querySelectorAll('[data-pdf]').forEach(btn => {
+  btn.onclick = () => {
+    const id = btn.dataset.pdf;
+    document.body.dataset.only = id;
+    document.getElementById(id).classList.add('only');
+    document.title = `SternenClan-${id}`; // wird zum Dateinamen des PDFs
+    window.print();
+  };
+});
+window.addEventListener('afterprint', () => {
+  delete document.body.dataset.only;
+  document.querySelectorAll('section.only').forEach(s => s.classList.remove('only'));
+  document.title = 'Druckvorlagen SternenClan';
+});
 
 renderCertificates();

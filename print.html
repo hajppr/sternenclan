@@ -29,6 +29,10 @@
     .screen-only label { white-space: nowrap; font-weight: 600; cursor: pointer; }
 
     section { break-after: page; page-break-after: always; }
+    section:last-child { break-after: auto; page-break-after: auto; }
+    section > h2 .pdf { margin-left: 8px; font: 600 0.8rem sans-serif; padding: 3px 10px; cursor: pointer; border: 1px solid var(--forest); border-radius: 6px; background: #fff; color: var(--forest); }
+    body[data-only] section:not(.only) { display: none; }
+    .grid { break-inside: avoid; }
     section > h2 { font: 600 0.9rem sans-serif; color: #777; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin: 0 0 5mm; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
 
@@ -91,6 +95,7 @@
       border-radius: 3mm;
       background: #fff;
       min-height: 265mm;
+      break-inside: avoid;
       padding: 12mm 12mm 10mm;
       display: flex;
       flex-direction: column;
@@ -139,7 +144,17 @@
     body.eco .card { background: #fff; }
     body.eco .pawgrid div { background: #fff; }
 
+    /* Vorrat der Heilerin: halbe A4-Seite */
+    .sheet.half { min-height: 0; height: 132mm; padding: 8mm 10mm 6mm; }
+    .sheet.half .sheet-head .cover-title { font-size: 1.8rem; }
+    .sheet.half .divider { margin-top: 2mm; }
+    .sheet.half .herbs { margin-top: 3mm; }
+    .sheet.half .herbs li { padding: 2mm 3mm; }
+    .sheet.half .herbs b { font-size: 1.3rem; }
+    .sheet.half .herbs span { font-size: 1.1rem; margin-top: 0; }
+
     @media print {
+      section > h2 { display: none; }
       .screen-only, .screen-only-inline, .photo .download { display: none; }
       body { padding: 0; }
       @page { size: A4; margin: 10mm; }
