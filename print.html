@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Druckvorlagen SternenClan</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    :root { --ink: #2c2112; --gold: #b07a12; --line: #d9c8a0; --paper: #fbf5e6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 16px; font-family: "Palatino Linotype", Palatino, Georgia, serif; color: var(--ink); background: #fff; }
+    h1 { font-size: 1.4rem; }
+    .screen-only { background: #fff6dc; border: 1px solid var(--line); padding: 12px 16px; border-radius: 10px; margin-bottom: 16px; font-family: sans-serif; font-size: 0.95rem; }
+    .screen-only code { background: #fff; padding: 1px 4px; }
+    section { page-break-after: always; break-after: page; }
+    section h2 { font-size: 1.1rem; font-family: sans-serif; border-bottom: 2px solid var(--line); padding-bottom: 4px; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10mm; }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .card {
+      border: 2px dashed var(--line);
+      border-radius: 6mm;
+      padding: 6mm;
+      text-align: center;
+      background: var(--paper);
+      break-inside: avoid;
+    }
+    .card .title { font-size: 1.15rem; color: var(--gold); margin: 0 0 3mm; }
+    .card .qr svg { width: 48mm; height: 48mm; }
+    .card .code { font-family: monospace; font-size: 1.1rem; letter-spacing: 2px; }
+    .card .small { font-size: 0.8rem; opacity: 0.75; }
+    .symbol { font-size: 3.4rem; line-height: 1.1; }
+    .digit { font-size: 2.6rem; font-weight: bold; color: var(--gold); }
+    .letter { font-size: 4.5rem; font-weight: bold; color: var(--gold); line-height: 1; }
+    .certificate {
+      border: 3mm double var(--gold);
+      padding: 14mm;
+      text-align: center;
+      min-height: 120mm;
+      margin-bottom: 10mm;
+      background: var(--paper);
+      break-inside: avoid;
+    }
+    .certificate .warrior { font-size: 2.6rem; color: var(--gold); margin: 6mm 0; }
+    .gm td, .gm th { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: left; vertical-align: top; font-family: sans-serif; font-size: 0.85rem; }
+    .gm { border-collapse: collapse; width: 100%; }
+    @media print {
+      .screen-only { display: none; }
+      body { padding: 0; }
+      @page { margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-only">
+    <b>Druckvorlagen.</b> Die QR-Codes zeigen auf <code id="base"></code> –
+    druck diese Seite also von der <b>veröffentlichten</b> Adresse aus (nicht von localhost), sonst funktionieren die Codes später nicht.
+    Tipp: QR-Karten laminieren oder in Klarsichthüllen stecken (Dezember = nass).
+  </div>
+  <div id="out"></div>
+  <script src="js/lib/qrcode.js"></script>
+  <script type="module" src="js/print.js"></script>
+</body>
+</html>
