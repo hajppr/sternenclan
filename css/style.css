@@ -313,6 +313,25 @@ input:focus, select:focus { outline: 2px solid var(--gold); outline-offset: 1px;
 }
 .touchstone.lifted { transform: translateY(-20px) scale(1.06); }
 
+/* Testmodus */
+.preview-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  background: #3b2350;
+  border-top: 2px solid #b48ad6;
+  color: #f3e9ff;
+  font-size: 0.9rem;
+}
+.preview-bar .btn { min-height: 48px; min-width: 56px; }
+.preview-info { text-align: center; line-height: 1.35; }
+.preview-end { background: none; border: 0; color: #d9c2ee; text-decoration: underline; font: inherit; font-size: 0.8rem; margin-top: 2px; cursor: pointer; }
+
 .gm-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .gm-table td, .gm-table th { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--card-line); vertical-align: top; }
 .warn { color: var(--bad); font-weight: 600; }

@@ -10,13 +10,21 @@ const HINT_DELAYS = [60, 180, 300]; // Sekunden nach Ankunft, ab denen Tipp 1/2/
 
 // ---------------------------------------------------------------------------
 // Spielstand (pro Gerät im Browser gespeichert)
+// Im Testmodus nur in der Browser-Sitzung, damit der echte Spielstand unberührt bleibt.
 // ---------------------------------------------------------------------------
+
+const PREVIEW_FLAG = 'sternenclan-preview';
+const preview = (() => {
+  try { return sessionStorage.getItem(PREVIEW_FLAG) === '1'; } catch { return false; }
+})();
+const store = preview ? sessionStorage : localStorage;
+const STATE_KEY = preview ? `${GAME.storageKey}-preview` : GAME.storageKey;
 
 const fresh = () => ({ startedAt: null, solved: {}, hints: {}, arrived: {} });
 
 function load() {
   try {
-    return { ...fresh(), ...JSON.parse(localStorage.getItem(GAME.storageKey)) };
+    return { ...fresh(), ...JSON.parse(store.getItem(STATE_KEY)) };
   } catch {
     return fresh();
   }
@@ -25,7 +33,15 @@ function load() {
 let state = load();
 
 function save() {
-  try { localStorage.setItem(GAME.storageKey, JSON.stringify(state)); } catch { /* privater Modus */ }
+  try { store.setItem(STATE_KEY, JSON.stringify(state)); } catch { /* privater Modus */ }
+}
+
+function setPreview(on) {
+  try {
+    if (on) sessionStorage.setItem(PREVIEW_FLAG, '1');
+    else sessionStorage.removeItem(PREVIEW_FLAG);
+    sessionStorage.removeItem(`${GAME.storageKey}-preview`);
+  } catch { /* egal */ }
 }
 
 const stations = GAME.stations;
@@ -48,6 +64,11 @@ function route() {
   window.scrollTo(0, 0);
 
   const [, page, arg] = location.hash.split('/');
+  render(page, arg);
+  if (preview) drawPreviewBar(page, arg);
+}
+
+function render(page, arg) {
   if (page === 's' && arg && byToken(arg)) return viewStation(byToken(arg));
   if (page === 'intro') return viewIntro(Number(arg) || 0);
   if (page === 'scan') return viewScan();
@@ -162,7 +183,7 @@ function viewStation(station) {
   save();
 
   const prev = stations[idx - 1];
-  const skipped = prev && !state.solved[prev.id];
+  const skipped = !preview && prev && !state.solved[prev.id];
 
   app.innerHTML = `
     ${trail(station.id)}
@@ -289,7 +310,7 @@ function renderHints(root, station) {
   const draw = () => {
     const shown = state.hints[station.id] || 0;
     const wait = shown < hints.length
-      ? Math.max(0, Math.ceil(HINT_DELAYS[Math.min(shown, HINT_DELAYS.length - 1)] - (Date.now() - state.arrived[station.id]) / 1000))
+      ? preview ? 0 : Math.max(0, Math.ceil(HINT_DELAYS[Math.min(shown, HINT_DELAYS.length - 1)] - (Date.now() - state.arrived[station.id]) / 1000))
       : 0;
     box.innerHTML = `
       <h3>🌟 Rat des SternenClans</h3>
@@ -459,8 +480,9 @@ function answerOf(s) {
   switch (p.type) {
     case 'cipher': return p.message;
     case 'quiz': return p.questions.map(q => q.options[q.answer]).join(' · ');
-    case 'number': return p.answer == null ? '<span class="warn">fehlt!</span>' : `${p.answer} (±${p.tolerance || 0})`;
+    case 'number': return p.answer == null ? '<span class="warn">fehlt! (bis dahin zählt jede Zahl)</span>' : `${p.answer} (±${p.tolerance || 0})`;
     case 'owl': return `${p.calls} Rufe`;
+    case 'touch': return 'alle Finger gleichzeitig auf den Stein';
     case 'prey': return p.prey.map(x => x.letter).join('');
     case 'roles': return roleOrder(p.order).map(r => GAME.roles[r].digit).join('');
     case 'match': return p.pairs.map(x => x[1]).join(', ');
@@ -496,6 +518,7 @@ function viewGM() {
       <p>${mins == null ? 'Noch nicht gestartet.' : `Läuft seit ${mins} Minuten.`}</p>
       <div class="row">
         <a class="btn small" href="print.html" target="_blank">🖨️ Druckvorlagen</a>
+        ${preview ? '' : '<button class="btn ghost small" id="preview">🧪 Testmodus</button>'}
         <button class="btn ghost small" id="reset">Spiel zurücksetzen</button>
       </div>
     </div>
@@ -542,6 +565,11 @@ function viewGM() {
     };
   });
   renderClanEditor(app.querySelector('#clan'));
+  app.querySelector('#preview')?.addEventListener('click', () => {
+    setPreview(true);
+    location.hash = '#/intro';
+    location.reload();
+  });
   app.querySelector('#reset').onclick = () => {
     if (!confirm('Wirklich den ganzen Spielstand auf diesem Gerät löschen?')) return;
     state = fresh();
@@ -666,6 +694,47 @@ function viewSetup(data) {
     savePlayers(setup.players);
     if (Object.keys(setup.geo).length) saveGeo({ ...getGeo(), ...setup.geo });
     location.hash = '#/gm';
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Testmodus: alle Stationen durchblättern, Lösungen sehen, nichts wird gespeichert
+// ---------------------------------------------------------------------------
+
+const previewSteps = [
+  { hash: '#/intro', label: 'Einleitung' },
+  ...stations.map((s, i) => ({ hash: `#/s/${s.token}`, label: `${i + 1}/${stations.length} ${s.title}`, station: s })),
+  { hash: '#/zeremonie', label: 'Kriegerzeremonie' },
+];
+
+function drawPreviewBar(page, arg) {
+  let bar = document.getElementById('preview-bar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'preview-bar';
+    bar.className = 'preview-bar';
+    document.body.append(bar);
+  }
+  const pos = page === 'intro' ? 0
+    : page === 's' && byToken(arg ?? '') ? stations.indexOf(byToken(arg)) + 1
+    : page === 'zeremonie' ? previewSteps.length - 1
+    : -1;
+  const step = previewSteps[pos];
+  const prev = previewSteps[pos - 1];
+  const next = previewSteps[pos + 1] || (pos === -1 ? previewSteps[0] : null);
+
+  bar.innerHTML = `
+    ${prev ? `<a class="btn ghost small" href="${prev.hash}" aria-label="Zurück">◀</a>` : '<span></span>'}
+    <div class="preview-info">
+      <b>🧪 Testmodus</b> · ${step ? step.label : 'außerhalb der Stationen'}
+      ${step?.station ? `<div>Lösung: <b>${answerOf(step.station)}</b></div>` : ''}
+      <button class="preview-end" type="button">Testmodus beenden</button>
+    </div>
+    ${next ? `<a class="btn small" href="${next.hash}" aria-label="Weiter">▶</a>` : '<span></span>'}`;
+  bar.querySelector('.preview-end').onclick = () => {
+    setPreview(false);
+    location.hash = '#/gm';
+    location.reload();
   };
 }
 
