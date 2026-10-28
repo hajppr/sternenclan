@@ -137,10 +137,22 @@ function harp(notes, { spacing = 0.09, gain = 0.3, to = sfxBus } = {}) {
 // Richtig: aufsteigende Harfe
 export const chime = safe(() => harp([587.33, 739.99, 880, 1174.66, 1479.98], { gain: 0.32 }));
 
-// Falsch: echtes Katzenfauchen
+// Falsch: kurzes, gedämpftes Katzenfauchen (Höhen weicher, nach 0,7 s ausgeblendet)
 export const hiss = safe(() => {
   const now = ctx().currentTime;
-  if (samples.hiss) return play(samples.hiss, now, { gain: 0.9 });
+  if (samples.hiss) {
+    const soft = audio.createBiquadFilter();
+    soft.type = 'lowpass';
+    soft.frequency.value = 3500;
+    const fade = audio.createGain();
+    fade.gain.setValueAtTime(0.35, now);
+    fade.gain.setValueAtTime(0.35, now + 0.5);
+    fade.gain.linearRampToValueAtTime(0, now + 0.8);
+    soft.connect(fade).connect(sfxBus);
+    const src = play(samples.hiss, now, { to: soft });
+    src.stop(now + 0.85);
+    return;
+  }
   const src = noise();
   const filter = audio.createBiquadFilter();
   filter.type = 'highpass';
