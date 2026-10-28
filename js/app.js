@@ -1,6 +1,6 @@
 import { GAME, lockCode } from './config.js';
 import { renderPuzzle } from './puzzles.js';
-import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying } from './fx.js';
+import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying, preloadSounds } from './fx.js';
 import { getPlayers, savePlayers, resetPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
 import { mapSvg } from './map.js';
 import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth } from './geo.js';
@@ -542,7 +542,8 @@ function viewGM() {
           </tr>`).join('')}
       </table>
     </div>
-    <a class="btn ghost block" href="#/">Zum Spiel</a>`;
+    <a class="btn ghost block" href="#/">Zum Spiel</a>
+    <p class="muted center" style="font-size:0.8rem;margin-top:24px">Klänge: Waldkauz – W.carter (CC BY 4.0), Wind – Gravity Sound (CC BY 4.0), Fauchen – Zabuhailo (CC0), via Wikimedia Commons. Details: sounds/LIZENZEN.md</p>`;
 
   app.querySelectorAll('[data-solve]').forEach(b => {
     b.onclick = () => {
@@ -765,6 +766,7 @@ musicButton.onclick = e => {
 
 document.addEventListener('pointerdown', function firstTap() {
   document.removeEventListener('pointerdown', firstTap);
+  preloadSounds();
   if (musicWanted()) startMusic();
   updateMusicButton();
 });

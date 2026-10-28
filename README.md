@@ -75,3 +75,7 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 - Tipps werden zeitverzögert freigeschaltet (nach 1, 3, 5 Minuten an einer Station).
 - **GPS ohne Mobilfunk** braucht für den ersten Fix draußen evtl. 1–2 Minuten. Am besten kurz vor dem Losgehen draußen „Witterung aufnehmen“ einmal öffnen. Im Wald ist GPS ungenauer (10–20 m) – die Witterung bringt die Mädchen in die Nähe, den Rest erledigt der Hinweistext.
 - Die Witterung zeigt nur heiß/kalt (Entfernung), keine Richtung – funktioniert also auch ohne Kompass-Sensor.
+
+## Klänge
+
+Eule, Wind und Fauchen sind echte Aufnahmen von Wikimedia Commons (CC BY 4.0 bzw. CC0) – Urheber und Links in [`sounds/LIZENZEN.md`](sounds/LIZENZEN.md). Melodien und Hall werden im Browser erzeugt.
