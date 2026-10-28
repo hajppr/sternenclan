@@ -1,6 +1,6 @@
 import { GAME, lockCode } from './config.js';
 import { renderPuzzle } from './puzzles.js';
-import { speak, chime, shimmer, fanfare, stopSpeaking, startMusic, stopMusic, isMusicPlaying } from './fx.js';
+import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying } from './fx.js';
 import { getPlayers, savePlayers, resetPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
 import { mapSvg } from './map.js';
 import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth } from './geo.js';
@@ -45,7 +45,6 @@ const onLeave = fn => cleanup.push(fn);
 function route() {
   cleanup.forEach(fn => fn());
   cleanup = [];
-  stopSpeaking();
   window.scrollTo(0, 0);
 
   const [, page, arg] = location.hash.split('/');
@@ -71,13 +70,6 @@ function trail(activeId) {
   }).join('')}</div>`;
 }
 
-const readButton = id => `<button class="btn ghost small" data-read="${id}">🔊 Vorlesen</button>`;
-
-function bindRead(root, texts) {
-  root.querySelectorAll('[data-read]').forEach(b => {
-    b.onclick = () => speak(texts[b.dataset.read]);
-  });
-}
 
 // ---------------------------------------------------------------------------
 // Startseite
@@ -135,12 +127,10 @@ function viewIntro(step) {
       <div class="card" style="margin-top:10vh">
         <div class="chip">Ein Traum von ${GAME.leader.name}</div>
         <p class="story">${slides[step]}</p>
-        <div class="row" style="justify-content:space-between;margin-top:20px">
-          ${readButton('slide')}
+        <div class="row" style="justify-content:flex-end;margin-top:20px">
           <a class="btn" href="#/intro/${step + 1}">Weiter</a>
         </div>
       </div>`;
-    bindRead(app, { slide: slides[step] });
     return;
   }
 
@@ -152,9 +142,8 @@ function viewIntro(step) {
         return `<li><span class="dot">${r.symbol}</span><span><b>${p.apprentice}</b> <span class="muted">(${p.name})</span><br><small class="muted">${r.title} – ${r.text}</small></span></li>`;
       }).join('')}</ul>
     </div>
-    <div class="card"><p class="story">„${GAME.prophecy}“</p>${readButton('prophecy')}</div>
+    <div class="card"><p class="story">„${GAME.prophecy}“</p></div>
     <button class="btn block" id="go">Wir sind bereit!</button>`;
-  bindRead(app, { prophecy: GAME.prophecy });
   app.querySelector('#go').onclick = () => {
     state.startedAt = Date.now();
     save();
@@ -182,20 +171,14 @@ function viewStation(station) {
       <div class="chip">📍 ${station.place}</div>
       <h2>${station.title}</h2>
       <p class="story">${station.story}</p>
-      ${readButton('story')}
     </div>
     <div class="card" id="puzzle"></div>
     <div id="after"></div>`;
-  bindRead(app, { story: station.story });
 
   const after = app.querySelector('#after');
   const showAfter = () => {
     after.innerHTML = state.solved[station.id] ? successBlock(station) : '';
-    if (state.solved[station.id]) {
-      bindRead(after, { next: station.next });
-      return;
-    }
-    renderHints(after, station);
+    if (!state.solved[station.id]) renderHints(after, station);
   };
 
   renderPuzzle(app.querySelector('#puzzle'), station, {
@@ -220,7 +203,7 @@ function successBlock(station) {
     <div class="card success">
       <h2>Prüfung bestanden!</h2>
       ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut!</p>` : ''}
-      ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>${readButton('next')}` : ''}
+      ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>` : ''}
       ${next?.map ? `<a class="map-inline" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: next.id, compact: true })}</a>` : ''}
       <div class="stack" style="margin-top:16px">
         ${next
@@ -436,9 +419,7 @@ function viewCeremony(step) {
         <h1>⭐ ${GAME.clan} ⭐</h1>
         <p class="story">${text}</p>
         ${bday ? `<p class="name">Alles Gute zum 11. Geburtstag, ${bday.warrior}!</p>` : ''}
-        ${readButton('end')}
       </div>`;
-    bindRead(app, { end: text + (bday ? ` Alles Gute zum Geburtstag, ${bday.warrior}!` : '') });
     fanfare();
     return;
   }
@@ -449,12 +430,11 @@ function viewCeremony(step) {
 
   app.innerHTML = `
     <div class="card ceremony" style="margin-top:6vh">
-      <div class="chip">Kriegerzeremonie ${step + 1}/${order.length}</div>
+      <div class="chip">Kriegerzeremonie ${step + 1}/${order.length} · ${leader} spricht</div>
       <p class="story">${vow}</p>
-      <div class="row">${readButton('vow')}<button class="btn" id="promise">„Ich verspreche es!“</button></div>
+      <button class="btn" id="promise">„Ich verspreche es!“</button>
       <div id="named"></div>
     </div>`;
-  bindRead(app, { vow, naming });
 
   app.querySelector('#promise').onclick = e => {
     e.target.remove();
@@ -467,7 +447,6 @@ function viewCeremony(step) {
         <div class="name">${p.warrior}</div>
       </div>
       <a class="btn block" href="#/zeremonie/${step + 1}">${step + 1 < order.length ? 'Nächste Schülerin' : 'Abschluss'}</a>`;
-    setTimeout(() => speak(naming), 1500);
   };
 }
 
@@ -481,7 +460,7 @@ function answerOf(s) {
     case 'cipher': return p.message;
     case 'quiz': return p.questions.map(q => q.options[q.answer]).join(' · ');
     case 'number': return p.answer == null ? '<span class="warn">fehlt!</span>' : `${p.answer} (±${p.tolerance || 0})`;
-    case 'audio': return p.answers.join(' / ');
+    case 'owl': return `${p.calls} Rufe`;
     case 'prey': return p.prey.map(x => x.letter).join('');
     case 'roles': return roleOrder(p.order).map(r => GAME.roles[r].digit).join('');
     case 'match': return p.pairs.map(x => x[1]).join(', ');

@@ -1,6 +1,6 @@
 // Rätseltypen. Jeder Typ bekommt den Container, die Station und ctx = { solved, state, onSolved }.
 import { GAME } from './config.js';
-import { speak, canSpeak, hiss } from './fx.js';
+import { hiss, owlCalls } from './fx.js';
 import { roleOrder, getPlayers } from './players.js';
 
 const TRY_AGAIN = [
@@ -151,17 +151,25 @@ const types = {
     });
   },
 
-  audio(el, p, ctx) {
+  owl(el, p, ctx) {
     el.innerHTML = `
-      <h3>Stimmen im Wind</h3>
-      ${canSpeak
-        ? `<button class="btn block" id="listen">👂 Lauschen</button>`
-        : `<p class="parchment" style="cursor:default">„${p.speech}“</p>`}`;
-    el.querySelector('#listen')?.addEventListener('click', () => speak(p.speech, { whisper: true }));
+      <h3>Ruf der Eule</h3>
+      <button class="btn block" id="listen">👂 Lauschen</button>`;
+    const listen = el.querySelector('#listen');
+    listen.onclick = () => {
+      const ms = owlCalls(p.calls);
+      listen.disabled = true;
+      listen.textContent = '🦉 Psst … zählt mit!';
+      setTimeout(() => {
+        listen.disabled = false;
+        listen.textContent = '👂 Noch einmal lauschen';
+      }, ms);
+    };
     answerForm(el, {
       question: p.question,
+      numeric: true,
       onSolved: ctx.onSolved,
-      check: v => p.answers.some(a => norm(a) === norm(v)),
+      check: v => Number(v) === p.calls,
     });
   },
 

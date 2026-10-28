@@ -11,7 +11,7 @@ Sonnenuntergang am 4.12. ist gegen **16:15 Uhr** → gegen **14:00 Uhr** starten
 | 0:00 | 1 Das Lager | Zuhause | Einleitung, Rollenkarten, Pfotenschrift |
 | 0:12 | 2 Der Lagerausgang | Haustür | Clan-Quiz (nur Grundwissen, keine Spoiler) |
 | 0:20 | 3 Am Donnerweg | Ende unserer Straße | Laternen unterwegs zählen |
-| 0:30 | 4 Die Grenze | Feldrand | Stimme des SternenClans (Sprachausgabe) |
+| 0:30 | 4 Die Grenze | Feldrand | Ruf der Eule: Eulenrufe zählen |
 | 0:40 | 5 Das Jagdgebiet | Weg am Feld, Höhe Baum im Feld | 5 versteckte Beutekarten → Wort „EICHE“ |
 | 0:52 | 6 Die Wächter-Eiche | Waldrand an der Querstraße | Krallen-Code aus den Rollenkarten |
 | 1:02 | 7 Der Heilerbau | hinter dem Bolzplatz | Kräuterkunde |
@@ -71,7 +71,6 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 - **Ein Tablet für alle** ist der Hauptmodus. Zusätzliche Handys (zu zweit) können parallel mitspielen – jedes Gerät hat seinen eigenen Spielstand.
 - QR-Codes können mit dem **Scanner in der App** oder mit der **normalen Kamera-App** gescannt werden. Falls nichts geht: den Spurcode unter dem QR eintippen.
 - **Android/Chrome:** Die Seite kann über Chrome-Menü → „Zum Startbildschirm hinzufügen“ / „App installieren“ wie eine App installiert werden (Vollbild). Spielstand bleibt derselbe wie in Chrome.
-- **Vorlesen offline:** Android-Einstellungen → „Sprachausgabe“ (Text-in-Sprache) → Google-Sprachausgabe → Deutsch-Sprachdaten herunterladen. Sonst bleibt die Stimme im Wald ohne Netz stumm.
 - Auf iPad/iPhone dagegen **nicht** zum Home-Bildschirm hinzufügen, sondern in Safari spielen – sonst öffnen QR-Links aus der Kamera-App einen anderen Spielstand.
 - Tipps werden zeitverzögert freigeschaltet (nach 1, 3, 5 Minuten an einer Station).
 - **GPS ohne Mobilfunk** braucht für den ersten Fix draußen evtl. 1–2 Minuten. Am besten kurz vor dem Losgehen draußen „Witterung aufnehmen“ einmal öffnen. Im Wald ist GPS ungenauer (10–20 m) – die Witterung bringt die Mädchen in die Nähe, den Rest erledigt der Hinweistext.

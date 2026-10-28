@@ -1,33 +1,4 @@
-// Vorlesen (Sprachausgabe des Geräts) sowie Musik und Klänge – alles per Web Audio
-// erzeugt, also offline und ohne Audiodateien oder Lizenzen.
-
-const synth = window.speechSynthesis;
-
-function germanVoice() {
-  const voices = synth?.getVoices() || [];
-  return voices.find(v => v.lang === 'de-DE' && v.localService) || voices.find(v => v.lang?.startsWith('de'));
-}
-
-export const canSpeak = !!synth;
-
-export function speak(text, { whisper = false } = {}) {
-  if (!synth) return;
-  synth.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'de-DE';
-  u.voice = germanVoice() || null;
-  u.rate = whisper ? 0.75 : 0.9;
-  u.pitch = whisper ? 1.25 : 1;
-  // Musik leiser, solange gesprochen wird
-  u.onstart = () => duck(true);
-  u.onend = u.onerror = () => duck(false);
-  synth.speak(u);
-}
-
-export function stopSpeaking() {
-  synth?.cancel();
-  duck(false);
-}
+// Musik und Klänge – alles per Web Audio erzeugt, also offline und ohne Audiodateien oder Lizenzen.
 
 // ---------------------------------------------------------------------------
 // Audio-Grundgerüst
@@ -190,7 +161,10 @@ function padChord(i) {
   });
 }
 
+let owlQuietUntil = 0; // Hintergrund-Eule schweigt, während beim Rätsel gezählt wird
+
 function owl() {
+  if (Date.now() < owlQuietUntil) return;
   const now = audio.currentTime;
   [0, 0.55].forEach(t => tone(420, now + t, { dur: 0.45, vol: 0.06, type: 'sine', attack: 0.08, glide: 360, to: musicBus }));
 }
@@ -238,13 +212,36 @@ export const stopMusic = safe(() => {
 
 export const isMusicPlaying = () => playing;
 
-const duck = safe(down => {
-  if (!playing || !audio) return;
-  const now = audio.currentTime;
-  musicBus.gain.cancelScheduledValues(now);
-  musicBus.gain.setValueAtTime(musicBus.gain.value, now);
-  musicBus.gain.linearRampToValueAtTime(down ? MUSIC_VOLUME * 0.25 : MUSIC_VOLUME, now + 0.4);
-});
+// Rätsel „Ruf der Eule“: n Eulenrufe mit unregelmäßigen Pausen im Wind. Gibt die Dauer in ms zurück.
+export function owlCalls(n) {
+  try {
+    ctx();
+    const now = audio.currentTime + 0.3;
+    let t = 0;
+    for (let i = 0; i < n; i++) {
+      tone(390, now + t, { dur: 0.75, vol: 0.22, type: 'sine', attack: 0.12, glide: 330 });
+      tone(780, now + t, { dur: 0.5, vol: 0.03, type: 'sine', attack: 0.12, glide: 660 });
+      t += 1 + Math.random() * 1.1;
+    }
+    const wind = noise();
+    const filter = audio.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 450;
+    const gain = audio.createGain();
+    gain.gain.setValueAtTime(0, now - 0.3);
+    gain.gain.linearRampToValueAtTime(0.1, now + 0.5);
+    gain.gain.linearRampToValueAtTime(0, now + t + 0.5);
+    wind.loop = true;
+    wind.connect(filter).connect(gain).connect(sfxBus);
+    wind.start(now - 0.3);
+    wind.stop(now + t + 0.6);
+    owlQuietUntil = Date.now() + (t + 1) * 1000 + 60000;
+    return (t + 1) * 1000;
+  } catch (e) {
+    console.debug('Audio nicht verfügbar', e);
+    return 0;
+  }
+}
 
 // Im Hintergrund (Bildschirm aus) Audio pausieren – spart Akku
 document.addEventListener('visibilitychange', () => {
