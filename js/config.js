@@ -90,7 +90,7 @@ export const GAME = {
         'Das erste Wort heißt WIE.',
         'Die Botschaft lautet: WIE VIELE LATERNEN?',
       ],
-      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende – und findet unterwegs die Antwort auf die Frage der Pfotenschrift! Bleibt zusammen und überquert Donnerwege nur mit einer erwachsenen Kriegerin.',
+      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende – und findet unterwegs die Antwort auf die Frage der Pfotenschrift!',
     },
     {
       id: 'donnerweg', token: 'm3kd', title: 'Am Donnerweg', place: 'Ende der Straße',
