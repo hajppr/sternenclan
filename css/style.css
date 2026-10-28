@@ -332,6 +332,10 @@ input:focus, select:focus { outline: 2px solid var(--gold); outline-offset: 1px;
 .preview-info { text-align: center; line-height: 1.35; }
 .preview-end { background: none; border: 0; color: #d9c2ee; text-decoration: underline; font: inherit; font-size: 0.8rem; margin-top: 2px; cursor: pointer; }
 
+.paper-note { font-family: var(--serif); font-size: 1.2rem; color: var(--gold); text-align: center; margin: 14px 0 6px; }
+.paper-fallback { margin-top: 6px; }
+.paper-fallback summary { font-size: 0.85rem; cursor: pointer; }
+
 .gm-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .gm-table td, .gm-table th { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--card-line); vertical-align: top; }
 .warn { color: var(--bad); font-weight: 600; }

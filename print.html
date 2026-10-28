@@ -42,6 +42,19 @@
       break-inside: avoid;
     }
     .certificate .warrior { font-size: 2.6rem; color: var(--gold); margin: 6mm 0; }
+    .handout { border: 3mm double var(--gold); padding: 10mm; background: var(--paper); text-align: center; }
+    .handout-title { font-size: 1.8rem; color: var(--gold); margin: 0 0 2mm; }
+    .handout-sub { margin: 0 0 8mm; font-style: italic; }
+    .pawgrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4mm; }
+    .pawgrid div { border: 1px solid var(--line); border-radius: 3mm; padding: 3mm 1mm; background: #fff; }
+    .pawgrid span { display: block; font-size: 2.4rem; line-height: 1.2; }
+    .pawgrid b { font-size: 1.6rem; }
+    .parchment { border: 3mm double var(--gold); padding: 12mm; background: var(--paper); font-size: 1.4rem; }
+    .parchment > b { display: block; font-size: 2rem; color: var(--gold); text-align: center; margin-bottom: 6mm; }
+    .herbs { list-style: none; padding: 0; margin: 0; }
+    .herbs li { padding: 4mm 0; border-bottom: 1px dashed var(--line); }
+    .herbs li:last-child { border-bottom: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .gm td, .gm th { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: left; vertical-align: top; font-family: sans-serif; font-size: 0.85rem; }
     .gm { border-collapse: collapse; width: 100%; }
     @media print {

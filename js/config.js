@@ -56,11 +56,12 @@ export const GAME = {
     {
       id: 'lager', token: 'lg4m', title: 'Das Lager', place: 'Zuhause',
       map: { x: 275, y: 80 },
-      gm: { hide: 'Kein QR nötig – Start direkt in der App.', prep: 'Rollenkarten verteilen, bevor ihr startet.' },
+      gm: { hide: 'Kein QR nötig – Start direkt in der App.', prep: 'Rollenkarten verteilen. Pfotenschrift-Tafel (print.html) auf den Tisch legen.' },
       story: 'Lichtstern hat im Lager eine Botschaft in Pfotenschrift gefunden. Nur wer die alten Zeichen lesen kann, weiß, wo die Prüfung beginnt.',
       puzzle: {
         type: 'cipher',
         message: 'SUCHT AM LAGERAUSGANG',
+        printed: true, // Tafel liegt ausgedruckt bereit (print.html)
         question: 'Entschlüsselt die Botschaft: Schreibt unter jedes Zeichen den passenden Buchstaben.',
       },
       hints: [
@@ -158,10 +159,11 @@ export const GAME = {
     {
       id: 'heilerbau', token: 'h6cs', title: 'Der Heilerbau', place: 'Hinter dem Bolzplatz',
       map: { x: 332, y: 758 },
-      gm: { hide: 'ANPASSEN: QR-Karte an einem Baum am Weg zwischen Bolzplatz und Wegende (dort stehen Bäume auf beiden Seiten).', prep: '' },
+      gm: { hide: 'ANPASSEN: QR-Karte an einem Baum am Weg zwischen Bolzplatz und Wegende (dort stehen Bäume auf beiden Seiten).', prep: 'Pergament „Vorrat der Heilerin“ (print.html) in Klarsichthülle zur QR-Karte legen.' },
       story: 'Die alte Heilerin des MondClans hat euch ihr Wissen hinterlassen. Vier Clankatzen brauchen Hilfe. Welches Kraut hilft wem?',
       puzzle: {
         type: 'match',
+        printed: true, // Vorrat der Heilerin liegt ausgedruckt bei der Station (print.html)
         info: [
           ['Spinnweben', 'stoppen Blutungen'],
           ['Katzenminze', 'hilft gegen Husten'],

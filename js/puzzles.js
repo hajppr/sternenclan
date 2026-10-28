@@ -90,9 +90,22 @@ function slotInput(el, words, { numeric = false, onSolved }) {
   });
 }
 
+// Info liegt ausgedruckt bei der Station – in der App nur als zugeklappte Notlösung
+const paperFallback = html => `
+  <details class="paper-fallback">
+    <summary class="muted">Pergament verloren? Hier anzeigen</summary>
+    ${html}
+  </details>`;
+
+export const herbList = info => `
+  <div class="parchment" style="cursor:default">
+    <b>Vorrat der Heilerin</b>
+    <ul class="herbs">${info.map(([name, use]) => `<li><b>${name}</b> – ${use}</li>`).join('')}</ul>
+  </div>`;
+
 // ---------------------------------------------------------------------------
 
-const PAW_SCRIPT = {
+export const PAW_SCRIPT = {
   A: '🌙', B: '⭐', C: '🍃', D: '🔥', E: '🐾', F: '💧', G: '🌲', H: '🐭', I: '🪶',
   J: '🦉', K: '🐟', L: '🌸', M: '❄️', N: '☀️', O: '🍂', P: '🐦', Q: '🌿', R: '🪨',
   S: '🦊', T: '🐇', U: '🌰', V: '🍄', W: '⚡', X: '🌊', Y: '🐿️', Z: '🦔',
@@ -103,11 +116,10 @@ const types = {
     el.innerHTML = `<h3>Pfotenschrift</h3><p>${p.question}</p>`;
     const words = p.message.toUpperCase().split(/\s+/).map(w => [...w].map(ch => ({ label: PAW_SCRIPT[ch] || ch, expected: ch })));
     slotInput(el, words, { onSolved: ctx.onSolved });
-    el.insertAdjacentHTML('beforeend', `
-      <details style="margin-top:12px" open>
-        <summary class="muted">Pfotenschrift-Tafel</summary>
-        <div class="keytable">${Object.entries(PAW_SCRIPT).map(([l, g]) => `<div>${g}<b>${l}</b></div>`).join('')}</div>
-      </details>`);
+    const table = `<div class="keytable">${Object.entries(PAW_SCRIPT).map(([l, g]) => `<div>${g}<b>${l}</b></div>`).join('')}</div>`;
+    el.insertAdjacentHTML('beforeend', p.printed
+      ? `<p class="paper-note">📜 Schaut auf eure Pfotenschrift-Tafel!</p>${paperFallback(table)}`
+      : `<details style="margin-top:12px" open><summary class="muted">Pfotenschrift-Tafel</summary>${table}</details>`);
   },
 
   quiz(el, p, ctx) {
@@ -189,10 +201,9 @@ const types = {
     const herbs = p.info.map(([name]) => name);
     el.innerHTML = `
       <h3>Kräuterkunde</h3>
-      <div class="parchment" style="cursor:default">
-        <b>Vorrat der Heilerin</b>
-        <ul class="herbs">${p.info.map(([name, use]) => `<li><b>${name}</b> – ${use}</li>`).join('')}</ul>
-      </div>
+      ${p.printed
+        ? `<p class="paper-note">📜 Lest im Vorrat der Heilerin nach!</p>${paperFallback(herbList(p.info))}`
+        : herbList(p.info)}
       <div class="stack" style="margin-top:18px">${p.pairs.map(([patient], i) => `
         <div>
           <p style="margin:0 0 6px">${patient}</p>

@@ -1,5 +1,6 @@
 import { GAME, lockCode } from './config.js';
 import { getPlayers } from './players.js';
+import { PAW_SCRIPT, herbList } from './puzzles.js';
 
 const players = getPlayers();
 
@@ -33,6 +34,15 @@ const roleCards = players.map(p => {
     </div>`;
 }).join('');
 
+const pawTable = `
+  <div class="handout">
+    <p class="handout-title">🐾 Die Pfotenschrift des ${GAME.clan}s 🐾</p>
+    <p class="handout-sub">Jedes Zeichen steht für einen Buchstaben.</p>
+    <div class="pawgrid">${Object.entries(PAW_SCRIPT).map(([l, g]) => `<div><span>${g}</span><b>${l}</b></div>`).join('')}</div>
+  </div>`;
+
+const herbStation = GAME.stations.find(s => s.puzzle.type === 'match');
+
 const preyStation = GAME.stations.find(s => s.puzzle.type === 'prey');
 const preyCards = preyStation ? preyStation.puzzle.prey.map(x => `
   <div class="card">
@@ -61,6 +71,8 @@ document.getElementById('out').innerHTML = `
   <section><h1>Spielleitung – nicht den Kindern zeigen!</h1>${gmSheet}</section>
   <section><h2>QR-Karten für die Stationen</h2><div class="grid three">${stationCards}</div></section>
   <section><h2>Rollenkarten</h2><div class="grid three">${roleCards}</div></section>
+  <section><h2>Pfotenschrift-Tafel (Station 1, auf den Tisch)</h2>${pawTable}</section>
+  ${herbStation ? `<section><h2>Vorrat der Heilerin (Station 7, zur QR-Karte)</h2>${herbList(herbStation.puzzle.info)}</section>` : ''}
   ${preyCards ? `<section><h2>Beutekarten (Jagdgebiet)</h2><div class="grid three">${preyCards}</div></section>` : ''}
   <section><h2>Kriegerurkunden (in die Truhe)</h2>${certificates}</section>
   <section><h2>Start-QR (für Einladung oder Tisch)</h2><div class="grid three"><div class="card"><p class="title">${GAME.title}</p><div class="qr">${qr(base)}</div></div></div></section>`;
