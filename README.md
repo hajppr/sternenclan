@@ -78,4 +78,4 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 
 ## Klänge
 
-Eule, Wind, Fauchen und Miau sind echte Aufnahmen von Wikimedia Commons (CC BY 4.0 bzw. CC0) – Urheber und Links in [`sounds/LIZENZEN.md`](sounds/LIZENZEN.md). Melodien und Hall werden im Browser erzeugt.
+Eule, Wind und Fauchen sind echte Aufnahmen von Wikimedia Commons (CC BY 4.0 bzw. CC0) – Urheber und Links in [`sounds/LIZENZEN.md`](sounds/LIZENZEN.md). Melodien und Hall werden im Browser erzeugt.
