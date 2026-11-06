@@ -97,13 +97,13 @@ export const GAME = {
       map: { x: 404, y: 176, via: [[306, 151]] },
       gm: {
         hide: 'ANPASSEN: QR-Karte an Laternenpfahl / Schild, wo unsere Straße endet (Details: privat/ROUTE.md).',
-        prep: 'ANPASSEN: Laternen vom Haus bis hier selbst zählen und unten bei answer eintragen!',
+        prep: 'Lösung: 4 Laternen (3 oder 5 werden auch akzeptiert).',
       },
       story: 'Ihr habt den Zweibeinerort durchquert. Nachts wachen hier die Laternen der Zweibeiner über den Donnerweg. Eine gute Kriegerin hat Augen für alles, was um sie herum geschieht.',
       puzzle: {
         type: 'number',
         question: 'Wie viele Laternen der Zweibeiner habt ihr auf dem Weg vom Lager bis hierher gezählt?',
-        answer: null, // ANPASSEN, z. B. 7
+        answer: 4,
         tolerance: 1,
       },
       hints: ['Wenn ihr nicht mitgezählt habt: Schaut den Weg zurück und zählt noch einmal.', 'Zählt auch die Laterne, an der ihr gerade steht.'],
