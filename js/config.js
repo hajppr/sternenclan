@@ -143,13 +143,13 @@ export const GAME = {
         question: 'Tragt die Buchstaben der gefangenen Beute in dieser Reihenfolge ein.',
       },
       hints: ['Die Beutekarten sind in der Nähe – sucht an Pfosten, Steinen und im Gras.', 'Es ist ein Baum – ihr werdet ihn bald sehen.'],
-      next: 'Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Am Waldrand wacht eine Eiche mit drei Stämmen. Bei ihr findet ihr die nächste Spur.',
+      next: 'Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Gegenüber, auf der Seite der Pferdeweide, steht eine Eiche mit zwei Stämmen. Bei ihr findet ihr die nächste Spur.',
     },
     {
-      id: 'waldrand', token: 'r5vb', title: 'Die Wächter-Eiche', place: 'Waldrand',
+      id: 'waldrand', token: 'r5vb', title: 'Die Wächter-Eiche', place: 'Gegenüber vom Waldrand',
       map: { x: 355, y: 556, via: [[356, 551]] },
-      gm: { hide: 'QR-Karte an der Drillingseiche (drei Stämme) am Waldrand, Ecke Querstraße.', prep: '' },
-      story: 'Seht ihr die Eiche mit den drei Stämmen? Drei Stämme, eine Wurzel – so wie ein Clan, der zusammenhält. Die Eiche bewacht das Tor zum Wald, und es ist mit einem Krallen-Code verschlossen. Nur wenn jede Schülerin ihr Wissen teilt, öffnet es sich.',
+      gm: { hide: 'QR-Karte an der Zwillingseiche (zwei Stämme, ein Baum direkt daneben) gegenüber vom Waldrand, auf der Seite der Pferdekoppel.', prep: '' },
+      story: 'Zwei Stämme aus einer Wurzel – wie Schwestern. Und dicht daneben ein dritter Baum, als würde er einfach dazugehören. So ist es auch in einem Clan. Von hier aus behält die Wächter-Eiche den Weg in den Wald im Blick. Sie lässt euch nur weiter, wenn ihr den Krallen-Code kennt – und den findet ihr nur, wenn jede Schülerin ihr Wissen teilt.',
       puzzle: {
         type: 'roles',
         order: ['seherin', 'heilerin', 'waechterin', 'faehrte'],
