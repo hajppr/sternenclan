@@ -667,15 +667,36 @@ function drawTransfer(el) {
     q.make();
     svg = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
   }
+  const gpsCount = Object.keys(getGeo()).length;
   el.innerHTML = `
     <details style="margin-top:8px">
-      <summary>Auf das Spiel-Tablet übertragen</summary>
-      <p class="muted">Gespeicherten Clan und GPS-Positionen übertragen: QR mit dem Tablet scannen (Kamera-App oder „Spur scannen“) oder Link schicken.</p>
+      <summary>Übertragen &amp; sichern (Clan: ${getPlayers().length} · GPS-Punkte: ${gpsCount})</summary>
+      <p class="muted">Clan und GPS-Punkte stecken in diesem Link. Aufs Spiel-Tablet: QR scannen (Kamera-App oder „Spur scannen“). Als Sicherung: Datei herunterladen und z. B. an dich selbst mailen – zum Wiederherstellen den Link darin einmal öffnen.</p>
       ${svg ? `<div class="setup-qr">${svg}</div>` : ''}
-      <button class="btn ghost small" id="copy">Link kopieren</button>
+      <div class="row">
+        <button class="btn ghost small" id="copy">Link kopieren</button>
+        <button class="btn ghost small" id="backup">💾 Sicherung herunterladen</button>
+      </div>
     </details>`;
   el.querySelector('#copy').onclick = e => {
     navigator.clipboard?.writeText(link).then(() => { e.target.textContent = 'Kopiert ✓'; });
+  };
+  el.querySelector('#backup').onclick = () => {
+    const date = new Date().toISOString().slice(0, 10);
+    const text = [
+      `Sicherung ${GAME.title} – ${date}`,
+      `Clan: ${getPlayers().length} Schülerinnen · GPS-Punkte: ${gpsCount}`,
+      '',
+      'Wiederherstellen: diesen Link auf dem Spiel-Tablet öffnen und „Übernehmen“ tippen.',
+      '',
+      link,
+      '',
+    ].join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+    a.download = `SternenClan-Sicherung-${date}.txt`;
+    a.click();
+    URL.revokeObjectURL(a.href);
   };
 }
 
@@ -782,3 +803,6 @@ route();
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js');
 }
+
+// Browser bitten, Clan, GPS-Punkte und Spielstand nicht automatisch aufzuräumen
+navigator.storage?.persist?.();
