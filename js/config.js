@@ -157,13 +157,13 @@ export const GAME = {
       },
       hints: ['Holt eure Rollenkarten heraus! Jede hat ein Zeichen und eine Zahl.', 'Sucht die Karten mit genau diesen Zeichen und lest die Zahlen der Reihe nach.'],
       digit: 2,
-      next: 'Folgt dem Donnerweg weiter nach Süden, am Wald entlang. Hinter der Wiese, auf der Zweibeiner-Junge einem Ball hinterherjagen, rücken die Bäume wieder an den Weg. Dort liegt der Heilerbau.',
+      next: 'Folgt dem Donnerweg weiter nach Süden, am Wald entlang. Hinter der Wiese, auf der Zweibeiner-Junge einem Ball hinterherjagen, rücken die Bäume wieder an den Weg. Haltet rechts neben dem Weg Ausschau nach großen Felsen – zwischen ihnen liegt der Heilerbau.',
     },
     {
-      id: 'heilerbau', token: 'h6cs', title: 'Der Heilerbau', place: 'Hinter dem Bolzplatz',
+      id: 'heilerbau', token: 'h6cs', title: 'Der Heilerbau', place: 'Bei den Felsen hinter dem Bolzplatz',
       map: { x: 328, y: 758, via: [[347, 645]] },
-      gm: { hide: 'QR-Karte an einem Baum am Weg zwischen Bolzplatz und Wegende (dort stehen Bäume auf beiden Seiten).', prep: 'Pergament „Vorrat der Heilerin“ (print.html) in Klarsichthülle zur QR-Karte legen.' },
-      story: 'Die alte Heilerin des MondClans hat euch ihr Wissen hinterlassen. Vier Clankatzen brauchen Hilfe. Welches Kraut hilft wem?',
+      gm: { hide: 'QR-Karte bei den 3–4 großen Felsen, ein Stück rechts neben dem Weg hinter dem Bolzplatz.', prep: 'Pergament „Vorrat der Heilerin“ (print.html) in Klarsichthülle unter einen der Felsen legen.' },
+      story: 'Zwischen diesen Felsen, geschützt vor Wind und Regen, hatte die alte Heilerin des MondClans ihren Bau. Irgendwo hier hat sie euch ihr Wissen hinterlassen. Vier Clankatzen brauchen Hilfe. Welches Kraut hilft wem?',
       puzzle: {
         type: 'match',
         printed: true, // Vorrat der Heilerin liegt ausgedruckt bei der Station (print.html)
@@ -181,7 +181,7 @@ export const GAME = {
           ['Eine Königin hat Schmerzen und kann nicht schlafen.', 'Mohnsamen'],
         ],
       },
-      hints: ['Lest die Kräuterliste ganz genau.', 'Jedes Kraut passt nur zu einer Katze – eins bleibt übrig.'],
+      hints: ['Das Pergament der Heilerin liegt gut geschützt bei den Felsen. Lest die Kräuterliste ganz genau.', 'Jedes Kraut passt nur zu einer Katze – eins bleibt übrig.'],
       next: 'Am Ende des Weges biegt ihr in Richtung Sonnenaufgang ab, am Feld entlang. An der nächsten Ecke liegen drei Botschaften – angeblich alle vom SternenClan.',
     },
     {

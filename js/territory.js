@@ -61,6 +61,14 @@ export const TERRITORY = {
       <circle r="13" fill="#5c7a4c"/><circle r="7" cx="-6" cy="-5" fill="#6f8c58"/><circle r="6" cx="6" cy="-3" fill="#4f6b42"/>
     </g>
 
+    <!-- Felsen beim Heilerbau (rechts neben dem Weg) -->
+    <g fill="#8d8a80" stroke="#5f5c54" stroke-width="1">
+      <path d="M297 750 q4 -7 10 -5 q5 2 4 8 q-6 4 -14 -3 z"/>
+      <path d="M302 762 q3 -6 9 -4 q4 3 2 8 q-6 2 -11 -4 z"/>
+      <path d="M292 760 q2 -5 7 -4 q3 3 1 7 q-5 1 -8 -3 z"/>
+      <path d="M307 772 q3 -4 7 -3 q3 2 1 6 q-5 1 -8 -3 z"/>
+    </g>
+
     <!-- Wege -->
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
       <!-- Großer Donnerweg (Hauptstraße + Bahn im Nordosten) -->
