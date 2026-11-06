@@ -121,7 +121,6 @@ function viewHome() {
         <li>
           <span class="dot">${state.solved[s.id] ? '🐾' : i === ci ? '✨' : '·'}</span>
           <span>${state.solved[s.id] || i === ci ? s.title : '???'}</span>
-          ${state.solved[s.id] && s.digit != null ? `<span class="chip" style="margin:0 0 0 auto">Krallenzeichen ${s.digit}</span>` : ''}
         </li>`).join('')}
       </ul>
     </div>
@@ -225,7 +224,7 @@ function successBlock(station) {
   return `
     <div class="card success">
       <h2>Prüfung bestanden!</h2>
-      ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut!</p>` : ''}
+      ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut – die App verrät es euch später nicht noch einmal!</p>` : ''}
       ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>` : ''}
       ${next?.map ? `<a class="map-inline" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: next.id, compact: true })}</a>` : ''}
       <div class="stack" style="margin-top:16px">

@@ -90,16 +90,16 @@ export const GAME = {
         'Das erste Wort heißt WIE.',
         'Die Botschaft lautet: WIE VIELE LATERNEN?',
       ],
-      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende – und findet unterwegs die Antwort auf die Frage der Pfotenschrift!',
+      next: 'Folgt dem Donnerweg in Richtung Sonnenaufgang bis zu seinem Ende – und findet unterwegs die Antwort auf die Frage der Pfotenschrift! Am Ende wachen ein blaues Schild und ein großer Stein über die nächste Spur.',
     },
     {
       id: 'donnerweg', token: 'm3kd', title: 'Am Donnerweg', place: 'Ende der Straße',
       map: { x: 404, y: 176, via: [[306, 151]] },
       gm: {
-        hide: 'QR-Karte an Laternenpfahl / Schild, wo unsere Straße endet (Details: privat/ROUTE.md).',
+        hide: 'QR-Karte am blauen Schild bzw. beim großen Stein, wo unsere Straße endet.',
         prep: 'Lösung: 4 Laternen (3 oder 5 werden auch akzeptiert).',
       },
-      story: 'Ihr habt den Zweibeinerort durchquert. Nachts wachen hier die Laternen der Zweibeiner über den Donnerweg. Eine gute Kriegerin hat Augen für alles, was um sie herum geschieht.',
+      story: 'Ihr habt den Zweibeinerort durchquert. Nachts wachen hier die Laternen der Zweibeiner über den Donnerweg – und am Tag dieser große Stein. Eine gute Kriegerin hat Augen für alles, was um sie herum geschieht.',
       puzzle: {
         type: 'number',
         question: 'Wie viele Laternen der Zweibeiner habt ihr auf dem Weg vom Lager bis hierher gezählt?',
@@ -107,12 +107,12 @@ export const GAME = {
         tolerance: 1,
       },
       hints: ['Wenn ihr nicht mitgezählt habt: Schaut den Weg zurück und zählt noch einmal.', 'Zählt auch die Laterne, an der ihr gerade steht.'],
-      next: 'Biegt ab in Richtung Mittagssonne (Süden). Zu eurer Linken beginnt das offene Land. Sucht am Rand des Feldes nach der nächsten Spur.',
+      next: 'Biegt ab in Richtung Mittagssonne (Süden). Zu eurer Linken beginnt das offene Land, zu eurer Rechten wächst eine Hecke. Dort, wo die Hecke endet, hat sich die nächste Spur versteckt.',
     },
     {
-      id: 'grenze', token: 'w8tn', title: 'Die Grenze', place: 'Feldrand',
+      id: 'grenze', token: 'w8tn', title: 'Die Grenze', place: 'Am Ende der Hecke',
       map: { x: 396, y: 245 },
-      gm: { hide: 'QR-Karte am ersten Pfosten / Baum am Feldrand, gleich hinter den letzten Häusern.', prep: 'Tablet-Lautstärke voll aufdrehen.' },
+      gm: { hide: 'QR-Karte versteckt in der Hecke auf der rechten Straßenseite, dort wo die Hecke endet.', prep: 'Tablet-Lautstärke voll aufdrehen.' },
       story: 'Hier beginnt das offene Land. Die Eule ist die Wächterin der Grenze – sie verrät euch, ob ihr weitergehen dürft. Seid ganz still und hört genau hin.',
       puzzle: {
         type: 'owl',
@@ -182,31 +182,31 @@ export const GAME = {
         ],
       },
       hints: ['Das Pergament der Heilerin liegt gut geschützt bei den Felsen. Lest die Kräuterliste ganz genau.', 'Jedes Kraut passt nur zu einer Katze – eins bleibt übrig.'],
-      next: 'Am Ende des Weges biegt ihr in Richtung Sonnenaufgang ab, am Feld entlang. An der nächsten Ecke liegen drei Botschaften – angeblich alle vom SternenClan.',
+      next: 'Am Ende des Weges biegt ihr in Richtung Sonnenaufgang ab, am Feld entlang. An der nächsten Ecke biegt der Weg nach Norden – folgt ihm ein kleines Stück bis zu einer Birke mit weißer Rinde. Dort liegen drei Botschaften, angeblich alle vom SternenClan.',
     },
     {
-      id: 'verraeter', token: 'x9fa', title: 'Die falsche Spur', place: 'Ecke am Feldweg (Südosten)',
-      map: { x: 452, y: 832, via: [[322, 792]] },
-      gm: { hide: 'QR-Karte an der Ecke, wo der Feldweg nach Norden abbiegt (Pfosten / Baum).', prep: 'Die echten Botschaften beschreiben das Versteck der Truhe (Station 9).' },
+      id: 'verraeter', token: 'x9fa', title: 'Die falsche Spur', place: 'An der Birke',
+      map: { x: 461, y: 808, via: [[322, 792], [455, 833]] },
+      gm: { hide: 'QR-Karte an der Birke, ein kleines Stück nördlich der Ecke, wo der Feldweg nach Norden abbiegt.', prep: 'Die echten Botschaften beschreiben das Versteck der Truhe (Station 9).' },
       story: 'Drei Botschaften. Aber eine davon stammt vom Spion des SchattenClans! Welche ist falsch?',
       puzzle: {
         type: 'traitor',
         messages: [
           'Folgt dem Weg in Richtung Norden, am Obstgarten der Zweibeiner vorbei.',
           'Trennt euch! Jede sucht allein, und vertraut niemandem aus eurem Clan.',
-          'Wo der Weg in Richtung Sonnenuntergang abbiegt, ruht der Mondstein im Schutz der Bäume.',
+          'Wo der Weg in Richtung Sonnenuntergang abbiegt, wacht ein großer Baum über den Mondstein.',
         ],
         fake: 1,
         reason: 'Richtig! Das Gesetz der Krieger sagt: Ein Clan hält zusammen. Diese Botschaft war vom SchattenClan.',
       },
       hints: ['Denkt an das Gesetz der Krieger.', 'Würde der SternenClan wollen, dass ein Clan auseinandergeht?'],
       digit: 7,
-      next: 'Geht nach Norden, am Obstgarten entlang. Wo der Weg in Richtung Sonnenuntergang abbiegt, sucht im Schutz der Bäume den Mondstein!',
+      next: 'Geht weiter nach Norden, am Obstgarten entlang. Wo der Weg in Richtung Sonnenuntergang abbiegt, steht ein großer Baum – dort wartet der Mondstein!',
     },
     {
-      id: 'mondstein', token: 'z1mo', title: 'Der Mondstein', place: 'Wäldchen an der Nordost-Ecke',
-      map: { x: 460, y: 694, via: [[455, 833], [487, 706]] },
-      gm: { hide: 'Truhe mit Zahlenschloss im Wäldchen an der Ecke, wo der Weg nach Westen abbiegt (+ QR-Karte darauf).', prep: 'Truhe vorher verstecken, Urkunden + Überraschung hinein, Zahlenschloss zu!' },
+      id: 'mondstein', token: 'z1mo', title: 'Der Mondstein', place: 'Großer Baum an der Ecke',
+      map: { x: 486, y: 706 },
+      gm: { hide: 'Truhe mit Zahlenschloss am großen Baum genau an der Ecke, wo der Weg nach Westen abbiegt (+ QR-Karte darauf).', prep: 'Truhe vorher verstecken, Urkunden + Überraschung hinein, Zahlenschloss zu!' },
       story: 'Im Schutz der Bäume liegt der Mondstein! Doch er ist versiegelt. Nur im Lager, im Kreis des ganzen Clans, lässt er sich öffnen.',
       puzzle: {
         type: 'touch',
@@ -219,12 +219,20 @@ export const GAME = {
       id: 'heimkehr', token: 'v4lt', title: 'Heimkehr ins Lager', place: 'Zuhause',
       map: { x: 275, y: 80, via: [[347, 645], [356, 551], [378, 384], [392, 285], [404, 174], [306, 151], [306, 80]] },
       gm: { hide: 'QR-Karte an die Haustür oder auf den Tisch, an dem die Truhe geöffnet wird.', prep: 'Kuchen bereitstellen 🎂' },
-      story: 'Ihr seid zurück im Lager! Lichtstern erwartet euch schon. Jetzt zeigt sich, ob ihr unterwegs gut aufgepasst habt: Unterwegs habt ihr Krallenzeichen gesammelt …',
+      story: 'Ihr seid zurück im Lager! Lichtstern erwartet euch schon. Jetzt zeigt sich, ob ihr unterwegs gut aufgepasst habt: Erinnert ihr euch an die Krallenzeichen, die ihr gesammelt habt?',
       puzzle: { type: 'lock' },
-      hints: ['Die Krallenzeichen stehen oben – in der Reihenfolge, in der ihr sie gefunden habt.'],
+      hints: [], // werden unten aus den Krallenzeichen erzeugt
       next: null,
     },
   ],
 };
 
 export const lockCode = () => GAME.stations.filter(s => s.digit != null).map(s => s.digit).join('');
+
+// Heimkehr: Den Code sollen sich die Mädchen gemerkt haben – Tipps verraten ihn nur nach und nach.
+const clawStations = GAME.stations.filter(s => s.digit != null);
+GAME.stations.find(s => s.id === 'heimkehr').hints = [
+  `Ihr habt ${clawStations.length} Krallenzeichen bekommen: ${clawStations.map(s => `„${s.title}“`).join(', ')}. In dieser Reihenfolge ergeben sie den Code.`,
+  `Die ersten beiden Krallenzeichen waren ${clawStations[0].digit} und ${clawStations[1].digit}.`,
+  `Der ganze Code lautet: ${lockCode()}`,
+];

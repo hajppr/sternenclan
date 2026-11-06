@@ -297,12 +297,12 @@ const types = {
   },
 
   lock(el, p, ctx) {
+    // Code nicht anzeigen – die Mädchen sollen sich die Krallenzeichen gemerkt haben (Tipps helfen notfalls)
     const digits = GAME.stations.filter(s => s.digit != null);
     el.innerHTML = `
       <h3>Eure Krallenzeichen</h3>
-      <div class="bigsymbols">${digits.map(s => `<span title="${s.title}">${ctx.state.solved[s.id] ? s.digit : '?'}</span>`).join('')}</div>
-      ${digits.some(s => !ctx.state.solved[s.id]) ? '<p class="muted center">Ein paar Zeichen fehlen noch – vielleicht habt ihr eine Prüfung übersprungen?</p>' : ''}
-      <p class="center">Stellt das Zahlenschloss auf diesen Code und öffnet die Truhe.</p>
+      <div class="bigsymbols">${digits.map(() => '<span>?</span>').join('')}</div>
+      <p class="center">Stellt das Zahlenschloss auf eure ${digits.length} Krallenzeichen – in der Reihenfolge, in der ihr sie bekommen habt – und öffnet die Truhe.</p>
       ${ctx.solved ? '' : '<button class="btn block" id="open">Die Truhe ist offen!</button>'}`;
     el.querySelector('#open')?.addEventListener('click', ctx.onSolved);
   },
