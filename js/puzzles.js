@@ -254,7 +254,7 @@ const types = {
   touch(el, p, ctx) {
     const need = Math.min(Math.max(getPlayers().length, 1), 10);
     el.innerHTML = `
-      <h3>Gemeinsam heben</h3>
+      <h3>Das Mondsiegel</h3>
       <p>${p.question}</p>
       <div class="touchstone" id="stone"><span id="count">0 / ${need}</span></div>
       <p class="feedback center"></p>

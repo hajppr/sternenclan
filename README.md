@@ -16,7 +16,7 @@ Sonnenuntergang am 4.12. ist gegen **16:15 Uhr** → gegen **14:00 Uhr** starten
 | 0:52 | 6 Die Wächter-Eiche | Waldrand an der Querstraße | Krallen-Code aus den Rollenkarten |
 | 1:02 | 7 Der Heilerbau | hinter dem Bolzplatz | Kräuterkunde |
 | 1:12 | 8 Die falsche Spur | Feldweg, Südost-Ecke | Welche Botschaft ist vom SchattenClan? |
-| 1:20 | 9 Der Mondstein | Wäldchen an der Nordost-Ecke | Truhe finden, alle heben gemeinsam den Mondstein (alle Finger aufs Tablet) |
+| 1:20 | 9 Der Schatz des Mondsteins | Wäldchen an der Nordost-Ecke | Truhe finden, alle heben gemeinsam den Mondstein (alle Finger aufs Tablet) |
 | 1:25 | Heimweg | denselben Weg zurück | ca. 1 km, Truhe wird mitgetragen, ggf. schon in der Dämmerung (Taschenlampen!) |
 | 1:45 | 10 Heimkehr ins Lager | Zuhause | Zahlenschloss öffnen → Kriegerzeremonie, Kuchen |
 

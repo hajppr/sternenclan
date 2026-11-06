@@ -224,7 +224,7 @@ function successBlock(station) {
   return `
     <div class="card success">
       <h2>Prüfung bestanden!</h2>
-      ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut – die App verrät es euch später nicht noch einmal!</p>` : ''}
+      ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut – der SternenClan verrät es kein zweites Mal!</p>` : ''}
       ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>` : ''}
       ${next?.map ? `<a class="map-inline" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: next.id, compact: true })}</a>` : ''}
       <div class="stack" style="margin-top:16px">
@@ -483,7 +483,7 @@ function answerOf(s) {
     case 'quiz': return p.questions.map(q => q.options[q.answer]).join(' · ');
     case 'number': return p.answer == null ? '<span class="warn">fehlt! (bis dahin zählt jede Zahl)</span>' : `${p.answer} (±${p.tolerance || 0})`;
     case 'owl': return `${p.calls} Rufe`;
-    case 'touch': return 'alle Finger gleichzeitig auf den Stein';
+    case 'touch': return 'alle Finger gleichzeitig auf das Siegel';
     case 'prey': return p.prey.map(x => x.letter).join('');
     case 'roles': return roleOrder(p.order).map(r => GAME.roles[r].digit).join('');
     case 'match': return p.pairs.map(x => x[1]).join(', ');
