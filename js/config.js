@@ -5,7 +5,7 @@
 //  • stations: Reihenfolge, Texte, Rätsel, Tipps, Verstecke
 //  • gm.*:     Notizen nur für die Spielleitung (sieht man nur unter #/gm)
 //
-//  Alles mit "ANPASSEN" in gm.prep sollte vor dem 4.12. einmal vor Ort geprüft werden.
+//  Verstecke und GPS-Punkte wurden am 6.11. vor Ort abgelaufen (GPS: Spielleitung / privat/).
 // ============================================================================
 
 export const GAME = {
@@ -75,7 +75,7 @@ export const GAME = {
       id: 'ausgang', token: 'q7xr', title: 'Der Lagerausgang', place: 'Haustür',
       map: { x: 306, y: 80 },
       gm: {
-        hide: 'ANPASSEN: QR-Karte außen an die Haustür.',
+        hide: 'QR-Karte außen an die Haustür.',
         prep: 'Pfotenschrift-Tafel (print.html) in der Nähe der Haustür verstecken – z. B. unter der Fußmatte, im Briefkasten oder hinter einem Blumentopf.',
       },
       story: 'Am Lagerausgang hat jemand eine Botschaft in Pfotenschrift hinterlassen. Doch um sie zu lesen, braucht ihr die Pfotenschrift-Tafel – und die ist hier irgendwo versteckt!',
@@ -96,7 +96,7 @@ export const GAME = {
       id: 'donnerweg', token: 'm3kd', title: 'Am Donnerweg', place: 'Ende der Straße',
       map: { x: 404, y: 176, via: [[306, 151]] },
       gm: {
-        hide: 'ANPASSEN: QR-Karte an Laternenpfahl / Schild, wo unsere Straße endet (Details: privat/ROUTE.md).',
+        hide: 'QR-Karte an Laternenpfahl / Schild, wo unsere Straße endet (Details: privat/ROUTE.md).',
         prep: 'Lösung: 4 Laternen (3 oder 5 werden auch akzeptiert).',
       },
       story: 'Ihr habt den Zweibeinerort durchquert. Nachts wachen hier die Laternen der Zweibeiner über den Donnerweg. Eine gute Kriegerin hat Augen für alles, was um sie herum geschieht.',
@@ -112,7 +112,7 @@ export const GAME = {
     {
       id: 'grenze', token: 'w8tn', title: 'Die Grenze', place: 'Feldrand',
       map: { x: 396, y: 245 },
-      gm: { hide: 'ANPASSEN: QR-Karte am ersten Pfosten / Baum am Feldrand, gleich hinter den letzten Häusern.', prep: 'Tablet-Lautstärke voll aufdrehen.' },
+      gm: { hide: 'QR-Karte am ersten Pfosten / Baum am Feldrand, gleich hinter den letzten Häusern.', prep: 'Tablet-Lautstärke voll aufdrehen.' },
       story: 'Hier beginnt das offene Land. Die Eule ist die Wächterin der Grenze – sie verrät euch, ob ihr weitergehen dürft. Seid ganz still und hört genau hin.',
       puzzle: {
         type: 'owl',
@@ -127,8 +127,8 @@ export const GAME = {
       id: 'feld', token: 'j2pz', title: 'Das Jagdgebiet', place: 'Am Feld, auf Höhe des einsamen Baums',
       map: { x: 364, y: 492, via: [[392, 285], [378, 384]] },
       gm: {
-        hide: 'ANPASSEN: QR-Karte an einen Pfosten / Baum am Wegrand, auf Höhe des Baums im Feld. Nicht ins Feld selbst (Acker)!',
-        prep: 'Die 5 Beutekarten (print.html) im Umkreis von ca. 20 m am Wegrand verstecken. ANPASSEN: Steht am Waldrand keine Eiche, Buchstaben auf einen anderen Baum ändern (z. B. BIRKE, BUCHE).',
+        hide: 'QR-Karte an einen Pfosten / Baum am Wegrand, auf Höhe des Baums im Feld. Nicht ins Feld selbst (Acker)!',
+        prep: 'Die 5 Beutekarten (print.html) im Umkreis von ca. 20 m am Wegrand verstecken.',
       },
       story: 'Jagdtraining! Fünf Beutetiere haben sich hier versteckt. Jedes trägt einen Buchstaben. Fangt sie alle!',
       puzzle: {
@@ -142,14 +142,14 @@ export const GAME = {
         ],
         question: 'Tragt die Buchstaben der gefangenen Beute in dieser Reihenfolge ein.',
       },
-      hints: ['Die Beutekarten sind in der Nähe – sucht an Pfosten, Steinen und im Gras.', 'Es ist ein Baum.'],
-      next: 'Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Am Waldrand wacht eine Eiche. Bei ihr findet ihr die nächste Spur.',
+      hints: ['Die Beutekarten sind in der Nähe – sucht an Pfosten, Steinen und im Gras.', 'Es ist ein Baum – ihr werdet ihn bald sehen.'],
+      next: 'Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Am Waldrand wacht eine Eiche mit drei Stämmen. Bei ihr findet ihr die nächste Spur.',
     },
     {
       id: 'waldrand', token: 'r5vb', title: 'Die Wächter-Eiche', place: 'Waldrand',
       map: { x: 355, y: 556, via: [[356, 551]] },
-      gm: { hide: 'ANPASSEN: QR-Karte an einer Eiche (oder dem markantesten Baum) am Waldrand, Ecke Querstraße.', prep: '' },
-      story: 'Das Tor zum Wald ist mit einem Krallen-Code verschlossen. Nur wenn jede Schülerin ihr Wissen teilt, öffnet es sich.',
+      gm: { hide: 'QR-Karte an der Drillingseiche (drei Stämme) am Waldrand, Ecke Querstraße.', prep: '' },
+      story: 'Seht ihr die Eiche mit den drei Stämmen? Drei Stämme, eine Wurzel – so wie ein Clan, der zusammenhält. Die Eiche bewacht das Tor zum Wald, und es ist mit einem Krallen-Code verschlossen. Nur wenn jede Schülerin ihr Wissen teilt, öffnet es sich.',
       puzzle: {
         type: 'roles',
         order: ['seherin', 'heilerin', 'waechterin', 'faehrte'],
@@ -162,7 +162,7 @@ export const GAME = {
     {
       id: 'heilerbau', token: 'h6cs', title: 'Der Heilerbau', place: 'Hinter dem Bolzplatz',
       map: { x: 328, y: 758, via: [[347, 645]] },
-      gm: { hide: 'ANPASSEN: QR-Karte an einem Baum am Weg zwischen Bolzplatz und Wegende (dort stehen Bäume auf beiden Seiten).', prep: 'Pergament „Vorrat der Heilerin“ (print.html) in Klarsichthülle zur QR-Karte legen.' },
+      gm: { hide: 'QR-Karte an einem Baum am Weg zwischen Bolzplatz und Wegende (dort stehen Bäume auf beiden Seiten).', prep: 'Pergament „Vorrat der Heilerin“ (print.html) in Klarsichthülle zur QR-Karte legen.' },
       story: 'Die alte Heilerin des MondClans hat euch ihr Wissen hinterlassen. Vier Clankatzen brauchen Hilfe. Welches Kraut hilft wem?',
       puzzle: {
         type: 'match',
@@ -187,7 +187,7 @@ export const GAME = {
     {
       id: 'verraeter', token: 'x9fa', title: 'Die falsche Spur', place: 'Ecke am Feldweg (Südosten)',
       map: { x: 452, y: 832, via: [[322, 792]] },
-      gm: { hide: 'ANPASSEN: QR-Karte an der Ecke, wo der Feldweg nach Norden abbiegt (Pfosten / Baum).', prep: 'Die echten Botschaften beschreiben das Versteck der Truhe (Station 9).' },
+      gm: { hide: 'QR-Karte an der Ecke, wo der Feldweg nach Norden abbiegt (Pfosten / Baum).', prep: 'Die echten Botschaften beschreiben das Versteck der Truhe (Station 9).' },
       story: 'Drei Botschaften. Aber eine davon stammt vom Spion des SchattenClans! Welche ist falsch?',
       puzzle: {
         type: 'traitor',
@@ -206,7 +206,7 @@ export const GAME = {
     {
       id: 'mondstein', token: 'z1mo', title: 'Der Mondstein', place: 'Wäldchen an der Nordost-Ecke',
       map: { x: 460, y: 694, via: [[455, 833], [487, 706]] },
-      gm: { hide: 'ANPASSEN: Truhe mit Zahlenschloss im Wäldchen an der Ecke, wo der Weg nach Westen abbiegt (+ QR-Karte darauf).', prep: 'Truhe vorher verstecken, Urkunden + Überraschung hinein, Zahlenschloss zu!' },
+      gm: { hide: 'Truhe mit Zahlenschloss im Wäldchen an der Ecke, wo der Weg nach Westen abbiegt (+ QR-Karte darauf).', prep: 'Truhe vorher verstecken, Urkunden + Überraschung hinein, Zahlenschloss zu!' },
       story: 'Im Schutz der Bäume liegt der Mondstein! Doch er ist versiegelt. Nur im Lager, im Kreis des ganzen Clans, lässt er sich öffnen.',
       puzzle: {
         type: 'touch',
