@@ -121,16 +121,16 @@ export const GAME = {
       },
       hints: ['Ihr dürft so oft lauschen, wie ihr wollt. Zählt mit den Fingern mit!', 'Es sind mehr als fünf und weniger als zehn Rufe.'],
       digit: 9,
-      next: 'Folgt dem Weg weiter nach Süden, am offenen Land entlang. Haltet Ausschau nach dem einsamen Baum mitten im Feld – auf seiner Höhe hat der Clan früher gejagt. Die Beute ist noch da!',
+      next: 'Folgt dem Weg weiter nach Süden, am offenen Land entlang. Der erste große Baum auf der linken Seite ist eine mächtige Eiche – unter ihr hat der Clan früher gejagt. Die Beute ist noch da!',
     },
     {
-      id: 'feld', token: 'j2pz', title: 'Das Jagdgebiet', place: 'Am Feld, auf Höhe des einsamen Baums',
+      id: 'feld', token: 'j2pz', title: 'Das Jagdgebiet', place: 'An der großen Eiche',
       map: { x: 364, y: 492, via: [[392, 285], [378, 384]] },
       gm: {
-        hide: 'QR-Karte an einen Pfosten / Baum am Wegrand, auf Höhe des Baums im Feld. Nicht ins Feld selbst (Acker)!',
-        prep: 'Die 5 Beutekarten (print.html) im Umkreis von ca. 20 m am Wegrand verstecken.',
+        hide: 'QR-Karte an der großen Eiche – erster großer Baum links (Feldseite), bevor weitere Bäume kommen.',
+        prep: 'Die 5 Beutekarten (print.html) im Umkreis von ca. 20 m um die Eiche am Wegrand verstecken – nicht im Acker.',
       },
-      story: 'Jagdtraining! Fünf Beutetiere haben sich hier versteckt. Jedes trägt einen Buchstaben. Fangt sie alle!',
+      story: 'Jagdtraining unter der großen Eiche! Fünf Beutetiere haben sich hier versteckt. Jedes trägt einen Buchstaben. Fangt sie alle!',
       puzzle: {
         type: 'prey',
         prey: [
@@ -143,7 +143,7 @@ export const GAME = {
         question: 'Tragt die Buchstaben der gefangenen Beute in dieser Reihenfolge ein.',
       },
       hints: ['Die Beutekarten sind in der Nähe – sucht an Pfosten, Steinen und im Gras.', 'Es ist ein Baum – ihr werdet ihn bald sehen.'],
-      next: 'Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Gegenüber, auf der Seite der Pferdeweide, steht eine Eiche mit zwei Stämmen. Bei ihr findet ihr die nächste Spur.',
+      next: 'Richtig – aber der Clan sucht nicht diese Eiche, sondern eine andere! Geht weiter nach Süden. Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Gegenüber, auf der Seite der Pferdeweide, steht eine Eiche mit zwei Stämmen. Bei ihr findet ihr die nächste Spur.',
     },
     {
       id: 'waldrand', token: 'r5vb', title: 'Die Wächter-Eiche', place: 'Gegenüber vom Waldrand',
