@@ -89,8 +89,18 @@ const band = (title, { color, sub } = {}) => `
 
 // ---------------------------------------------------------------------------
 
-// QR-Karten zum Knicken: oben Vorderseite (Code), unten Rückseite (Deko).
-// Die Rückseite steht auf dem Kopf, damit sie nach dem Knicken richtig herum ist.
+// Faltkarten: oben Vorderseite, unten Deko-Rückseite. Die Rückseite steht auf dem Kopf,
+// damit sie nach dem Knicken richtig herum ist.
+const backFace = (sub, title) => `
+    <div class="face back">
+      <div class="band">
+        <div class="caps">${sub}</div>
+        <div class="cover-title">${title}</div>
+        ${eyes()}
+      </div>
+      ${forest}
+    </div>`;
+
 const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
   <div class="fold">
     <div class="face front">
@@ -98,15 +108,7 @@ const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
       <p class="station-name">${s.title}</p>
       <p class="spurcode">${s.token.toUpperCase()}</p>
     </div>
-    <div class="face back">
-      <div class="band">
-        <div class="caps">Spur des</div>
-        <div class="cover-title">SternenClans</div>
-        ${eyes()}
-        <div class="paw">🐾</div>
-      </div>
-      ${forest}
-    </div>
+    ${backFace('Spur des', 'SternenClans')}
   </div>`).join('');
 
 const roleCards = players.map(p => {
@@ -115,7 +117,7 @@ const roleCards = players.map(p => {
     <div class="card">
       ${band(GAME.clan, { color: EYE_COLORS[p.role] })}
       <div class="body">
-        <div class="symbol">${r.symbol}</div>
+        <img class="role-photo" src="${r.photo}" alt="${r.title}">
         <p class="apprentice">${p.apprentice}</p>
         <div class="caps role-title">${r.title}</div>
         <p class="role-text">${r.text}</p>
@@ -151,13 +153,15 @@ const herbSheet = herbStation ? `
 
 const preyStation = GAME.stations.find(s => s.puzzle.type === 'prey');
 const preyCards = preyStation ? preyStation.puzzle.prey.map(x => `
-  <div class="card square">
-    ${band('Beute', { color: null, sub: x.name })}
-    <div class="body">
-      <img class="prey-photo" src="${x.photo}" alt="${x.name}">
-      <div class="letter">${x.letter}</div>
+  <div class="fold">
+    <div class="face front prey">
+      ${band('Beute', { color: null, sub: x.name })}
+      <div class="body">
+        <img class="prey-photo" src="${x.photo}" alt="${x.name}">
+        <div class="letter">${x.letter}</div>
+      </div>
     </div>
-    ${forest}
+    ${backFace('Jagdgebiet des', 'SternenClans')}
   </div>`).join('') : '';
 
 // Urkunden: als Fotos 15 × 10 cm (JPG) für den Fotokiosk, siehe certificate.js
@@ -196,7 +200,7 @@ const sections = [
   ['rollenkarten', 'Rollenkarten', `<div class="grid two">${roleCards}</div>`],
   ['pfotenschrift', 'Pfotenschrift-Tafel (Station 2, an der Haustür verstecken)', pawTable],
   herbSheet && ['vorrat-der-heilerin', 'Vorrat der Heilerin (Station 7, zur QR-Karte)', herbSheet],
-  preyCards && ['beutekarten', 'Beutekarten (Jagdgebiet)', `<div class="grid">${preyCards}</div>`],
+  preyCards && ['beutekarten', 'Beutekarten (Jagdgebiet; ausschneiden, an der gestrichelten Linie knicken, zusammenkleben)', `<div class="folds">${preyCards}</div>`],
   ['urkunden', 'Kriegerurkunden (in die Truhe)', certificates],
   ['start-qr', 'Start-QR (für Einladung oder Tisch)', `<div class="grid"><div class="card">${band(GAME.title, { color: null })}<div class="body"><div class="qr">${qr(base)}</div></div>${forest}</div></div>`],
 ].filter(Boolean);

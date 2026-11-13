@@ -21,12 +21,13 @@ export const GAME = {
   // Rollen: Jedes Mädchen bekommt eine ausgedruckte Rollenkarte (print.html).
   // Die Ziffer steht NUR auf der Karte – gebraucht am Waldrand.
   roles: {
-    heilerin:   { title: 'Heilerin',       symbol: '🌿', digit: 3, text: 'Du kennst die Kräuter des Waldes.' },
-    jaegerin:   { title: 'Jägerin',        symbol: '🐭', digit: 8, text: 'Du hast die schärfsten Augen und die leisesten Pfoten.' },
-    kaempferin: { title: 'Kämpferin',      symbol: '🔥', digit: 1, text: 'Du beschützt deinen Clan mit Mut.' },
-    faehrte:    { title: 'Fährtenleserin', symbol: '🐾', digit: 6, text: 'Du findest jede Spur, auch die kleinste.' },
-    waechterin: { title: 'Wächterin',      symbol: '🌙', digit: 5, text: 'Du hältst Wache, wenn alle anderen schlafen.' },
-    seherin:    { title: 'Sternenseherin', symbol: '⭐', digit: 9, text: 'Du verstehst die Zeichen des SternenClans.' },
+    // Katzenfotos statt Emojis, damit niemand sie mit der Pfotenschrift verwechselt (Lizenzen: images/rollen/LIZENZEN.md)
+    heilerin:   { title: 'Heilerin',       photo: 'images/rollen/heilerin.jpg', digit: 3, text: 'Du kennst die Kräuter des Waldes.' },
+    jaegerin:   { title: 'Jägerin',        photo: 'images/rollen/jaegerin.jpg', digit: 8, text: 'Du hast die schärfsten Augen und die leisesten Pfoten.' },
+    kaempferin: { title: 'Kämpferin',      photo: 'images/rollen/kaempferin.jpg', digit: 1, text: 'Du beschützt deinen Clan mit Mut.' },
+    faehrte:    { title: 'Fährtenleserin', photo: 'images/rollen/faehrte.jpg', digit: 6, text: 'Du findest jede Spur, auch die kleinste.' },
+    waechterin: { title: 'Wächterin',      photo: 'images/rollen/waechterin.jpg', digit: 5, text: 'Du hältst Wache, wenn alle anderen schlafen.' },
+    seherin:    { title: 'Sternenseherin', photo: 'images/rollen/seherin.jpg', digit: 9, text: 'Du verstehst die Zeichen des SternenClans.' },
   },
 
   // Standard-Clan. Lässt sich vor dem Spiel in der Spielleitung (#/gm → „Clan einrichten“) ändern.
