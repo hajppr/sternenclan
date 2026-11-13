@@ -121,7 +121,7 @@ const roleCards = players.map(p => {
     <div class="card">
       ${band(GAME.clan, { color: EYE_COLORS[p.role] })}
       <div class="body">
-        <p class="apprentice">${p.apprentice}</p>
+        <p class="apprentice" style="--len: ${[...p.apprentice].length}">${p.apprentice}</p>
         <div class="caps role-title">${r.title}</div>
         <p class="role-text">${r.text}</p>
         <div class="secret">Geheime Zahl – nur zeigen, wenn der Clan sie braucht:

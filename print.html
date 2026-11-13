@@ -33,17 +33,21 @@
     section > h2 .pdf { margin-left: 8px; font: 600 0.8rem sans-serif; padding: 3px 10px; cursor: pointer; border: 1px solid var(--forest); border-radius: 6px; background: #fff; color: var(--forest); }
     body[data-only] section:not(.only) { display: none; }
     .grid { break-inside: avoid; }
-    /* Rollenkarten: 2 nebeneinander, 3 Reihen = eine A4-Seite */
+    /* Rollenkarten: 2 nebeneinander (Druck: Querformat, 2 × 2 pro Seite) */
     .grid.two { grid-template-columns: repeat(2, 1fr); gap: 5mm 8mm; }
     .grid.two .card { height: 88mm; }
-    .grid.two .band { padding: 3mm; }
-    .grid.two .eyes { width: 42%; }
-    .grid.two .card .body { display: flex; flex-direction: column; justify-content: center; padding: 3mm 6mm 4mm; }
-    .grid.two .apprentice { font-size: 1.75rem; margin: 0; }
-    .grid.two .role-title { margin: 1mm 0 2.5mm; font-size: 0.8rem; }
-    .grid.two .role-text { margin-bottom: 1.5mm; }
-    .grid.two .secret { padding-top: 1.5mm; }
-    .grid.two .digit { font-size: 2.1rem; }
+    .grid.two .band { padding: 2.5mm 3mm 3mm; }
+    .grid.two .band .caps { font-size: 0.85rem; }
+    .grid.two .eyes { width: 30%; margin-top: 1.5mm; }
+    .grid.two .card .body { display: flex; flex-direction: column; justify-content: center; padding: 3mm 6mm 5mm; }
+    .grid.two .card .forest { height: 7mm; }
+    /* Name so groß wie möglich, lange Namen werden passend kleiner (--len = Anzahl Buchstaben) */
+    .grid.two .card .body { container-type: inline-size; }
+    .grid.two .apprentice { font-size: min(2.7rem, calc(100cqw / (var(--len, 11) * 0.84))); line-height: 1.05; margin: 0; white-space: nowrap; }
+    .grid.two .role-title { margin: 1.5mm 0 2.5mm; font-size: 0.95rem; letter-spacing: 0.2em; }
+    .grid.two .role-text { font-size: 1.05rem; margin-bottom: 2mm; }
+    .grid.two .secret { padding-top: 2mm; font-size: 0.9rem; }
+    .grid.two .digit { font-size: 2.5rem; margin-top: 2mm; line-height: 1; }
     section > h2 { font: 600 0.9rem sans-serif; color: #777; border-bottom: 1px solid #ddd; padding-bottom: 3px; margin: 0 0 5mm; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
 
@@ -194,6 +198,11 @@
       .screen-only, .screen-only-inline, .photo .download { display: none; }
       body { padding: 0; }
       @page { size: A4; margin: 10mm; }
+      /* Rollenkarten im Querformat: 2 × 2 breite Karten (12,6 × 8,8 cm) pro Seite */
+      @page rollen { size: A4 landscape; margin: 10mm; }
+      #rollenkarten { page: rollen; }
+      .grid.two { grid-template-columns: repeat(2, 126mm); justify-content: center; gap: 6mm 8mm; }
+      .grid.two .card { height: 88mm; }
       /* weicher Leuchtschatten wird im PDF zum Kasten */
       .band .cover-title { text-shadow: 0 1px 0 #000; }
     }
