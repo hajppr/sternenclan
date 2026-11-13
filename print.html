@@ -89,9 +89,10 @@
     .fold { width: 60mm; border: 0.4mm solid var(--forest); break-inside: avoid; }
     .fold .face { height: 60mm; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .fold .front { background: var(--paper); border-bottom: 0.3mm dashed #999; padding-top: 1mm; }
-    .fold .front .qr svg { width: 40mm; height: 40mm; }
-    .fold .front .spurcode { margin: 1mm 0 0; font-size: 0.95rem; }
-    .fold .hide-at { margin: 0.5mm 2mm 0; font-size: 0.82rem; font-style: italic; color: #666; line-height: 1.1; }
+    .fold .front .qr svg { width: 38mm; height: 38mm; }
+    .fold .station-name { margin: 1.5mm 2mm 0; font-family: var(--title); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.04em; color: var(--forest); line-height: 1.15; }
+    /* Spurcode nur als Notlösung, falls die Kamera streikt */
+    .fold .front .spurcode { margin: 0.8mm 0 0; font-size: 0.62rem; color: #888; }
     .fold .back { transform: rotate(180deg); background: linear-gradient(180deg, #0d1512, var(--forest)); justify-content: space-between; }
     .fold .back .band { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; padding: 3mm; }
     .fold .back .cover-title { font-size: 1.05rem; letter-spacing: 0.1em; }

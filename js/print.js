@@ -78,12 +78,12 @@ const band = (title, { color, sub } = {}) => `
 
 // QR-Karten zum Knicken: oben Vorderseite (Code), unten Rückseite (Deko).
 // Die Rückseite steht auf dem Kopf, damit sie nach dem Knicken richtig herum ist.
-const stationCards = GAME.stations.map((s, i) => ({ s, nr: i + 1 })).filter(({ nr }) => nr > 1).map(({ s, nr }) => `
+const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
   <div class="fold">
     <div class="face front">
       <div class="qr">${qr(`${base}#/s/${s.token}`)}</div>
+      <p class="station-name">${s.title}</p>
       <p class="spurcode">${s.token.toUpperCase()}</p>
-      <p class="hide-at">${nr} · ${s.place}</p>
     </div>
     <div class="face back">
       <div class="band">
