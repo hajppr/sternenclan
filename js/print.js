@@ -33,25 +33,38 @@ const EYE_COLORS = {
 const DEFAULT_EYES = '#e3b341';
 
 let eyeId = 0;
+// Katzenauge: Mandelform, außen leicht hochgezogen, Schlitzpupille bleibt innerhalb der Iris
+const EYE = {
+  lid: 'M-25 0 C-15 -17 15 -17 25 0 C15 17 -15 17 -25 0 Z',
+  iris: 'M-22 0 C-13 -15 13 -15 22 0 C13 15 -13 15 -22 0 Z',
+  pupil: 'M0 -10 C5.5 -4 5.5 4 0 10 C-5.5 4 -5.5 -4 0 -10 Z',
+};
 function eyes(color = DEFAULT_EYES) {
   const id = `eye${eyeId++}`;
-  const eye = cx => `
-    <g transform="translate(${cx} 22)">
-      <path d="M-24 0 Q0 -19 24 0 Q0 19 -24 0 Z" fill="#0b0f0d"/>
-      <path d="M-21 0 Q0 -16 21 0 Q0 16 -21 0 Z" fill="url(#${id})"/>
-      <path d="M0 -13 Q4 0 0 13 Q-4 0 0 -13 Z" fill="#050505"/>
-      <circle cx="6" cy="-5" r="2.4" fill="#fff" opacity="0.9"/>
+  const eye = (cx, tilt) => `
+    <g transform="translate(${cx} 22) rotate(${tilt})">
+      <path d="${EYE.lid}" fill="#0b0f0d"/>
+      <path d="${EYE.iris}" fill="url(#${id})"/>
+      <path d="${EYE.iris}" fill="url(#${id}-lid)"/>
+      <path d="${EYE.pupil}" fill="#050505"/>
+      <circle cx="5" cy="-5" r="2.3" fill="#fff" opacity="0.9"/>
+      <circle cx="-4" cy="4" r="1" fill="#fff" opacity="0.5"/>
     </g>`;
   return `
     <svg class="eyes" viewBox="0 0 160 44" aria-hidden="true">
       <defs>
-        <radialGradient id="${id}" cx="50%" cy="45%" r="60%">
+        <radialGradient id="${id}" cx="50%" cy="50%" r="55%">
           <stop offset="0" stop-color="#fffbe6"/>
-          <stop offset="0.35" stop-color="${color}"/>
-          <stop offset="1" stop-color="${color}" stop-opacity="0.55"/>
+          <stop offset="0.3" stop-color="${color}"/>
+          <stop offset="0.8" stop-color="${color}"/>
+          <stop offset="1" stop-color="#3a2400"/>
         </radialGradient>
+        <linearGradient id="${id}-lid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.5"/>
+          <stop offset="0.4" stop-color="#000" stop-opacity="0"/>
+        </linearGradient>
       </defs>
-      ${eye(40)}${eye(120)}
+      ${eye(40, 8)}${eye(120, -8)}
     </svg>`;
 }
 

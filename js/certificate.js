@@ -64,27 +64,44 @@ function wrap(ctx, str, maxWidth) {
   return [...lines, line];
 }
 
-// Katzenauge (gleiche Form wie auf den Druckkarten), Maßstab s
-function eye(ctx, cx, cy, s, color) {
+// Katzenauge (gleiche Form wie auf den Druckkarten), Maßstab s, tilt in Grad
+const EYE = {
+  lid: 'M-25 0 C-15 -17 15 -17 25 0 C15 17 -15 17 -25 0 Z',
+  iris: 'M-22 0 C-13 -15 13 -15 22 0 C13 15 -13 15 -22 0 Z',
+  pupil: 'M0 -10 C5.5 -4 5.5 4 0 10 C-5.5 4 -5.5 -4 0 -10 Z',
+};
+function eye(ctx, cx, cy, s, color, tilt = 0) {
   ctx.save();
   ctx.translate(cx, cy);
   ctx.scale(s, s);
+  ctx.rotate(tilt * Math.PI / 180);
   ctx.fillStyle = '#060807';
-  ctx.fill(new Path2D('M-24 0 Q0 -19 24 0 Q0 19 -24 0 Z'));
-  const iris = ctx.createRadialGradient(0, -2, 0, 0, 0, 22);
+  ctx.fill(new Path2D(EYE.lid));
+  const irisPath = new Path2D(EYE.iris);
+  const iris = ctx.createRadialGradient(0, 0, 0, 0, 0, 22);
   iris.addColorStop(0, '#fffbe6');
-  iris.addColorStop(0.35, color);
-  iris.addColorStop(1, `${color}99`);
+  iris.addColorStop(0.3, color);
+  iris.addColorStop(0.8, color);
+  iris.addColorStop(1, '#3a2400');
   ctx.fillStyle = iris;
   ctx.shadowColor = color;
   ctx.shadowBlur = 12;
-  ctx.fill(new Path2D('M-21 0 Q0 -16 21 0 Q0 16 -21 0 Z'));
+  ctx.fill(irisPath);
   ctx.shadowBlur = 0;
+  const lid = ctx.createLinearGradient(0, -12, 0, 12);
+  lid.addColorStop(0, 'rgba(0,0,0,0.5)');
+  lid.addColorStop(0.4, 'rgba(0,0,0,0)');
+  ctx.fillStyle = lid;
+  ctx.fill(irisPath);
   ctx.fillStyle = '#050505';
-  ctx.fill(new Path2D('M0 -13 Q4 0 0 13 Q-4 0 0 -13 Z'));
+  ctx.fill(new Path2D(EYE.pupil));
   ctx.fillStyle = 'rgba(255,255,255,0.92)';
   ctx.beginPath();
-  ctx.arc(6, -5, 2.4, 0, Math.PI * 2);
+  ctx.arc(5, -5, 2.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath();
+  ctx.arc(-4, 4, 1, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
 }
@@ -176,8 +193,8 @@ export function drawCertificate(player, theme = THEMES[0]) {
 
   text(ctx, GAME.clan.toUpperCase(), W / 2, 150, { font: `600 42px ${TITLE}`, color: gold, spacing: 14 });
   text(ctx, 'KRIEGERURKUNDE', W / 2, 262, { font: `800 118px ${TITLE}`, color: gold, spacing: 14, glow: `${theme.glow}aa` });
-  eye(ctx, W / 2 - 200, 400, 4, theme.eyes);
-  eye(ctx, W / 2 + 200, 400, 4, theme.eyes);
+  eye(ctx, W / 2 - 200, 400, 4, theme.eyes, 8);
+  eye(ctx, W / 2 + 200, 400, 4, theme.eyes, -8);
   moon(ctx, W / 2 + 560, 395, 62);
 
   text(ctx, `Der SternenClan und ${leader}, ${title} des ${GAME.clan}s, verkünden:`, W / 2, 575, { font: `400 46px ${BODY}`, color: light });
