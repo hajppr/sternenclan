@@ -84,6 +84,24 @@
     /* QR-Karten: Code immer schwarz auf weiß */
     .qr { background: #fff; display: inline-block; padding: 1.5mm; border-radius: 1.5mm; }
     .qr svg { width: 42mm; height: 42mm; display: block; }
+    /* QR-Karten zum Knicken: zwei Quadrate übereinander, Rückseite auf dem Kopf */
+    .folds { display: grid; grid-template-columns: repeat(3, 60mm); gap: 6mm 5mm; justify-content: center; }
+    .fold { width: 60mm; border: 0.4mm solid var(--forest); break-inside: avoid; }
+    .fold .face { height: 60mm; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .fold .front { background: var(--paper); border-bottom: 0.3mm dashed #999; padding-top: 1mm; }
+    .fold .front .qr svg { width: 40mm; height: 40mm; }
+    .fold .front .spurcode { margin: 1mm 0 0; font-size: 0.95rem; }
+    .fold .hide-at { margin: 0.5mm 2mm 0; font-size: 0.82rem; font-style: italic; color: #666; line-height: 1.1; }
+    .fold .back { transform: rotate(180deg); background: linear-gradient(180deg, #0d1512, var(--forest)); justify-content: space-between; }
+    .fold .back .band { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; padding: 3mm; }
+    .fold .back .cover-title { font-size: 1.05rem; letter-spacing: 0.1em; }
+    .fold .back .eyes { width: 80%; margin-top: 3mm; }
+    .fold .back .paw { font-size: 1.3rem; margin-top: 2mm; }
+    .fold .back .forest { height: 9mm; }
+    .fold .back .forest path { fill: #0d1512; }
+    body.eco .fold .back { background: #fff; }
+    body.eco .fold .back .band { border-bottom: 0; }
+    body.eco .fold .back .forest path { fill: #c9d3c2; }
     .spurcode { font-family: var(--title); font-weight: 600; letter-spacing: 0.2em; margin: 2mm 0 0; }
 
     /* Rollenkarten */

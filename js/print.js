@@ -76,14 +76,24 @@ const band = (title, { color, sub } = {}) => `
 
 // ---------------------------------------------------------------------------
 
-const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
-  <div class="card">
-    ${band('Spur des SternenClans', { color: null })}
-    <div class="body">
+// QR-Karten zum Knicken: oben Vorderseite (Code), unten Rückseite (Deko).
+// Die Rückseite steht auf dem Kopf, damit sie nach dem Knicken richtig herum ist.
+const stationCards = GAME.stations.map((s, i) => ({ s, nr: i + 1 })).filter(({ nr }) => nr > 1).map(({ s, nr }) => `
+  <div class="fold">
+    <div class="face front">
       <div class="qr">${qr(`${base}#/s/${s.token}`)}</div>
       <p class="spurcode">${s.token.toUpperCase()}</p>
+      <p class="hide-at">${nr} · ${s.place}</p>
     </div>
-    ${forest}
+    <div class="face back">
+      <div class="band">
+        <div class="caps">Spur des</div>
+        <div class="cover-title">SternenClans</div>
+        ${eyes()}
+        <div class="paw">🐾</div>
+      </div>
+      ${forest}
+    </div>
   </div>`).join('');
 
 const roleCards = players.map(p => {
@@ -169,7 +179,7 @@ const gmSheet = `
 // Abschnitte: Titel, Dateiname für „Als PDF“, Inhalt
 const sections = [
   ['spielleitung', 'Spielleitung – nicht den Kindern zeigen!', gmSheet],
-  ['qr-karten', 'QR-Karten für die Stationen', `<div class="grid">${stationCards}</div>`],
+  ['qr-karten', 'QR-Karten für die Stationen (ausschneiden, an der gestrichelten Linie knicken, zusammenkleben)', `<div class="folds">${stationCards}</div>`],
   ['rollenkarten', 'Rollenkarten', `<div class="grid two">${roleCards}</div>`],
   ['pfotenschrift', 'Pfotenschrift-Tafel (Station 2, an der Haustür verstecken)', pawTable],
   herbSheet && ['vorrat-der-heilerin', 'Vorrat der Heilerin (Station 7, zur QR-Karte)', herbSheet],
