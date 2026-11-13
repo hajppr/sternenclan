@@ -54,7 +54,7 @@ function slotInput(el, words, { numeric = false, onSolved }) {
       <div class="word">${w.map(c => `
         <label class="slot">
           <span class="glyph">${c.label}</span>
-          <input maxlength="1" ${numeric ? 'inputmode="numeric"' : 'autocapitalize="characters"'} autocomplete="off" spellcheck="false" aria-label="${c.label}">
+          <input maxlength="1" ${numeric ? 'inputmode="numeric"' : 'autocapitalize="characters"'} autocomplete="off" spellcheck="false" aria-label="${c.aria ?? c.label}">
         </label>`).join('')}
       </div>`).join('')}
     </div>
@@ -190,7 +190,7 @@ const types = {
 
   prey(el, p, ctx) {
     el.innerHTML = `<h3>Jagdtraining</h3><p>${p.question}</p>`;
-    slotInput(el, [p.prey.map(x => ({ label: x.symbol, expected: x.letter }))], { onSolved: ctx.onSolved });
+    slotInput(el, [p.prey.map(x => ({ label: `<img class="prey-photo" src="${x.photo}" alt="${x.name}">`, aria: x.name, expected: x.letter }))], { onSolved: ctx.onSolved });
   },
 
   roles(el, p, ctx) {

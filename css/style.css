@@ -167,6 +167,7 @@ select {
 .word { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-right: 14px; }
 .slot { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .slot .glyph { font-size: 1.9rem; line-height: 1.2; }
+.slot .prey-photo { display: block; width: 56px; height: 56px; object-fit: cover; border-radius: 50%; border: 2px solid var(--gold, #d4a64a); }
 .slot input {
   width: 46px; min-height: 50px; padding: 4px;
   text-align: center; text-transform: uppercase;

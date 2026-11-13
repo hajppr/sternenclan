@@ -154,7 +154,7 @@ const preyCards = preyStation ? preyStation.puzzle.prey.map(x => `
   <div class="card square">
     ${band('Beute', { color: null, sub: x.name })}
     <div class="body">
-      <div class="symbol">${x.symbol}</div>
+      <img class="prey-photo" src="${x.photo}" alt="${x.name}">
       <div class="letter">${x.letter}</div>
     </div>
     ${forest}

@@ -150,6 +150,9 @@
     .card.square .body { padding: 1mm 3mm 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .card.square .symbol { font-size: 2.6rem; margin: 0; }
     .card.square .letter { font-size: 4.2rem; margin: 0; }
+    /* Beute als Foto (keine Emojis – sonst Verwechslung mit der Pfotenschrift) */
+    .card.square .body:has(.prey-photo) { flex-direction: row; gap: 4mm; }
+    .prey-photo { width: 32mm; height: 32mm; object-fit: cover; border-radius: 2mm; border: 0.5mm solid var(--gold); display: block; }
     .card.square .forest { height: 7mm; }
 
     /* Urkunden als Fotos 15 × 10 cm */

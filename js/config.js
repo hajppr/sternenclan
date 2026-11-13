@@ -133,12 +133,13 @@ export const GAME = {
       story: 'Jagdtraining unter der großen Eiche! Fünf Beutetiere haben sich hier versteckt. Jedes trägt einen Buchstaben. Fangt sie alle!',
       puzzle: {
         type: 'prey',
+        // Fotos statt Emojis, damit niemand sie mit der Pfotenschrift verwechselt (Lizenzen: images/beute/LIZENZEN.md)
         prey: [
-          { symbol: '🐭', name: 'Maus', letter: 'E' },
-          { symbol: '🐦', name: 'Amsel', letter: 'I' },
-          { symbol: '🐇', name: 'Kaninchen', letter: 'C' },
-          { symbol: '🐿️', name: 'Eichhörnchen', letter: 'H' },
-          { symbol: '🐸', name: 'Frosch', letter: 'E' },
+          { photo: 'images/beute/maus.jpg', name: 'Maus', letter: 'E' },
+          { photo: 'images/beute/amsel.jpg', name: 'Amsel', letter: 'I' },
+          { photo: 'images/beute/kaninchen.jpg', name: 'Kaninchen', letter: 'C' },
+          { photo: 'images/beute/eichhoernchen.jpg', name: 'Eichhörnchen', letter: 'H' },
+          { photo: 'images/beute/frosch.jpg', name: 'Frosch', letter: 'E' },
         ],
         question: 'Tragt die Buchstaben der gefangenen Beute in dieser Reihenfolge ein.',
       },
