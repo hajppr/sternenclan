@@ -203,7 +203,7 @@ export function drawCertificate(player, theme = THEMES[0]) {
     .forEach((line, i) => text(ctx, line, W / 2, 650 + i * 58, { font: `400 46px ${BODY}`, color: light }));
 
   text(ctx, player.warrior.toUpperCase(), W / 2, 890, { font: `800 150px ${TITLE}`, color: gold, spacing: 10, glow: `${theme.glow}cc` });
-  text(ctx, player.birthday ? 'Alles Gute zum 11. Geburtstag!' : 'Möge der SternenClan deine Pfade erleuchten.', W / 2, 985,
+  text(ctx, 'Möge der SternenClan deine Pfade erleuchten.', W / 2, 985,
     { font: `italic 400 52px ${BODY}`, color: light });
 
   forest(ctx, H - 150, 150);
