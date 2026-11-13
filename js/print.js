@@ -39,7 +39,9 @@ const EYE = {
   iris: 'M-22 0 C-13 -15 13 -15 22 0 C13 15 -13 15 -22 0 Z',
   pupil: 'M0 -10 C5.5 -4 5.5 4 0 10 C-5.5 4 -5.5 -4 0 -10 Z',
 };
-function eyes(color = DEFAULT_EYES) {
+// flip: auf dem Kopf (für Faltkarten-Rückseiten). Gedreht wird innerhalb des SVG –
+// eine CSS-Drehung macht die Farbverläufe im PDF kaputt.
+function eyes(color = DEFAULT_EYES, flip = false) {
   const id = `eye${eyeId++}`;
   const eye = (cx, tilt) => `
     <g transform="translate(${cx} 22) rotate(${tilt})">
@@ -53,31 +55,32 @@ function eyes(color = DEFAULT_EYES) {
   return `
     <svg class="eyes" viewBox="0 0 160 44" aria-hidden="true">
       <defs>
-        <radialGradient id="${id}" cx="50%" cy="50%" r="55%">
+        <radialGradient id="${id}" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="22">
           <stop offset="0" stop-color="#fffbe6"/>
           <stop offset="0.3" stop-color="${color}"/>
           <stop offset="0.8" stop-color="${color}"/>
           <stop offset="1" stop-color="#3a2400"/>
         </radialGradient>
-        <linearGradient id="${id}-lid" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="${id}-lid" gradientUnits="userSpaceOnUse" x1="0" y1="-12" x2="0" y2="12">
           <stop offset="0" stop-color="#000" stop-opacity="0.5"/>
           <stop offset="0.4" stop-color="#000" stop-opacity="0"/>
         </linearGradient>
       </defs>
-      ${eye(40, 8)}${eye(120, -8)}
+      <g ${flip ? 'transform="rotate(180 80 22)"' : ''}>${eye(40, 8)}${eye(120, -8)}</g>
     </svg>`;
 }
 
 // Waldsilhouette: Baumspitzen gleichmäßig über die ganze Breite (0–200)
 const TREE_HEIGHTS = [11, 15, 7, 19, 10, 16, 8, 18, 12, 14, 9, 17, 10, 13, 6, 15, 11, 18, 9, 14, 7];
-const forest = (() => {
+const forestSvg = (flip = false) => {
   const step = 200 / TREE_HEIGHTS.length;
   const peaks = TREE_HEIGHTS.map((h, i) => `L${(i * step).toFixed(1)} 26 L${((i + 0.5) * step).toFixed(1)} ${26 - h}`).join(' ');
   return `
   <svg class="forest" viewBox="0 0 200 30" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0 30 ${peaks} L200 26 L200 30 Z"/>
+    <path d="M0 30 ${peaks} L200 26 L200 30 Z" ${flip ? 'transform="rotate(180 100 15)"' : ''}/>
   </svg>`;
-})();
+};
+const forest = forestSvg();
 
 // Kopfleiste im Cover-Stil; color: null = ohne Augen
 const band = (title, { color, sub } = {}) => `
@@ -91,14 +94,15 @@ const band = (title, { color, sub } = {}) => `
 
 // Faltkarten: oben Vorderseite, unten Deko-Rückseite. Die Rückseite steht auf dem Kopf,
 // damit sie nach dem Knicken richtig herum ist.
+// Rückseite steht auf dem Kopf; Schrift einzeln gedreht, Grafiken im SVG gedreht
 const backFace = (sub, title) => `
     <div class="face back">
+      ${forestSvg(true)}
       <div class="band">
-        <div class="caps">${sub}</div>
-        <div class="cover-title">${title}</div>
-        ${eyes()}
+        ${eyes(DEFAULT_EYES, true)}
+        <div class="cover-title upside-down">${title}</div>
+        <div class="caps upside-down">${sub}</div>
       </div>
-      ${forest}
     </div>`;
 
 const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
@@ -117,7 +121,6 @@ const roleCards = players.map(p => {
     <div class="card">
       ${band(GAME.clan, { color: EYE_COLORS[p.role] })}
       <div class="body">
-        <img class="role-photo" src="${r.photo}" alt="${r.title}">
         <p class="apprentice">${p.apprentice}</p>
         <div class="caps role-title">${r.title}</div>
         <p class="role-text">${r.text}</p>

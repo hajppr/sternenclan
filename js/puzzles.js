@@ -197,7 +197,7 @@ const types = {
     el.innerHTML = `
       <h3>Der Krallen-Code</h3>
       <p>${p.question}</p>`;
-    slotInput(el, [roleOrder(p.order).map(r => ({ label: `<img class="role-photo" src="${GAME.roles[r].photo}" alt="${GAME.roles[r].title}">`, aria: GAME.roles[r].title, expected: GAME.roles[r].digit }))], { numeric: true, onSolved: ctx.onSolved });
+    slotInput(el, [roleOrder(p.order).map(r => ({ label: `<span class="role-label">${GAME.roles[r].title}</span>`, aria: GAME.roles[r].title, expected: GAME.roles[r].digit }))], { numeric: true, onSolved: ctx.onSolved });
   },
 
   match(el, p, ctx) {

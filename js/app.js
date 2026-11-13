@@ -159,7 +159,7 @@ function viewIntro(step) {
     <div class="card">
       <ul class="path">${getPlayers().map(p => {
         const r = GAME.roles[p.role];
-        return `<li><span class="dot"><img class="role-photo" src="${r.photo}" alt=""></span><span><b>${p.apprentice}</b> <span class="muted">(${p.name})</span><br><small class="muted">${r.title} – ${r.text}</small></span></li>`;
+        return `<li><span class="dot">✦</span><span><b>${p.apprentice}</b> <span class="muted">(${p.name})</span><br><small class="muted">${r.title} – ${r.text}</small></span></li>`;
       }).join('')}</ul>
     </div>
     <div class="card"><p class="story">„${GAME.prophecy}“</p></div>

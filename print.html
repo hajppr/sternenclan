@@ -38,8 +38,9 @@
     .grid.two .card { height: 88mm; }
     .grid.two .band { padding: 3mm; }
     .grid.two .eyes { width: 42%; }
-    .grid.two .body { padding: 2mm 6mm; }
-    .grid.two .symbol { font-size: 2.2rem; margin: 0; }
+    .grid.two .card .body { display: flex; flex-direction: column; justify-content: center; padding: 3mm 6mm 4mm; }
+    .grid.two .apprentice { font-size: 1.75rem; margin: 0; }
+    .grid.two .role-title { margin: 1mm 0 2.5mm; font-size: 0.8rem; }
     .grid.two .role-text { margin-bottom: 1.5mm; }
     .grid.two .secret { padding-top: 1.5mm; }
     .grid.two .digit { font-size: 2.1rem; }
@@ -93,12 +94,13 @@
     .fold .station-name { margin: 1.5mm 2mm 0; font-family: var(--title); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.04em; color: var(--forest); line-height: 1.15; }
     /* Spurcode nur als Notlösung, falls die Kamera streikt */
     .fold .front .spurcode { margin: 0.8mm 0 0; font-size: 0.62rem; color: #888; }
-    .fold .back { transform: rotate(180deg); background: linear-gradient(180deg, #0d1512, var(--forest)); justify-content: space-between; }
-    .fold .back .band { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; padding: 3mm; }
+    .fold .back { background: linear-gradient(0deg, #0d1512, var(--forest)); justify-content: space-between; }
+    .fold .back .band { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; padding: 3mm; background: radial-gradient(circle at 50% 40%, rgba(212, 166, 74, 0.28), transparent 60%); }
     .fold .back .cover-title { font-size: 1.05rem; letter-spacing: 0.1em; }
-    .fold .back .eyes { width: 80%; margin-top: 3mm; }
+    .fold .back .eyes { width: 80%; margin-bottom: 3mm; }
     .fold .back .forest { height: 9mm; }
     .fold .back .forest path { fill: #0d1512; }
+    .upside-down { transform: rotate(180deg); }
     body.eco .fold .back { background: #fff; }
     body.eco .fold .back .band { border-bottom: 0; }
     body.eco .fold .back .forest path { fill: #c9d3c2; }
@@ -155,9 +157,6 @@
     .fold .front.prey .band { width: 100%; padding: 2mm 3mm; }
     .fold .front.prey .body { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4mm; }
     .fold .front.prey .letter { font-size: 3.6rem; margin: 0; }
-    /* Rollen als Katzenfoto (keine Emojis – sonst Verwechslung mit der Pfotenschrift) */
-    .role-photo { width: 24mm; height: 24mm; object-fit: cover; border-radius: 50%; border: 0.6mm solid var(--gold); display: block; margin: 1mm auto 0; }
-    .grid.two .role-photo { width: 22mm; height: 22mm; }
     .card.square .forest { height: 7mm; }
 
     /* Urkunden als Fotos 15 × 10 cm */
@@ -195,6 +194,8 @@
       .screen-only, .screen-only-inline, .photo .download { display: none; }
       body { padding: 0; }
       @page { size: A4; margin: 10mm; }
+      /* weicher Leuchtschatten wird im PDF zum Kasten */
+      .band .cover-title { text-shadow: 0 1px 0 #000; }
     }
   </style>
 </head>
