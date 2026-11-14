@@ -52,8 +52,7 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 ## Vorbereitung – Checkliste
 
 - [ ] Spielleitung → „Clan einrichten“: wer ist dabei, Namen, Rollen, Geburtstagskind 🎂 – **am Gerät, von dem aus gedruckt wird**
-- [ ] Spielleitung → „Übertragen & sichern“: QR mit dem Tablet scannen (Clan + GPS-Punkte)
-- [ ] Nur GPS-Punkte aufs Tablet (Clan bleibt): `privat/GPS-QR-Tablet.pdf` scannen bzw. Link aus `privat/GPS-Link.txt` öffnen
+- [ ] Tablet einrichten, siehe „Tablet vorbereiten“ unten
 - [ ] Strecke ablaufen: Versteck-Texte anpassen, **Laternen an der Kreuzung zählen** und eintragen
 - [ ] `print.html` **von der veröffentlichten Adresse** drucken (Rollenkarten und Urkunden enthalten die eingerichteten Namen)
 - [ ] QR-Karten und Beutekarten laminieren bzw. in Klarsichthüllen (Dezember = nass)
@@ -64,6 +63,16 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 - [ ] Tablet: Seite **im WLAN zu Hause einmal komplett öffnen** (dann läuft sie offline), Lautstärke hoch, Akku voll
 - [ ] Testlauf: einmal komplett durchspielen, dann in `#/gm` „Spiel zurücksetzen“
 - [ ] Taschenlampen, Powerbank, Gefrierbeutel fürs Tablet bei Regen
+
+## Tablet vorbereiten
+
+Beim ersten Öffnen (und nach „Spiel zurücksetzen“) zeigt die App den Bildschirm **Vorbereitung**:
+
+1. **📍 GPS-QR scannen**: `privat/GPS-QR-Tablet.pdf` (oder Spielleitung → „QR für die GPS-Punkte“ an dem Gerät, auf dem die Punkte gespeichert sind)
+2. **🐾 Spielerinnen-QR scannen**: am Laptop Spielleitung → Clan einrichten → Speichern → „QR für die Spielerinnen“
+3. Häkchen prüfen → **Spiel starten** → Tablet den Mädchen geben
+
+Die QR-Codes lassen sich auch mit der Kamera-App scannen. Die GPS-Punkte werden ergänzt, nicht ersetzt.
 
 ## Gut zu wissen
 

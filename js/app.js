@@ -1,7 +1,7 @@
 import { GAME, lockCode } from './config.js';
 import { renderPuzzle } from './puzzles.js';
 import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying, preloadSounds } from './fx.js';
-import { getPlayers, savePlayers, resetPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
+import { getPlayers, savePlayers, resetPlayers, hasCustomPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
 import { mapSvg } from './map.js';
 import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth } from './geo.js';
 
@@ -97,6 +97,7 @@ function trail(activeId) {
 // ---------------------------------------------------------------------------
 
 function viewHome() {
+  if (!state.startedAt && !state.prepared && !preview) return viewPrepare();
   if (!state.startedAt) {
     app.innerHTML = `
       <div class="center" style="padding-top:12vh">
@@ -378,30 +379,43 @@ function viewScan() {
     }
   };
 
-  const video = app.querySelector('video');
   const msg = app.querySelector('#scanmsg');
+  startCamera(app.querySelector('video'), {
+    onCode: text => {
+      if (goToToken(text)) return true;
+      msg.textContent = 'Das ist keine Spur des SternenClans …';
+      return false;
+    },
+    onError: text => { msg.textContent = `${text} – nutzt den Spurcode unten.`; },
+  });
+}
+
+// Kamera starten und QR-Codes lesen, bis onCode(text) true zurückgibt. Stoppt beim Verlassen der Seite.
+function startCamera(video, { onCode, onError }) {
   if (!navigator.mediaDevices?.getUserMedia || !window.jsQR) {
-    msg.textContent = 'Kamera nicht verfügbar – nutzt den Spurcode unten.';
-    return;
+    onError('Kamera nicht verfügbar');
+    return () => {};
   }
 
   let stream, raf, stopped = false;
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const stop = () => {
+    stopped = true;
+    cancelAnimationFrame(raf);
+    stream?.getTracks().forEach(t => t.stop());
+  };
 
   const tick = () => {
     if (stopped) return;
     if (video.readyState === video.HAVE_ENOUGH_DATA) {
-      const scale = Math.min(1, 480 / video.videoWidth);
+      const scale = Math.min(1, 640 / video.videoWidth);
       canvas.width = video.videoWidth * scale;
       canvas.height = video.videoHeight * scale;
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const code = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
-      if (code?.data) {
-        if (goToToken(code.data)) return;
-        msg.textContent = 'Das ist keine Spur des SternenClans …';
-      }
+      if (code?.data && onCode(code.data)) return stop();
     }
     raf = requestAnimationFrame(tick);
   };
@@ -414,13 +428,101 @@ function viewScan() {
       video.play();
       tick();
     })
-    .catch(() => { msg.textContent = 'Kein Kamerazugriff – nutzt den Spurcode unten.'; });
+    .catch(() => onError('Kein Kamerazugriff'));
 
-  onLeave(() => {
-    stopped = true;
-    cancelAnimationFrame(raf);
-    stream?.getTracks().forEach(t => t.stop());
+  onLeave(stop);
+  return stop;
+}
+
+// ---------------------------------------------------------------------------
+// Vorbereitung vor dem Spiel: GPS-Punkte und Spielerinnen per QR einlesen, dann starten
+// ---------------------------------------------------------------------------
+
+let prepFlash = '';
+
+function applySetup(setup) {
+  if (setup.players.length) savePlayers(setup.players);
+  if (Object.keys(setup.geo).length) saveGeo({ ...getGeo(), ...setup.geo });
+}
+
+function viewPrepare() {
+  const gpsCount = Object.keys(getGeo()).length;
+  const gpsNeeded = stations.length - 1; // Station 1 ist zu Hause
+  const players = getPlayers();
+  const custom = hasCustomPlayers();
+  const ok = (good, text) => `<span class="${good ? 'ok' : 'warn'}">${good ? '✓' : '!'} ${text}</span>`;
+
+  app.innerHTML = `
+    <h2 class="center" style="margin-top:4vh">Vorbereitung</h2>
+    <p class="center muted">Nur für die Spielleitung. Danach „Spiel starten“ und das Tablet den Mädchen geben.</p>
+    <div class="card prep">
+      <h3>1. 📍 GPS-Punkte</h3>
+      <p>${ok(gpsCount >= gpsNeeded, gpsCount ? `${gpsCount} von ${gpsNeeded} Verstecken gespeichert` : 'noch keine GPS-Punkte')}</p>
+      <button class="btn ghost small" data-scan="gps">📷 GPS-QR scannen</button>
+    </div>
+    <div class="card prep">
+      <h3>2. 🐾 Spielerinnen</h3>
+      <p>${ok(custom, custom ? `${players.length} Spielerinnen` : 'noch nicht eingelesen (Beispiel-Clan aus config.js)')}</p>
+      ${custom ? `<ul class="prep-list">${players.map(p => `<li>${esc(p.name) || '–'} · ${esc(p.apprentice)} → ${esc(p.warrior)} · ${GAME.roles[p.role]?.title || ''}${p.birthday ? ' 🎂' : ''}</li>`).join('')}</ul>` : ''}
+      <button class="btn ghost small" data-scan="players">📷 Spielerinnen-QR scannen</button>
+    </div>
+    <div id="prep-scan"></div>
+    <p class="feedback ok center" id="prep-msg">${prepFlash}</p>
+    <button class="btn block" id="start">Spiel starten</button>
+    <p class="center" style="margin-top:16px"><a class="muted" href="#/gm">Spielleitung</a></p>`;
+  prepFlash = '';
+
+  const msg = app.querySelector('#prep-msg');
+  let stopScan = null;
+  app.querySelectorAll('[data-scan]').forEach(b => {
+    b.onclick = () => {
+      stopScan?.();
+      const box = app.querySelector('#prep-scan');
+      box.innerHTML = `
+        <div class="card">
+          <p class="center muted">${b.dataset.scan === 'gps' ? 'GPS-QR' : 'Spielerinnen-QR'} in den Rahmen halten.</p>
+          <div class="scanner"><video playsinline muted></video></div>
+          <button class="btn ghost small" id="scan-cancel" style="margin-top:8px">Abbrechen</button>
+        </div>`;
+      box.scrollIntoView({ behavior: 'smooth' });
+      box.querySelector('#scan-cancel').onclick = () => { stopScan?.(); box.innerHTML = ''; };
+      msg.className = 'feedback center';
+      msg.textContent = '';
+      stopScan = startCamera(box.querySelector('video'), {
+        onCode: text => {
+          const m = String(text).match(/#\/setup\/([\w-]+)/);
+          const setup = m && decodeSetup(m[1]);
+          if (!setup) {
+            msg.className = 'feedback bad center';
+            msg.textContent = 'Das ist kein Einrichtungs-QR aus der Spielleitung.';
+            return false;
+          }
+          applySetup(setup);
+          const parts = [];
+          if (setup.players.length) parts.push(`${setup.players.length} Spielerinnen`);
+          if (Object.keys(setup.geo).length) parts.push(`${Object.keys(setup.geo).length} GPS-Punkte`);
+          prepFlash = `Eingelesen: ${parts.join(' und ')} ✓`;
+          chime();
+          setTimeout(route, 0); // nach dem Stoppen der Kamera neu zeichnen
+          return true;
+        },
+        onError: text => {
+          msg.className = 'feedback bad center';
+          msg.textContent = `${text}. Alternativ den QR mit der Kamera-App scannen.`;
+        },
+      });
+    };
   });
+
+  app.querySelector('#start').onclick = () => {
+    const missing = [];
+    if (gpsCount < gpsNeeded) missing.push(gpsCount ? `nur ${gpsCount} von ${gpsNeeded} GPS-Punkten` : 'keine GPS-Punkte');
+    if (!custom) missing.push('keine Spielerinnen eingelesen');
+    if (missing.length && !confirm(`Trotzdem starten? Es fehlen: ${missing.join(', ')}.`)) return;
+    state.prepared = Date.now();
+    save();
+    route();
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -596,7 +698,7 @@ function renderClanEditor(box) {
   const draw = (msg = '', bad = false) => {
     box.innerHTML = `
       <h3>Clan einrichten</h3>
-      <p class="muted">Wer ist dabei? Gespeichert wird auf diesem Gerät. Für das Spiel-Tablet unten den Einrichtungs-QR scannen.</p>
+      <p class="muted">Wer ist dabei? Gespeichert wird auf diesem Gerät. Danach „QR für die Spielerinnen“ und am Spiel-Tablet scannen.</p>
       ${players.map((p, i) => `
         <div class="player-row" data-i="${i}">
           <input data-f="name" value="${esc(p.name)}" placeholder="Vorname" aria-label="Vorname">
@@ -657,38 +759,55 @@ function renderClanEditor(box) {
   clanFlash = '';
 }
 
+function setupLink(setup) {
+  return `${location.origin}${location.pathname}#/setup/${encodeSetup(setup)}`;
+}
+
+function qrSvg(text) {
+  if (!window.qrcode) return '';
+  const q = qrcode(0, 'L');
+  q.addData(text);
+  q.make();
+  return q.createSvgTag({ cellSize: 4, margin: 4, scalable: true });
+}
+
 function drawTransfer(el) {
-  const link = `${location.origin}${location.pathname}#/setup/${encodeSetup({ players: getPlayers(), geo: getGeo() })}`;
-  let svg = '';
-  if (window.qrcode) {
-    const q = qrcode(0, 'L');
-    q.addData(link);
-    q.make();
-    svg = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
-  }
-  const gpsCount = Object.keys(getGeo()).length;
+  const players = getPlayers();
+  const geo = getGeo();
+  const gpsCount = Object.keys(geo).length;
+  const fullLink = setupLink({ players, geo });
   el.innerHTML = `
-    <details style="margin-top:8px">
-      <summary>Übertragen &amp; sichern (Clan: ${getPlayers().length} · GPS-Punkte: ${gpsCount})</summary>
-      <p class="muted">Clan und GPS-Punkte stecken in diesem Link. Aufs Spiel-Tablet: QR scannen (Kamera-App oder „Spur scannen“). Als Sicherung: Datei herunterladen und z. B. an dich selbst mailen – zum Wiederherstellen den Link darin einmal öffnen.</p>
-      ${svg ? `<div class="setup-qr">${svg}</div>` : ''}
-      <div class="row">
-        <button class="btn ghost small" id="copy">Link kopieren</button>
-        <button class="btn ghost small" id="backup">💾 Sicherung herunterladen</button>
-      </div>
-    </details>`;
-  el.querySelector('#copy').onclick = e => {
-    navigator.clipboard?.writeText(link).then(() => { e.target.textContent = 'Kopiert ✓'; });
-  };
+    <div class="row" style="margin-top:12px">
+      <button class="btn small" data-qr="players">🐾 QR für die Spielerinnen</button>
+      ${gpsCount ? `<button class="btn ghost small" data-qr="gps">📍 QR für die GPS-Punkte (${gpsCount})</button>` : ''}
+      <button class="btn ghost small" id="backup">💾 Sicherung herunterladen</button>
+    </div>
+    <div id="qr-out"></div>`;
+
+  el.querySelectorAll('[data-qr]').forEach(b => {
+    b.onclick = () => {
+      const isGps = b.dataset.qr === 'gps';
+      const link = setupLink(isGps ? { geo } : { players });
+      el.querySelector('#qr-out').innerHTML = `
+        <p><b>${isGps ? `${gpsCount} GPS-Punkte` : `${players.length} Spielerinnen`}</b> – auf dem Spiel-Tablet im Startbildschirm „Vorbereitung“ scannen
+          (oder mit der Kamera-App).${isGps ? '' : ' Vorher „Speichern“ nicht vergessen.'}</p>
+        <div class="setup-qr big">${qrSvg(link)}</div>
+        <button class="btn ghost small" id="copy">Link kopieren</button>`;
+      el.querySelector('#copy').onclick = e => {
+        navigator.clipboard?.writeText(link).then(() => { e.target.textContent = 'Kopiert ✓'; });
+      };
+    };
+  });
+
   el.querySelector('#backup').onclick = () => {
     const date = new Date().toISOString().slice(0, 10);
     const text = [
       `Sicherung ${GAME.title} – ${date}`,
-      `Clan: ${getPlayers().length} Schülerinnen · GPS-Punkte: ${gpsCount}`,
+      `Clan: ${players.length} Schülerinnen · GPS-Punkte: ${gpsCount}`,
       '',
       'Wiederherstellen: diesen Link auf dem Spiel-Tablet öffnen und „Übernehmen“ tippen.',
       '',
-      link,
+      fullLink,
       '',
     ].join('\n');
     const a = document.createElement('a');
@@ -716,9 +835,8 @@ function viewSetup(data) {
       <button class="btn block" id="take">Übernehmen</button>
     </div>`;
   app.querySelector('#take').onclick = () => {
-    if (withClan) savePlayers(setup.players);
-    if (gpsCount) saveGeo({ ...getGeo(), ...setup.geo });
-    location.hash = '#/gm';
+    applySetup(setup);
+    location.hash = state.prepared || state.startedAt ? '#/gm' : '#/';
   };
 }
 

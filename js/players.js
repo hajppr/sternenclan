@@ -16,6 +16,11 @@ export function savePlayers(players) {
   try { localStorage.setItem(KEY, JSON.stringify(players)); } catch { /* privater Modus */ }
 }
 
+// true, wenn auf diesem Gerät ein eigener Clan gespeichert ist (nicht der Beispiel-Clan aus config.js)
+export function hasCustomPlayers() {
+  try { return Array.isArray(JSON.parse(localStorage.getItem(KEY))); } catch { return false; }
+}
+
 export function resetPlayers() {
   try { localStorage.removeItem(KEY); } catch { /* egal */ }
 }
