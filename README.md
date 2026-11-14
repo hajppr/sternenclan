@@ -28,8 +28,8 @@ Die Stationen 2, 4, 6 und 8 geben je ein **Krallenzeichen** (Ziffer). Zusammen e
 
 - `privat/` – **nur lokal** (in `.gitignore`): Ablauf und Verstecke mit echten Orten. Hier gehört alles Private hin.
 
-- `js/config.js` – **der gesamte Spielinhalt**. Namen, Texte, Rätsel, Tipps, Verstecke. Alles mit `ANPASSEN` vor Ort prüfen.
-- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, Rollen, Geburtstagskind), Lösungen, Verstecke, Stationen überspringen, Spiel zurücksetzen.
+- `js/config.js` – **der gesamte Spielinhalt** (außer den Spielerinnen). Texte, Rätsel, Tipps, Verstecke. Alles mit `ANPASSEN` vor Ort prüfen.
+- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, Rollen, Geburtstagskind – es gibt keine Standardnamen, alles wird hier eingetragen), Lösungen, Verstecke, Stationen überspringen, Spiel zurücksetzen.
 - `print.html` – Druckvorlagen: Spielleitungs-Blatt, QR-Karten, Rollenkarten, Beutekarten, Urkunden.
 
 ## Lokal testen

@@ -1,7 +1,7 @@
 import { GAME, lockCode } from './config.js';
 import { renderPuzzle } from './puzzles.js';
 import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying, preloadSounds } from './fx.js';
-import { getPlayers, savePlayers, resetPlayers, hasCustomPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
+import { getPlayers, savePlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
 import { mapSvg } from './map.js';
 import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth } from './geo.js';
 
@@ -449,7 +449,7 @@ function viewPrepare() {
   const gpsCount = Object.keys(getGeo()).length;
   const gpsNeeded = stations.length - 1; // Station 1 ist zu Hause
   const players = getPlayers();
-  const custom = hasCustomPlayers();
+  const custom = players.length > 0;
   const ok = (good, text) => `<span class="${good ? 'ok' : 'warn'}">${good ? '✓' : '!'} ${text}</span>`;
 
   app.innerHTML = `
@@ -462,7 +462,7 @@ function viewPrepare() {
     </div>
     <div class="card prep">
       <h3>2. 🐾 Spielerinnen</h3>
-      <p>${ok(custom, custom ? `${players.length} Spielerinnen` : 'noch nicht eingelesen (Beispiel-Clan aus config.js)')}</p>
+      <p>${ok(custom, custom ? `${players.length} Spielerinnen` : 'noch keine Spielerinnen')}</p>
       ${custom ? `<ul class="prep-list">${players.map(p => `<li>${esc(p.name) || '–'} · ${esc(p.apprentice)} → ${esc(p.warrior)} · ${GAME.roles[p.role]?.title || ''}${p.birthday ? ' 🎂' : ''}</li>`).join('')}</ul>` : ''}
       <button class="btn ghost small" data-scan="players">📷 Spielerinnen-QR scannen</button>
     </div>
@@ -691,7 +691,11 @@ let clanFlash = ''; // Meldung, die nach dem Neuaufbau der Spielleitung angezeig
 const esc = v => String(v ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 function renderClanEditor(box) {
+  const emptyPlayer = role => ({ name: '', apprentice: '', warrior: '', role, birthday: false });
+  const unusedRole = list => Object.keys(GAME.roles).find(r => !list.some(p => p.role === r)) || Object.keys(GAME.roles)[0];
   let players = getPlayers().map(p => ({ ...p }));
+  // Noch niemand eingetragen: 4 leere Zeilen mit verschiedenen Rollen
+  if (!players.length) for (let n = 0; n < 4; n++) players.push(emptyPlayer(unusedRole(players)));
   const roleOptions = selected => Object.entries(GAME.roles)
     .map(([key, r]) => `<option value="${key}" ${key === selected ? 'selected' : ''}>${r.title}</option>`).join('');
 
@@ -712,7 +716,6 @@ function renderClanEditor(box) {
       <div class="row" style="margin-top:12px">
         <button class="btn ghost small" data-act="add">+ Mädchen</button>
         <button class="btn small" data-act="save">Speichern</button>
-        <button class="btn ghost small" data-act="default">Standard aus config.js</button>
       </div>
       <p class="feedback ${bad ? 'bad' : 'ok'}">${msg}</p>
       <div id="transfer"></div>`;
@@ -738,17 +741,14 @@ function renderClanEditor(box) {
       players.splice(i, 1);
       draw('Noch nicht gespeichert.');
     } else if (act === 'add') {
-      const used = players.map(p => p.role);
-      const role = Object.keys(GAME.roles).find(r => !used.includes(r)) || Object.keys(GAME.roles)[0];
-      players.push({ name: '', ...suggestNames(), role, birthday: false });
+      players.push(emptyPlayer(unusedRole(players)));
       draw('Noch nicht gespeichert.');
-    } else if (act === 'default') {
-      resetPlayers();
-      clanFlash = 'Standard wiederhergestellt.';
-      route();
     } else if (act === 'save') {
-      if (!players.length) return draw('Mindestens ein Mädchen eintragen.', true);
-      if (players.some(p => !p.apprentice || !p.warrior)) return draw('Jede braucht einen Schülerinnen- und einen Kriegernamen.', true);
+      // Komplett leere Zeilen einfach weglassen
+      const filled = players.filter(p => p.name || p.apprentice || p.warrior);
+      if (!filled.length) return draw('Mindestens ein Mädchen eintragen.', true);
+      if (filled.some(p => !p.apprentice || !p.warrior)) return draw('Jede braucht einen Schülerinnen- und einen Kriegernamen (🎲 schlägt welche vor).', true);
+      players = filled;
       savePlayers(players);
       clanFlash = `Gespeichert: ${players.length} Schülerinnen.${players.some(p => p.birthday) ? '' : ' Tipp: Geburtstagskind 🎂 markieren.'}`;
       route(); // Lösungstabelle (Rollen-Code) neu berechnen

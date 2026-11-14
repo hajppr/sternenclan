@@ -115,7 +115,9 @@ const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
     ${backFace('Spur des', 'SternenClans')}
   </div>`).join('');
 
-const roleCards = players.map(p => {
+const noPlayers = '<p class="screen-only-inline"><b>Noch keine Spielerinnen eingetragen.</b> Erst in der App unter Spielleitung → „Clan einrichten“ eintragen und speichern (an diesem Gerät).</p>';
+
+const roleCards = !players.length ? noPlayers : players.map(p => {
   const r = GAME.roles[p.role];
   return `
     <div class="card">
@@ -171,6 +173,7 @@ const preyCards = preyStation ? preyStation.puzzle.prey.map(x => `
 const certificates = `
   <p class="screen-only-inline">Jede Urkunde ist ein Foto im Format <b>15 × 10 cm</b> (1800 × 1200 px, 300 dpi) – für den Fotokiosk z. B. bei Rossmann oder Budni.
   <button type="button" id="all-certs">Alle herunterladen</button></p>
+  ${players.length ? '' : noPlayers}
   <div class="photos" id="certs">${players.map(() => '<figure class="photo"><div class="photo-wait">Urkunde wird gezeichnet …</div></figure>').join('')}</div>`;
 
 async function renderCertificates() {

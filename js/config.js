@@ -1,7 +1,6 @@
 // ============================================================================
 //  SPIELINHALT – diese Datei ist die einzige, die du für die Party anpassen musst.
 //
-//  • players:  Namen der Mädchen, Schülerinnen- und Kriegernamen, Rollen
 //  • stations: Reihenfolge, Texte, Rätsel, Tipps, Verstecke
 //  • gm.*:     Notizen nur für die Spielleitung (sieht man nur unter #/gm)
 //
@@ -30,16 +29,8 @@ export const GAME = {
     seherin:    { title: 'Sternenseherin', digit: 9, text: 'Du verstehst die Zeichen des SternenClans.' },
   },
 
-  // Standard-Clan. Lässt sich vor dem Spiel in der Spielleitung (#/gm → „Clan einrichten“) ändern.
-  // apprentice = Schülerinnenname (…pfote), warrior = Kriegername für die Zeremonie am Ende.
-  players: [
-    { name: 'Geburtstagskind', apprentice: 'Funkenpfote', warrior: 'Funkenherz', role: 'seherin', birthday: true },
-    { name: 'Freundin 2', apprentice: 'Blattpfote',  warrior: 'Blattsturm',  role: 'heilerin' },
-    { name: 'Freundin 3', apprentice: 'Mauspfote',   warrior: 'Mausflug',    role: 'jaegerin' },
-    { name: 'Freundin 4', apprentice: 'Glutpfote',   warrior: 'Glutkralle',  role: 'kaempferin' },
-    { name: 'Freundin 5', apprentice: 'Spurpfote',   warrior: 'Spurenfell',  role: 'faehrte' },
-    { name: 'Freundin 6', apprentice: 'Nachtpfote',  warrior: 'Nachtwind',   role: 'waechterin' },
-  ],
+  // Spielerinnen gibt es hier bewusst nicht (echte Namen gehören nicht ins öffentliche Repo).
+  // Sie werden in der Spielleitung (#/gm → „Clan einrichten“) eingetragen und per QR aufs Tablet übertragen.
 
   prophecy: 'Wenn der Mond über dem Wald erwacht, wird nur ein Clan, der wie eine einzige Pfote läuft, den Mondstein finden.',
 

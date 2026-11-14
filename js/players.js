@@ -1,4 +1,4 @@
-// Teilnehmerinnen: Standard aus config.js, überschreibbar in der Spielleitung (#/gm).
+// Teilnehmerinnen: werden in der Spielleitung (#/gm) eingetragen, es gibt keine Standardnamen.
 // Gespeichert getrennt vom Spielstand, damit „Spiel zurücksetzen“ den Clan nicht löscht.
 import { GAME } from './config.js';
 
@@ -7,22 +7,13 @@ const KEY = `${GAME.storageKey}-players`;
 export function getPlayers() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY));
-    if (Array.isArray(saved) && saved.length) return saved;
+    if (Array.isArray(saved)) return saved;
   } catch { /* nichts gespeichert */ }
-  return GAME.players;
+  return [];
 }
 
 export function savePlayers(players) {
   try { localStorage.setItem(KEY, JSON.stringify(players)); } catch { /* privater Modus */ }
-}
-
-// true, wenn auf diesem Gerät ein eigener Clan gespeichert ist (nicht der Beispiel-Clan aus config.js)
-export function hasCustomPlayers() {
-  try { return Array.isArray(JSON.parse(localStorage.getItem(KEY))); } catch { return false; }
-}
-
-export function resetPlayers() {
-  try { localStorage.removeItem(KEY); } catch { /* egal */ }
 }
 
 // Für den Einrichtungs-Link (#/setup/…): { players, geo } als JSON → base64url und zurück.
@@ -49,6 +40,7 @@ export function decodeSetup(text) {
 // Rollen-Rätsel: nur Rollen verwenden, die wirklich jemand hat (max. 4 Zeichen).
 export function roleOrder(order) {
   const assigned = [...new Set(getPlayers().map(p => p.role))];
+  if (!assigned.length) return order.slice(0, 4); // noch kein Clan (z. B. Testmodus)
   const result = order.filter(r => assigned.includes(r));
   for (const r of assigned) if (result.length < 4 && !result.includes(r)) result.push(r);
   return result;
