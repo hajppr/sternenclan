@@ -29,7 +29,7 @@ Die Stationen 2, 4, 6 und 8 geben je ein **Krallenzeichen** (Ziffer). Zusammen e
 - `privat/` – **nur lokal** (in `.gitignore`): Ablauf und Verstecke mit echten Orten. Hier gehört alles Private hin.
 
 - `js/config.js` – **der gesamte Spielinhalt** (außer den Spielerinnen). Texte, Rätsel, Tipps, Verstecke. Alles mit `ANPASSEN` vor Ort prüfen.
-- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, Rollen, Geburtstagskind – es gibt keine Standardnamen, alles wird hier eingetragen), Lösungen, Verstecke, Stationen überspringen, Spiel zurücksetzen.
+- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, Rollen – es gibt keine Standardnamen, alles wird hier eingetragen), Lösungen, Verstecke, Stationen überspringen, Spiel zurücksetzen.
 - `print.html` – Druckvorlagen: Spielleitungs-Blatt, QR-Karten, Rollenkarten, Beutekarten, Urkunden.
 
 ## Lokal testen
@@ -51,7 +51,7 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 
 ## Vorbereitung – Checkliste
 
-- [ ] Spielleitung → „Clan einrichten“: wer ist dabei, Namen, Rollen, Geburtstagskind 🎂 – **am Gerät, von dem aus gedruckt wird**
+- [ ] Spielleitung → „Clan einrichten“: wer ist dabei, Namen, Rollen – **am Gerät, von dem aus gedruckt wird**
 - [ ] Tablet einrichten, siehe „Tablet vorbereiten“ unten
 - [ ] Strecke ablaufen: Versteck-Texte anpassen, **Laternen an der Kreuzung zählen** und eintragen
 - [ ] `print.html` **von der veröffentlichten Adresse** drucken (Rollenkarten und Urkunden enthalten die eingerichteten Namen)

@@ -463,7 +463,7 @@ function viewPrepare() {
     <div class="card prep">
       <h3>2. 🐾 Spielerinnen</h3>
       <p>${ok(custom, custom ? `${players.length} Spielerinnen` : 'noch keine Spielerinnen')}</p>
-      ${custom ? `<ul class="prep-list">${players.map(p => `<li>${esc(p.name) || '–'} · ${esc(p.apprentice)} → ${esc(p.warrior)} · ${GAME.roles[p.role]?.title || ''}${p.birthday ? ' 🎂' : ''}</li>`).join('')}</ul>` : ''}
+      ${custom ? `<ul class="prep-list">${players.map(p => `<li>${esc(p.name) || '–'} · ${esc(p.apprentice)} → ${esc(p.warrior)} · ${GAME.roles[p.role]?.title || ''}</li>`).join('')}</ul>` : ''}
       <button class="btn ghost small" data-scan="players">📷 Spielerinnen-QR scannen</button>
     </div>
     <div id="prep-scan"></div>
@@ -530,19 +530,15 @@ function viewPrepare() {
 // ---------------------------------------------------------------------------
 
 function viewCeremony(step) {
-  // Geburtstagskind kommt zum Schluss
-  const players = getPlayers();
-  const order = [...players.filter(p => !p.birthday), ...players.filter(p => p.birthday)];
+  const order = getPlayers();
   const { name: leader, title } = GAME.leader;
 
   if (step >= order.length) {
-    const bday = players.find(p => p.birthday);
     const text = `Der ${GAME.clan} ehrt seine neuen Kriegerinnen! ${order.map(p => p.warrior).join('! ')}!`;
     app.innerHTML = `
       <div class="card ceremony center reveal" style="margin-top:8vh">
         <h1>⭐ ${GAME.clan} ⭐</h1>
         <p class="story">${text}</p>
-        ${bday ? `<p class="name">Alles Gute zum 11. Geburtstag, ${bday.warrior}!</p>` : ''}
       </div>`;
     fanfare();
     return;
@@ -691,7 +687,7 @@ let clanFlash = ''; // Meldung, die nach dem Neuaufbau der Spielleitung angezeig
 const esc = v => String(v ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 function renderClanEditor(box) {
-  const emptyPlayer = role => ({ name: '', apprentice: '', warrior: '', role, birthday: false });
+  const emptyPlayer = role => ({ name: '', apprentice: '', warrior: '', role });
   const unusedRole = list => Object.keys(GAME.roles).find(r => !list.some(p => p.role === r)) || Object.keys(GAME.roles)[0];
   let players = getPlayers().map(p => ({ ...p }));
   // Noch niemand eingetragen: 4 leere Zeilen mit verschiedenen Rollen
@@ -709,7 +705,6 @@ function renderClanEditor(box) {
           <input data-f="apprentice" value="${esc(p.apprentice)}" placeholder="Schülerin (…pfote)" aria-label="Schülerinnenname">
           <input data-f="warrior" value="${esc(p.warrior)}" placeholder="Kriegerin" aria-label="Kriegername">
           <select data-f="role" aria-label="Rolle">${roleOptions(p.role)}</select>
-          <label class="bday" title="Geburtstagskind"><input type="radio" name="bday" data-f="birthday" ${p.birthday ? 'checked' : ''}> 🎂</label>
           <button class="btn ghost small" data-act="dice" title="Namen vorschlagen">🎲</button>
           <button class="btn ghost small" data-act="del" title="Entfernen">✕</button>
         </div>`).join('')}
@@ -726,8 +721,7 @@ function renderClanEditor(box) {
     const row = e.target.closest('[data-i]');
     if (!row || !e.target.dataset.f) return;
     const p = players[row.dataset.i];
-    if (e.target.dataset.f === 'birthday') players.forEach(x => { x.birthday = x === p; });
-    else p[e.target.dataset.f] = e.target.value.trim();
+    p[e.target.dataset.f] = e.target.value.trim();
   });
 
   box.addEventListener('click', e => {
@@ -750,7 +744,7 @@ function renderClanEditor(box) {
       if (filled.some(p => !p.apprentice || !p.warrior)) return draw('Jede braucht einen Schülerinnen- und einen Kriegernamen (🎲 schlägt welche vor).', true);
       players = filled;
       savePlayers(players);
-      clanFlash = `Gespeichert: ${players.length} Schülerinnen.${players.some(p => p.birthday) ? '' : ' Tipp: Geburtstagskind 🎂 markieren.'}`;
+      clanFlash = `Gespeichert: ${players.length} Schülerinnen.`;
       route(); // Lösungstabelle (Rollen-Code) neu berechnen
     }
   });

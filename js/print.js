@@ -179,9 +179,8 @@ const certificates = `
 async function renderCertificates() {
   await loadCertificateFonts();
   const figures = [...document.querySelectorAll('#certs .photo')];
-  // Geburtstagskind: „Feuer“ (erster Band), die anderen bekommen die übrigen Cover-Farbwelten
-  let next = 1;
-  const themes = players.map(p => (p.birthday ? THEMES[0] : THEMES[next++ % THEMES.length] || THEMES[1]));
+  // Jede bekommt reihum eine der Cover-Farbwelten
+  const themes = players.map((p, i) => THEMES[i % THEMES.length]);
   const links = await Promise.all(players.map(async (p, i) => {
     const canvas = drawCertificate(p, themes[i]);
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.92));
