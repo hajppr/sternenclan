@@ -705,17 +705,19 @@ function viewSetup(data) {
     app.innerHTML = `<div class="card" style="margin-top:10vh"><h2>Einrichtung</h2><p class="warn">Dieser Einrichtungs-Link ist ungültig.</p><a class="btn ghost" href="#/">Zum Spiel</a></div>`;
     return;
   }
+  const gpsCount = Object.keys(setup.geo).length;
+  const withClan = setup.players.length > 0;
   app.innerHTML = `
     <div class="card" style="margin-top:10vh">
-      <h2>Clan übernehmen?</h2>
-      <p>${setup.players.length} Schülerinnen: ${setup.players.map(p => esc(p.apprentice)).join(', ')}</p>
-      ${Object.keys(setup.geo).length ? `<p>GPS-Positionen für ${Object.keys(setup.geo).length} Stationen.</p>` : ''}
-      <p class="muted">Der bisherige Clan auf diesem Gerät wird ersetzt. Der Spielstand bleibt erhalten.</p>
+      <h2>${withClan ? 'Clan übernehmen?' : 'GPS-Punkte übernehmen?'}</h2>
+      ${withClan ? `<p>${setup.players.length} Schülerinnen: ${setup.players.map(p => esc(p.apprentice)).join(', ')}</p>` : ''}
+      ${gpsCount ? `<p>GPS-Positionen für ${gpsCount} Stationen.</p>` : ''}
+      <p class="muted">${withClan ? 'Der bisherige Clan auf diesem Gerät wird ersetzt.' : 'Der Clan auf diesem Gerät bleibt, wie er ist.'} Der Spielstand bleibt erhalten.</p>
       <button class="btn block" id="take">Übernehmen</button>
     </div>`;
   app.querySelector('#take').onclick = () => {
-    savePlayers(setup.players);
-    if (Object.keys(setup.geo).length) saveGeo({ ...getGeo(), ...setup.geo });
+    if (withClan) savePlayers(setup.players);
+    if (gpsCount) saveGeo({ ...getGeo(), ...setup.geo });
     location.hash = '#/gm';
   };
 }

@@ -30,10 +30,12 @@ export function decodeSetup(text) {
   try {
     const bin = atob(text.replace(/-/g, '+').replace(/_/g, '/'));
     const data = JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, c => c.charCodeAt(0))));
-    const { players, geo = {} } = Array.isArray(data) ? { players: data } : data; // alte Links: nur Spielerinnen
-    const validPlayers = Array.isArray(players) && players.length && players.every(p => p.apprentice && p.warrior && GAME.roles[p.role]);
+    const { players = [], geo = {} } = Array.isArray(data) ? { players: data } : data; // alte Links: nur Spielerinnen
+    // players darf leer sein (Link nur mit GPS-Punkten) – dann bleibt der Clan auf dem Gerät unverändert.
+    const validPlayers = Array.isArray(players) && players.every(p => p.apprentice && p.warrior && GAME.roles[p.role]);
     const validGeo = Object.values(geo).every(g => Number.isFinite(g.lat) && Number.isFinite(g.lon));
-    return validPlayers && validGeo ? { players, geo } : null;
+    const hasContent = players.length || Object.keys(geo).length;
+    return validPlayers && validGeo && hasContent ? { players, geo } : null;
   } catch {
     return null;
   }

@@ -52,7 +52,8 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 ## Vorbereitung – Checkliste
 
 - [ ] Spielleitung → „Clan einrichten“: wer ist dabei, Namen, Rollen, Geburtstagskind 🎂 – **am Gerät, von dem aus gedruckt wird**
-- [ ] Spielleitung → „Auf das Spiel-Tablet übertragen“: QR mit dem Tablet scannen
+- [ ] Spielleitung → „Übertragen & sichern“: QR mit dem Tablet scannen (Clan + GPS-Punkte)
+- [ ] Nur GPS-Punkte aufs Tablet (Clan bleibt): `privat/GPS-QR-Tablet.pdf` scannen bzw. Link aus `privat/GPS-Link.txt` öffnen
 - [ ] Strecke ablaufen: Versteck-Texte anpassen, **Laternen an der Kreuzung zählen** und eintragen
 - [ ] `print.html` **von der veröffentlichten Adresse** drucken (Rollenkarten und Urkunden enthalten die eingerichteten Namen)
 - [ ] QR-Karten und Beutekarten laminieren bzw. in Klarsichthüllen (Dezember = nass)
