@@ -84,8 +84,9 @@ function render(page, arg) {
 // Bausteine
 // ---------------------------------------------------------------------------
 
-// „IV 🐾 Die Grenze“ – Nummer und Name optisch getrennt
-const stationLabel = (i, title) => `<span class="num">${roman(i + 1)}</span><span class="sep" aria-hidden="true">🐾</span>${title}`;
+// „IV 🐾 Die Grenze“ – Nummer und Name optisch getrennt (gezeichnete Pfote, damit sie golden sein kann)
+const PAW_SEP = `<svg class="sep" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16.5" rx="5.2" ry="4.4"/><ellipse cx="5" cy="10.5" rx="2.2" ry="2.8" transform="rotate(-20 5 10.5)"/><ellipse cx="9.3" cy="6" rx="2.2" ry="2.9" transform="rotate(-8 9.3 6)"/><ellipse cx="14.7" cy="6" rx="2.2" ry="2.9" transform="rotate(8 14.7 6)"/><ellipse cx="19" cy="10.5" rx="2.2" ry="2.8" transform="rotate(20 19 10.5)"/></svg>`;
+const stationLabel = (i, title) => `<span class="num">${roman(i + 1)}</span>${PAW_SEP}${title}`;
 
 function trail(activeId) {
   return `<div class="trail" aria-label="Fortschritt">${stations.map(s => {
