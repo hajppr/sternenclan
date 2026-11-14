@@ -230,3 +230,9 @@ GAME.stations.find(s => s.id === 'heimkehr').hints = [
   `Die ersten beiden Krallenzeichen waren ${clawStations[0].digit} und ${clawStations[1].digit}.`,
   `Der ganze Code lautet: ${lockCode()}`,
 ];
+
+// Stationsnummer als römische Zahl (1 → I, 4 → IV, 10 → X)
+export function roman(n) {
+  return [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]
+    .reduce((out, [v, r]) => { while (n >= v) { out += r; n -= v; } return out; }, '');
+}

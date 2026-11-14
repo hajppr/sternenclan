@@ -1,4 +1,4 @@
-import { GAME, lockCode } from './config.js';
+import { GAME, lockCode, roman } from './config.js';
 import { getPlayers, roleTitle } from './players.js';
 import { PAW_SCRIPT } from './puzzles.js';
 import { drawCertificate, loadCertificateFonts, certificateFileName, THEMES } from './certificate.js';
@@ -105,11 +105,11 @@ const backFace = (sub, title) => `
       </div>
     </div>`;
 
-const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
+const stationCards = GAME.stations.map((s, i) => ({ s, num: roman(i + 1) })).filter((x, i) => i > 0).map(({ s, num }) => `
   <div class="fold">
     <div class="face front">
       <div class="qr">${qr(`${base}#/s/${s.token}`)}</div>
-      <p class="station-name">${s.title}</p>
+      <p class="station-name"><span class="num">${num}</span> ${s.title}</p>
       <p class="spurcode">${s.token.toUpperCase()}</p>
     </div>
     ${backFace('Spur des', 'SternenClans')}
@@ -194,7 +194,7 @@ async function renderCertificates() {
 const gmSheet = `
   <table class="gm">
     <tr><th>#</th><th>Station</th><th>Versteck</th><th>Vorbereitung</th></tr>
-    ${GAME.stations.map((s, i) => `<tr><td>${i + 1}</td><td><b>${s.title}</b><br>${s.place}<br>Code ${s.token.toUpperCase()}</td><td>${s.gm.hide}</td><td>${s.gm.prep || ''}</td></tr>`).join('')}
+    ${GAME.stations.map((s, i) => `<tr><td><b>${roman(i + 1)}</b></td><td><b>${s.title}</b><br>${s.place}<br>Code ${s.token.toUpperCase()}</td><td>${s.gm.hide}</td><td>${s.gm.prep || ''}</td></tr>`).join('')}
   </table>
   <p style="font-family:sans-serif">Zahlenschloss-Code: <b>${lockCode()}</b> · Spielleitung in der App: <code>${base}#/gm</code> (PIN ${GAME.gmPin})</p>`;
 

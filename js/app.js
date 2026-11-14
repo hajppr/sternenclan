@@ -1,4 +1,4 @@
-import { GAME, lockCode } from './config.js';
+import { GAME, lockCode, roman } from './config.js';
 import { renderPuzzle } from './puzzles.js';
 import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying, preloadSounds } from './fx.js';
 import { getPlayers, savePlayers, clearPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames, gw, roleTitle, groupWord } from './players.js';
@@ -121,12 +121,12 @@ function viewHome() {
       <ul class="path">${stations.map((s, i) => `
         <li>
           <span class="dot">${state.solved[s.id] ? '🐾' : i === ci ? '✨' : '·'}</span>
-          <span>${state.solved[s.id] || i === ci ? s.title : '???'}</span>
+          <span><span class="num">${roman(i + 1)}</span> ${state.solved[s.id] || i === ci ? s.title : '???'}</span>
         </li>`).join('')}
       </ul>
     </div>
     <div class="stack">
-      ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${current.title}</a>` : ''}
+      ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${roman(ci + 1)} · ${current.title}</a>` : ''}
       ${current && !reachable ? `<div class="card"><p class="muted">Letzter Hinweis:</p><p class="story">${stations[ci - 1].next}</p></div>` : ''}
       ${current && !reachable ? scentButton(current) : ''}
       ${current ? `<a class="btn block ${reachable ? 'ghost' : ''}" href="#/scan">📷 Spur scannen</a>` : ''}
@@ -190,7 +190,7 @@ function viewStation(station) {
     ${skipped ? `<div class="card"><p class="muted">Moment! Die Prüfung „${prev.title}“ habt ihr noch nicht bestanden. Ihr könnt trotzdem weitermachen – <a href="#/s/${prev.token}" style="color:var(--gold)">oder zurückgehen</a>.</p></div>` : ''}
     <div class="card">
       <div class="chip">📍 ${station.place}</div>
-      <h2>${station.title}</h2>
+      <h2><span class="num">${roman(idx + 1)}</span> ${station.title}</h2>
       <p class="story">${station.story}</p>
     </div>
     <div class="card" id="puzzle"></div>
@@ -627,7 +627,7 @@ function viewGM() {
         <tr><th>#</th><th>Station</th><th>Lösung</th><th>${hasGeolocation ? '📍 = beim Ablaufen am Versteck antippen' : ''}</th></tr>
         ${stations.map((s, i) => `
           <tr>
-            <td>${i + 1}</td>
+            <td><b>${roman(i + 1)}</b></td>
             <td><b>${s.title}</b> <span class="muted">(${s.place}, Code <code>${s.token}</code>)</span><br>
               <small>${s.gm.hide}</small>${s.gm.prep ? `<br><small>${s.gm.prep}</small>` : ''}</td>
             <td>${answerOf(s)}</td>
@@ -851,7 +851,7 @@ function viewSetup(data) {
 
 const previewSteps = [
   { hash: '#/intro', label: 'Einleitung' },
-  ...stations.map((s, i) => ({ hash: `#/s/${s.token}`, label: `${i + 1}/${stations.length} ${s.title}`, station: s })),
+  ...stations.map((s, i) => ({ hash: `#/s/${s.token}`, label: `${roman(i + 1)} ${s.title}`, station: s })),
   { hash: '#/zeremonie', label: 'Kriegerzeremonie' },
 ];
 
