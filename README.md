@@ -80,7 +80,8 @@ Die QR-Codes lassen sich auch mit der Kamera-App scannen. Die GPS-Punkte werden 
 
 - **Ein Tablet für alle** ist der Hauptmodus. Zusätzliche Handys (zu zweit) können parallel mitspielen – jedes Gerät hat seinen eigenen Spielstand.
 - QR-Codes können mit dem **Scanner in der App** oder mit der **normalen Kamera-App** gescannt werden. Falls nichts geht: den Spurcode unter dem QR eintippen.
-- **Android/Chrome:** Die Seite kann über Chrome-Menü → „Zum Startbildschirm hinzufügen“ / „App installieren“ wie eine App installiert werden (Vollbild). Spielstand bleibt derselbe wie in Chrome.
+- **Android/Chrome:** Chrome-Menü (⋮) → **„App installieren“** (heißt manchmal „Zum Startbildschirm hinzufügen“ → „Installieren“). Dann startet die App im Vollbild ohne Adressleiste und ohne Android-Leisten (wischen vom Rand holt sie kurz zurück). Wurde sie früher schon hinzugefügt: altes Symbol entfernen und neu installieren, sonst bleibt es eine einfache Verknüpfung mit Leisten. Spielstand bleibt derselbe wie in Chrome.
+- Auch ohne Installation schaltet die App bei „Spiel starten“ in den Vollbildmodus, und der Bildschirm geht während des Spiels nicht aus. Nach dem Neuladen holt das erste Antippen den Vollbildmodus zurück.
 - Auf iPad/iPhone dagegen **nicht** zum Home-Bildschirm hinzufügen, sondern in Safari spielen – sonst öffnen QR-Links aus der Kamera-App einen anderen Spielstand.
 - Tipps werden zeitverzögert freigeschaltet (nach 1, 3, 5 Minuten an einer Station).
 - **GPS ohne Mobilfunk** braucht für den ersten Fix draußen evtl. 1–2 Minuten. Am besten kurz vor dem Losgehen draußen „Witterung aufnehmen“ einmal öffnen. Im Wald ist GPS ungenauer (10–20 m) – die Witterung bringt die Kinder in die Nähe, den Rest erledigt der Hinweistext.

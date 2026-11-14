@@ -52,6 +52,35 @@ const currentIndex = () => {
 };
 
 // ---------------------------------------------------------------------------
+// Tablet-Modus: Vollbild (ohne Adress- und Systemleisten) und Bildschirm bleibt an.
+// Browser erlauben beides nur nach einem Antippen – daher beim Start und beim ersten Tippen nach dem Neuladen.
+// ---------------------------------------------------------------------------
+
+let wakeLock = null;
+const gameRunning = () => !preview && (state.prepared || state.startedAt);
+
+async function keepAwake() {
+  if (!('wakeLock' in navigator) || wakeLock) return;
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    wakeLock.addEventListener('release', () => { wakeLock = null; });
+  } catch { /* Akku-Sparmodus o. Ä. */ }
+}
+
+function immersive() {
+  const el = document.documentElement;
+  if (!document.fullscreenElement && el.requestFullscreen) el.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
+  keepAwake();
+}
+
+// Nach dem Neuladen mitten im Spiel: erstes Antippen holt Vollbild zurück (nur einmal, damit man es verlassen kann)
+document.addEventListener('pointerdown', () => { if (gameRunning()) immersive(); }, { once: true });
+// Wake Lock geht beim Wechsel in eine andere App verloren → beim Zurückkommen neu anfordern
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && gameRunning()) keepAwake();
+});
+
+// ---------------------------------------------------------------------------
 // Router
 // ---------------------------------------------------------------------------
 
@@ -108,8 +137,9 @@ function viewHome() {
         <div class="chip">Für die ${groupWord('Schülerinnen', 'Schüler')} des ${GAME.clan}s</div>
         <h1>${GAME.title}</h1>
         <p class="story muted">„${GAME.prophecy}“</p>
-        <p style="margin-top:32px"><a class="btn" href="#/intro">Die Prüfung beginnen</a></p>
+        <p style="margin-top:32px"><a class="btn" href="#/intro" id="begin">Die Prüfung beginnen</a></p>
       </div>`;
+    app.querySelector('#begin').addEventListener('click', () => { if (!preview) immersive(); });
     return;
   }
 
@@ -526,6 +556,7 @@ function viewPrepare() {
     if (missing.length && !confirm(`Trotzdem starten? Es fehlen: ${missing.join(', ')}.`)) return;
     state.prepared = Date.now();
     save();
+    immersive();
     route();
   };
 }

@@ -1,10 +1,11 @@
 // Offline-Cache: beim ersten Öffnen (im WLAN) wird alles gespeichert,
 // danach läuft das Spiel auch im Wald ohne Netz. VERSION erhöhen nach Änderungen!
-const VERSION = 'sternenclan-56';
+const VERSION = 'sternenclan-57';
 const FILES = [
   './', 'index.html', 'print.html', 'css/style.css', 'manifest.webmanifest', 'icon.svg',
   'js/app.js', 'js/config.js', 'js/players.js', 'js/map.js', 'js/territory.js', 'js/geo.js', 'js/puzzles.js', 'js/fx.js', 'js/print.js', 'js/certificate.js',
   'js/lib/jsQR.js', 'js/lib/qrcode.js',
+  'images/icons/icon-192.png', 'images/icons/icon-512.png', 'images/icons/maskable-192.png', 'images/icons/maskable-512.png',
   'images/beute/maus.jpg', 'images/beute/amsel.jpg', 'images/beute/kaninchen.jpg', 'images/beute/eichhoernchen.jpg', 'images/beute/frosch.jpg',
   'sounds/owl1.m4a', 'sounds/owl2.m4a', 'sounds/wind.m4a', 'sounds/hiss.m4a',
 ];
