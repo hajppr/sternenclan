@@ -1,13 +1,13 @@
 // Rätseltypen. Jeder Typ bekommt den Container, die Station und ctx = { solved, state, onSolved }.
 import { GAME } from './config.js';
 import { hiss, owlCalls } from './fx.js';
-import { roleOrder, getPlayers } from './players.js';
+import { roleOrder, getPlayers, roleLabel } from './players.js';
 
 const TRY_AGAIN = [
   'Hmm, das stimmt noch nicht.',
   'Der SternenClan schweigt … versucht es noch einmal.',
   'Fast! Schaut noch einmal genau hin.',
-  'Eine echte Kriegerin gibt nicht auf!',
+  'Eine echte Clankatze gibt nicht auf!',
 ];
 
 const norm = s => String(s).toLowerCase()
@@ -197,7 +197,7 @@ const types = {
     el.innerHTML = `
       <h3>Der Krallen-Code</h3>
       <p>${p.question}</p>`;
-    slotInput(el, [roleOrder(p.order).map(r => ({ label: `<span class="role-label">${GAME.roles[r].title}</span>`, aria: GAME.roles[r].title, expected: GAME.roles[r].digit }))], { numeric: true, onSolved: ctx.onSolved });
+    slotInput(el, [roleOrder(p.order).map(r => ({ label: `<span class="role-label">${roleLabel(r)}</span>`, aria: roleLabel(r), expected: GAME.roles[r].digit }))], { numeric: true, onSolved: ctx.onSolved });
   },
 
   match(el, p, ctx) {
@@ -297,7 +297,7 @@ const types = {
   },
 
   lock(el, p, ctx) {
-    // Code nicht anzeigen – die Mädchen sollen sich die Krallenzeichen gemerkt haben (Tipps helfen notfalls)
+    // Code nicht anzeigen – die Kinder sollen sich die Krallenzeichen gemerkt haben (Tipps helfen notfalls)
     const digits = GAME.stations.filter(s => s.digit != null);
     el.innerHTML = `
       <h3>Eure Krallenzeichen</h3>

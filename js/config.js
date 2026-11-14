@@ -17,26 +17,27 @@ export const GAME = {
   // Die Anführerin/der Anführer wird von einem Erwachsenen gespielt.
   leader: { name: 'Lichtstern', title: 'Anführerin' },
 
-  // Rollen: Jedes Mädchen bekommt eine ausgedruckte Rollenkarte (print.html).
+  // Rollen: Jedes Kind bekommt eine ausgedruckte Rollenkarte (print.html).
   // Die Ziffer steht NUR auf der Karte – gebraucht am Waldrand.
   roles: {
     // Bewusst ohne Symbole: Emojis würden mit der Pfotenschrift verwechselt
-    heilerin:   { title: 'Heilerin',       digit: 3, text: 'Du kennst die Kräuter des Waldes.' },
-    jaegerin:   { title: 'Jägerin',        digit: 8, text: 'Du hast die schärfsten Augen und die leisesten Pfoten.' },
-    kaempferin: { title: 'Kämpferin',      digit: 1, text: 'Du beschützt deinen Clan mit Mut.' },
-    faehrte:    { title: 'Fährtenleserin', digit: 6, text: 'Du findest jede Spur, auch die kleinste.' },
-    waechterin: { title: 'Wächterin',      digit: 5, text: 'Du hältst Wache, wenn alle anderen schlafen.' },
-    seherin:    { title: 'Sternenseherin', digit: 9, text: 'Du verstehst die Zeichen des SternenClans.' },
+    // title = weiblich, m = männlich (je nach Eintrag in „Clan einrichten“)
+    heilerin:   { title: 'Heilerin',       m: 'Heiler',       digit: 3, text: 'Du kennst die Kräuter des Waldes.' },
+    jaegerin:   { title: 'Jägerin',        m: 'Jäger',        digit: 8, text: 'Du hast die schärfsten Augen und die leisesten Pfoten.' },
+    kaempferin: { title: 'Kämpferin',      m: 'Kämpfer',      digit: 1, text: 'Du beschützt deinen Clan mit Mut.' },
+    faehrte:    { title: 'Fährtenleserin', m: 'Fährtenleser', digit: 6, text: 'Du findest jede Spur, auch die kleinste.' },
+    waechterin: { title: 'Wächterin',      m: 'Wächter',      digit: 5, text: 'Du hältst Wache, wenn alle anderen schlafen.' },
+    seherin:    { title: 'Sternenseherin', m: 'Sternenseher', digit: 9, text: 'Du verstehst die Zeichen des SternenClans.' },
   },
 
-  // Spielerinnen gibt es hier bewusst nicht (echte Namen gehören nicht ins öffentliche Repo).
+  // Mitspielende Kinder gibt es hier bewusst nicht (echte Namen gehören nicht ins öffentliche Repo).
   // Sie werden in der Spielleitung (#/gm → „Clan einrichten“) eingetragen und per QR aufs Tablet übertragen.
 
   prophecy: 'Wenn der Mond über dem Wald erwacht, wird nur ein Clan, der wie eine einzige Pfote läuft, den Mondstein finden.',
 
   intro: [
     'Lange Zeit hat der SternenClan geschwiegen. Doch letzte Nacht sandte er unserer Anführerin Lichtstern einen Traum.',
-    'Die Schülerinnen des MondClans sollen eine Prüfung bestehen. Nur wenn sie zusammenhalten, dürfen sie heute Kriegerinnen werden.',
+    'Die jungen Katzen des MondClans sollen eine Prüfung bestehen. Nur wenn sie zusammenhalten, bekommen sie heute ihren Kriegernamen.',
     'Aber Vorsicht: Ein Spion des SchattenClans hat falsche Spuren gelegt. Vertraut einander – und dem Gesetz der Krieger.',
   ],
 
@@ -56,10 +57,10 @@ export const GAME = {
           { q: 'Wie nennen Clankatzen die Menschen?', options: ['Zweibeiner', 'Langbeine', 'Riesen'], answer: 0 },
           { q: 'Wie nennen Clankatzen die Autos?', options: ['Brummer', 'Monster', 'Stinker'], answer: 1 },
           { q: 'Wo leben die verstorbenen Krieger aller Clans?', options: ['Im SchattenClan', 'Beim Mondsee', 'Im SternenClan'], answer: 2 },
-          { q: 'Wie endet der Name einer Schülerin?', options: ['…pfote', '…stern', '…junges'], answer: 0 },
+          { q: 'Wie endet der Name einer Katze in der Ausbildung?', options: ['…pfote', '…stern', '…junges'], answer: 0 },
         ],
       },
-      hints: ['Ihr dürft so oft raten, wie ihr wollt.', 'Schülerinnen heißen zum Beispiel Feuerpfote oder Rabenpfote.'],
+      hints: ['Ihr dürft so oft raten, wie ihr wollt.', 'Katzen in der Ausbildung heißen zum Beispiel Feuerpfote oder Rabenpfote.'],
       digit: 4,
       next: 'Der SternenClan schickt euch ein Rätsel: „Man klopft an mich, doch ich bin kein Specht. Man öffnet mich, doch ich bin kein Geschenk. Jede Katze muss durch mich hindurch, wenn sie das Lager verlässt.“ Dort wartet die nächste Spur!',
     },
@@ -91,7 +92,7 @@ export const GAME = {
         hide: 'QR-Karte am blauen Schild bzw. beim großen Stein, wo unsere Straße endet.',
         prep: 'Lösung: 4 Laternen (3 oder 5 werden auch akzeptiert).',
       },
-      story: 'Ihr habt den Zweibeinerort durchquert. Nachts wachen hier die Laternen der Zweibeiner über den Donnerweg – und am Tag dieser große Stein. Eine gute Kriegerin hat Augen für alles, was um sie herum geschieht.',
+      story: 'Ihr habt den Zweibeinerort durchquert. Nachts wachen hier die Laternen der Zweibeiner über den Donnerweg – und am Tag dieser große Stein. Eine gute Clankatze hat Augen für alles, was um sie herum geschieht.',
       puzzle: {
         type: 'number',
         question: 'Wie viele Laternen der Zweibeiner habt ihr auf dem Weg vom Lager bis hierher gezählt?',
@@ -142,11 +143,11 @@ export const GAME = {
       id: 'waldrand', token: 'r5vb', title: 'Die Wächter-Eiche', place: 'Gegenüber vom Waldrand',
       map: { x: 355, y: 556, via: [[356, 551]] },
       gm: { hide: 'QR-Karte an der Zwillingseiche (zwei Stämme, ein Baum direkt daneben) gegenüber vom Waldrand, auf der Seite der Pferdekoppel.', prep: '' },
-      story: 'Zwei Stämme aus einer Wurzel – wie Schwestern. Und dicht daneben ein dritter Baum, als würde er einfach dazugehören. So ist es auch in einem Clan. Von hier aus behält die Wächter-Eiche den Weg in den Wald im Blick. Sie lässt euch nur weiter, wenn ihr den Krallen-Code kennt – und den findet ihr nur, wenn jede Schülerin ihr Wissen teilt.',
+      story: 'Zwei Stämme aus einer Wurzel – wie Geschwister. Und dicht daneben ein dritter Baum, als würde er einfach dazugehören. So ist es auch in einem Clan. Von hier aus behält die Wächter-Eiche den Weg in den Wald im Blick. Sie lässt euch nur weiter, wenn ihr den Krallen-Code kennt – und den findet ihr nur, wenn alle ihr Wissen teilen.',
       puzzle: {
         type: 'roles',
         order: ['seherin', 'heilerin', 'waechterin', 'faehrte'],
-        question: 'Jede von euch hat auf ihrer Rollenkarte eine geheime Zahl. Welchen Code ergeben diese Zeichen?',
+        question: 'Auf jeder eurer Rollenkarten steht eine geheime Zahl. Welchen Code ergeben diese Zeichen?',
       },
       hints: ['Holt eure Rollenkarten heraus! Jede hat ein Zeichen und eine Zahl.', 'Sucht die Karten mit genau diesen Zeichen und lest die Zahlen der Reihe nach.'],
       digit: 2,
@@ -186,7 +187,7 @@ export const GAME = {
         type: 'traitor',
         messages: [
           'Folgt dem Weg in Richtung Norden, am Obstgarten der Zweibeiner vorbei.',
-          'Trennt euch! Jede sucht allein, und vertraut niemandem aus eurem Clan.',
+          'Trennt euch! Sucht allein, und vertraut niemandem aus eurem Clan.',
           'Wo der Weg in Richtung Sonnenuntergang abbiegt, wacht ein großer Baum über den Schatz des Mondsteins.',
         ],
         fake: 1,
@@ -203,10 +204,10 @@ export const GAME = {
       story: 'Unter dem großen Baum steht eine alte Truhe – der Schrein des Mondsteins! Auf ihrem Deckel leuchtet das Mondsiegel. Der Mondstein selbst ruht darin, doch die Truhe ist verschlossen. Nur im Lager, im Kreis des ganzen Clans, lässt sie sich öffnen.',
       puzzle: {
         type: 'touch',
-        question: 'Die Truhe ist schwer, und das Mondsiegel hält sie am Boden fest. Nur wenn alle Schülerinnen gleichzeitig eine Pfote auf das Siegel legen, löst sich der Bann. Legt alle einen Finger auf das leuchtende Siegel und haltet fest!',
+        question: 'Die Truhe ist schwer, und das Mondsiegel hält sie am Boden fest. Nur wenn alle gleichzeitig eine Pfote auf das Siegel legen, löst sich der Bann. Legt alle einen Finger auf das leuchtende Siegel und haltet fest!',
       },
       hints: ['Wirklich alle müssen gleichzeitig einen Finger auf das leuchtende Siegel legen – und kurz festhalten.'],
-      next: 'Der Bann ist gelöst! Tragt die Truhe gemeinsam ins Lager. Geht am Wäldchen vorbei in Richtung Sonnenuntergang, dann den Donnerweg nach Norden und am Ende wieder zurück ins Lager. Bleibt zusammen – eine Kriegerin lässt niemanden zurück!',
+      next: 'Der Bann ist gelöst! Tragt die Truhe gemeinsam ins Lager. Geht am Wäldchen vorbei in Richtung Sonnenuntergang, dann den Donnerweg nach Norden und am Ende wieder zurück ins Lager. Bleibt zusammen – eine echte Clankatze lässt niemanden zurück!',
     },
     {
       id: 'heimkehr', token: 'v4lt', title: 'Heimkehr ins Lager', place: 'Zuhause',
@@ -222,7 +223,7 @@ export const GAME = {
 
 export const lockCode = () => GAME.stations.filter(s => s.digit != null).map(s => s.digit).join('');
 
-// Heimkehr: Den Code sollen sich die Mädchen gemerkt haben – Tipps verraten ihn nur nach und nach.
+// Heimkehr: Den Code sollen sich die Kinder gemerkt haben – Tipps verraten ihn nur nach und nach.
 const clawStations = GAME.stations.filter(s => s.digit != null);
 GAME.stations.find(s => s.id === 'heimkehr').hints = [
   `Ihr habt ${clawStations.length} Krallenzeichen bekommen: ${clawStations.map(s => `„${s.title}“`).join(', ')}. In dieser Reihenfolge ergeben sie den Code.`,

@@ -258,13 +258,16 @@ select {
 
 .player-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1.1fr auto auto;
+  grid-template-columns: 1fr auto 1fr 1fr 1.1fr auto auto;
   gap: 6px;
   align-items: center;
   padding: 6px 0;
   border-bottom: 1px solid var(--card-line);
 }
 .player-row input, .player-row select { min-height: 44px; padding: 8px 10px; font-size: 0.95rem; }
+.player-row .gender { display: flex; gap: 10px; white-space: nowrap; }
+.player-row .gender label { display: flex; align-items: center; gap: 3px; cursor: pointer; }
+.player-row .gender input { width: auto; min-height: 0; padding: 0; }
 .setup-qr { background: #fff; width: 220px; padding: 8px; border-radius: 10px; margin: 8px 0; }
 .setup-qr.big { width: min(360px, 100%); }
 .prep h3 { margin-top: 0; }
@@ -275,6 +278,9 @@ select {
 @media (max-width: 700px) {
   .player-row { grid-template-columns: repeat(6, 1fr); }
   .player-row > input, .player-row > select { grid-column: span 3; }
+  .player-row > input[data-f="name"] { grid-column: span 4; }
+  .player-row > .gender { grid-column: span 2; justify-content: center; }
+  .player-row > select { grid-column: span 6; }
   .player-row > .btn { grid-column: span 3; justify-content: center; }
 }
 

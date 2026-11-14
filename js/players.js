@@ -1,4 +1,4 @@
-// Teilnehmerinnen: werden in der Spielleitung (#/gm) eingetragen, es gibt keine Standardnamen.
+// Mitspielende Kinder: werden in der Spielleitung (#/gm) eingetragen, es gibt keine Standardnamen.
 // Gespeichert getrennt vom Spielstand, damit „Spielstand zurücksetzen“ den Clan nicht löscht.
 import { GAME } from './config.js';
 
@@ -50,14 +50,50 @@ export function roleOrder(order) {
   return result;
 }
 
-// Namensvorschläge im Warrior-Cats-Stil: Schülerin = Präfix + „pfote“, Kriegerin = Präfix + Suffix.
-const PREFIXES = ['Funken', 'Blatt', 'Nebel', 'Stern', 'Mond', 'Sturm', 'Regen', 'Wolken', 'Schnee', 'Bernstein',
-  'Distel', 'Farn', 'Rosen', 'Eis', 'Licht', 'Feder', 'Tau', 'Kiesel', 'Efeu', 'Honig', 'Glut', 'Silber', 'Moos', 'Beeren'];
-const SUFFIXES = ['herz', 'sturm', 'flug', 'kralle', 'fell', 'pelz', 'schweif', 'blick', 'glanz', 'tatze', 'wind', 'licht'];
+// Geschlecht: p.gender = 'w' | 'm' (fehlt = 'w', alte Einträge)
+export const isMale = p => p?.gender === 'm';
+export const gw = (p, w, m) => (isMale(p) ? m : w);
+
+// Rollentitel für eine Person (Heilerin / Heiler)
+export const roleTitle = p => {
+  const r = GAME.roles[p.role];
+  return r ? (isMale(p) ? r.m || r.title : r.title) : '';
+};
+
+// Rollentitel fürs Rollen-Rätsel: nach denen, die die Rolle haben (gemischt: „Jägerin/Jäger“)
+export function roleLabel(key) {
+  const r = GAME.roles[key];
+  const holders = getPlayers().filter(p => p.role === key);
+  const hasM = holders.some(isMale), hasW = holders.some(p => !isMale(p));
+  if (hasM && hasW) return `${r.title}/${r.m}`;
+  return hasM ? r.m : r.title;
+}
+
+// Sammelbegriff für die ganze Gruppe: nur Mädchen → w, nur Jungen → m, gemischt → beides
+export function groupWord(w, m) {
+  const ps = getPlayers();
+  const hasM = ps.some(isMale), hasW = ps.some(p => !isMale(p));
+  if (hasM && hasW) return `${w} und ${m}`;
+  return hasM ? m : w;
+}
+
+// Namensvorschläge im Warrior-Cats-Stil: Schulname = Präfix + „pfote“, Kriegername = Präfix + Suffix.
+const PREFIXES = {
+  both: ['Funken', 'Blatt', 'Nebel', 'Stern', 'Mond', 'Sturm', 'Regen', 'Wolken', 'Schnee', 'Bernstein',
+    'Distel', 'Farn', 'Eis', 'Licht', 'Kiesel', 'Glut', 'Silber', 'Moos'],
+  w: ['Rosen', 'Feder', 'Tau', 'Efeu', 'Honig', 'Beeren', 'Blüten', 'Lilien'],
+  m: ['Fels', 'Eichen', 'Dornen', 'Aschen', 'Falken', 'Donner', 'Flammen', 'Bären'],
+};
+const SUFFIXES = {
+  both: ['herz', 'sturm', 'flug', 'kralle', 'fell', 'pelz', 'schweif', 'blick', 'tatze', 'wind', 'licht'],
+  w: ['glanz', 'blüte', 'feder'],
+  m: ['zahn', 'pranke', 'kralle'],
+};
 
 const pick = list => list[Math.floor(Math.random() * list.length)];
 
-export function suggestNames(prefix) {
-  const p = prefix || pick(PREFIXES);
-  return { apprentice: `${p}pfote`, warrior: `${p}${pick(SUFFIXES)}` };
+export function suggestNames(prefix, gender = 'w') {
+  const g = gender === 'm' ? 'm' : 'w';
+  const p = prefix || pick([...PREFIXES.both, ...PREFIXES[g]]);
+  return { apprentice: `${p}pfote`, warrior: `${p}${pick([...SUFFIXES.both, ...SUFFIXES[g]])}` };
 }

@@ -28,8 +28,8 @@ Die Stationen 2, 4, 6 und 8 geben je ein **Krallenzeichen** (Ziffer). Zusammen e
 
 - `privat/` – **nur lokal** (in `.gitignore`): Ablauf und Verstecke mit echten Orten. Hier gehört alles Private hin.
 
-- `js/config.js` – **der gesamte Spielinhalt** (außer den Spielerinnen). Texte, Rätsel, Tipps, Verstecke. Alles mit `ANPASSEN` vor Ort prüfen.
-- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, Rollen – es gibt keine Standardnamen, alles wird hier eingetragen), Lösungen, Verstecke, Stationen überspringen, Spielstand zurücksetzen (Namen bleiben; zum Löschen „🗑 Alle Namen löschen“).
+- `js/config.js` – **der gesamte Spielinhalt** (außer den Kindern). Texte, Rätsel, Tipps, Verstecke. Alles mit `ANPASSEN` vor Ort prüfen.
+- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, w/m, Rollen – es gibt keine Standardnamen, alles wird hier eingetragen), Lösungen, Verstecke, Stationen überspringen, Spielstand zurücksetzen (Namen bleiben; zum Löschen „🗑 Alle Namen löschen“).
 - `print.html` – Druckvorlagen: Spielleitungs-Blatt, QR-Karten, Rollenkarten, Beutekarten, Urkunden.
 
 ## Lokal testen
@@ -69,8 +69,8 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 Beim ersten Öffnen (und nach „Spielstand zurücksetzen“) zeigt die App den Bildschirm **Vorbereitung**:
 
 1. **📍 GPS-QR scannen**: `privat/GPS-QR-Tablet.pdf` (oder Spielleitung → „QR für die GPS-Punkte“ an dem Gerät, auf dem die Punkte gespeichert sind)
-2. **🐾 Spielerinnen-QR scannen**: am Laptop Spielleitung → Clan einrichten → Speichern → „QR für die Spielerinnen“
-3. Häkchen prüfen → **Spiel starten** → Tablet den Mädchen geben
+2. **🐾 Kinder-QR scannen**: am Laptop Spielleitung → Clan einrichten → Speichern → „QR für die Kinder“
+3. Häkchen prüfen → **Spiel starten** → Tablet den Kindern geben
 
 Die QR-Codes lassen sich auch mit der Kamera-App scannen. Die GPS-Punkte werden ergänzt, nicht ersetzt.
 
@@ -83,7 +83,7 @@ Die QR-Codes lassen sich auch mit der Kamera-App scannen. Die GPS-Punkte werden 
 - **Android/Chrome:** Die Seite kann über Chrome-Menü → „Zum Startbildschirm hinzufügen“ / „App installieren“ wie eine App installiert werden (Vollbild). Spielstand bleibt derselbe wie in Chrome.
 - Auf iPad/iPhone dagegen **nicht** zum Home-Bildschirm hinzufügen, sondern in Safari spielen – sonst öffnen QR-Links aus der Kamera-App einen anderen Spielstand.
 - Tipps werden zeitverzögert freigeschaltet (nach 1, 3, 5 Minuten an einer Station).
-- **GPS ohne Mobilfunk** braucht für den ersten Fix draußen evtl. 1–2 Minuten. Am besten kurz vor dem Losgehen draußen „Witterung aufnehmen“ einmal öffnen. Im Wald ist GPS ungenauer (10–20 m) – die Witterung bringt die Mädchen in die Nähe, den Rest erledigt der Hinweistext.
+- **GPS ohne Mobilfunk** braucht für den ersten Fix draußen evtl. 1–2 Minuten. Am besten kurz vor dem Losgehen draußen „Witterung aufnehmen“ einmal öffnen. Im Wald ist GPS ungenauer (10–20 m) – die Witterung bringt die Kinder in die Nähe, den Rest erledigt der Hinweistext.
 - Die Witterung zeigt nur heiß/kalt (Entfernung), keine Richtung – funktioniert also auch ohne Kompass-Sensor.
 
 ## Klänge

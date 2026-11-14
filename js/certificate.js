@@ -199,7 +199,7 @@ export function drawCertificate(player, theme = THEMES[0]) {
 
   text(ctx, `Der SternenClan und ${leader}, ${title} des ${GAME.clan}s, verkünden:`, W / 2, 575, { font: `400 46px ${BODY}`, color: light });
   ctx.font = `400 46px ${BODY}`;
-  wrap(ctx, `Die Schülerin ${player.apprentice} hat am 4. Dezember die Prüfung des SternenClans bestanden und trägt von nun an den Kriegernamen`, W - 2 * SAFE - 260)
+  wrap(ctx, `${player.gender === 'm' ? 'Der Schüler' : 'Die Schülerin'} ${player.apprentice} hat am 4. Dezember die Prüfung des SternenClans bestanden und trägt von nun an den Kriegernamen`, W - 2 * SAFE - 260)
     .forEach((line, i) => text(ctx, line, W / 2, 650 + i * 58, { font: `400 46px ${BODY}`, color: light }));
 
   text(ctx, player.warrior.toUpperCase(), W / 2, 890, { font: `800 150px ${TITLE}`, color: gold, spacing: 10, glow: `${theme.glow}cc` });

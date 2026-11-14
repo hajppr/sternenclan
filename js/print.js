@@ -1,5 +1,5 @@
 import { GAME, lockCode } from './config.js';
-import { getPlayers } from './players.js';
+import { getPlayers, roleTitle } from './players.js';
 import { PAW_SCRIPT } from './puzzles.js';
 import { drawCertificate, loadCertificateFonts, certificateFileName, THEMES } from './certificate.js';
 
@@ -115,7 +115,7 @@ const stationCards = GAME.stations.filter((s, i) => i > 0).map(s => `
     ${backFace('Spur des', 'SternenClans')}
   </div>`).join('');
 
-const noPlayers = '<p class="screen-only-inline"><b>Noch keine Spielerinnen eingetragen.</b> Erst in der App unter Spielleitung → „Clan einrichten“ eintragen und speichern (an diesem Gerät).</p>';
+const noPlayers = '<p class="screen-only-inline"><b>Noch keine Kinder eingetragen.</b> Erst in der App unter Spielleitung → „Clan einrichten“ eintragen und speichern (an diesem Gerät).</p>';
 
 const roleCards = !players.length ? noPlayers : players.map(p => {
   const r = GAME.roles[p.role];
@@ -124,7 +124,7 @@ const roleCards = !players.length ? noPlayers : players.map(p => {
       ${band(GAME.clan, { color: EYE_COLORS[p.role] })}
       <div class="body">
         <p class="apprentice" style="--len: ${[...p.apprentice].length}">${p.apprentice}</p>
-        <div class="caps role-title">${r.title}</div>
+        <div class="caps role-title">${roleTitle(p)}</div>
         <p class="role-text">${r.text}</p>
         <div class="secret">Geheime Zahl – nur zeigen, wenn der Clan sie braucht:
           <div class="digit">${r.digit}</div>

@@ -1,7 +1,7 @@
 import { GAME, lockCode } from './config.js';
 import { renderPuzzle } from './puzzles.js';
 import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying, preloadSounds } from './fx.js';
-import { getPlayers, savePlayers, clearPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
+import { getPlayers, savePlayers, clearPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames, gw, roleTitle, groupWord } from './players.js';
 import { mapSvg } from './map.js';
 import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth } from './geo.js';
 
@@ -101,7 +101,7 @@ function viewHome() {
   if (!state.startedAt) {
     app.innerHTML = `
       <div class="center" style="padding-top:12vh">
-        <div class="chip">Für die Schülerinnen des ${GAME.clan}s</div>
+        <div class="chip">Für die ${groupWord('Schülerinnen', 'Schüler')} des ${GAME.clan}s</div>
         <h1>${GAME.title}</h1>
         <p class="story muted">„${GAME.prophecy}“</p>
         <p style="margin-top:32px"><a class="btn" href="#/intro">Die Prüfung beginnen</a></p>
@@ -156,11 +156,11 @@ function viewIntro(step) {
   }
 
   app.innerHTML = `
-    <h2 class="center">Die Schülerinnen des ${GAME.clan}s</h2>
+    <h2 class="center">Die ${groupWord('Schülerinnen', 'Schüler')} des ${GAME.clan}s</h2>
     <div class="card">
       <ul class="path">${getPlayers().map(p => {
         const r = GAME.roles[p.role];
-        return `<li><span class="dot">✦</span><span><b>${p.apprentice}</b> <span class="muted">(${p.name})</span><br><small class="muted">${r.title} – ${r.text}</small></span></li>`;
+        return `<li><span class="dot">✦</span><span><b>${p.apprentice}</b> <span class="muted">(${p.name})</span><br><small class="muted">${roleTitle(p)} – ${r.text}</small></span></li>`;
       }).join('')}</ul>
     </div>
     <div class="card"><p class="story">„${GAME.prophecy}“</p></div>
@@ -435,7 +435,7 @@ function startCamera(video, { onCode, onError }) {
 }
 
 // ---------------------------------------------------------------------------
-// Vorbereitung vor dem Spiel: GPS-Punkte und Spielerinnen per QR einlesen, dann starten
+// Vorbereitung vor dem Spiel: GPS-Punkte und Kinder per QR einlesen, dann starten
 // ---------------------------------------------------------------------------
 
 let prepFlash = '';
@@ -454,17 +454,17 @@ function viewPrepare() {
 
   app.innerHTML = `
     <h2 class="center" style="margin-top:4vh">Vorbereitung</h2>
-    <p class="center muted">Nur für die Spielleitung. Danach „Spiel starten“ und das Tablet den Mädchen geben.</p>
+    <p class="center muted">Nur für die Spielleitung. Danach „Spiel starten“ und das Tablet den Kindern geben.</p>
     <div class="card prep">
       <h3>1. 📍 GPS-Punkte</h3>
       <p>${ok(gpsCount >= gpsNeeded, gpsCount ? `${gpsCount} von ${gpsNeeded} Verstecken gespeichert` : 'noch keine GPS-Punkte')}</p>
       <button class="btn ghost small" data-scan="gps">📷 GPS-QR scannen</button>
     </div>
     <div class="card prep">
-      <h3>2. 🐾 Spielerinnen</h3>
-      <p>${ok(custom, custom ? `${players.length} Spielerinnen` : 'noch keine Spielerinnen')}</p>
-      ${custom ? `<ul class="prep-list">${players.map(p => `<li>${esc(p.name) || '–'} · ${esc(p.apprentice)} → ${esc(p.warrior)} · ${GAME.roles[p.role]?.title || ''}</li>`).join('')}</ul>` : ''}
-      <button class="btn ghost small" data-scan="players">📷 Spielerinnen-QR scannen</button>
+      <h3>2. 🐾 Kinder</h3>
+      <p>${ok(custom, custom ? `${players.length} ${players.length === 1 ? 'Kind' : 'Kinder'}` : 'noch keine Kinder')}</p>
+      ${custom ? `<ul class="prep-list">${players.map(p => `<li>${esc(p.name) || '–'} · ${esc(p.apprentice)} → ${esc(p.warrior)} · ${roleTitle(p)}</li>`).join('')}</ul>` : ''}
+      <button class="btn ghost small" data-scan="players">📷 Kinder-QR scannen</button>
     </div>
     <div id="prep-scan"></div>
     <p class="feedback ok center" id="prep-msg">${prepFlash}</p>
@@ -480,7 +480,7 @@ function viewPrepare() {
       const box = app.querySelector('#prep-scan');
       box.innerHTML = `
         <div class="card">
-          <p class="center muted">${b.dataset.scan === 'gps' ? 'GPS-QR' : 'Spielerinnen-QR'} in den Rahmen halten.</p>
+          <p class="center muted">${b.dataset.scan === 'gps' ? 'GPS-QR' : 'Kinder-QR'} in den Rahmen halten.</p>
           <div class="scanner"><video playsinline muted></video></div>
           <button class="btn ghost small" id="scan-cancel" style="margin-top:8px">Abbrechen</button>
         </div>`;
@@ -499,7 +499,7 @@ function viewPrepare() {
           }
           applySetup(setup);
           const parts = [];
-          if (setup.players.length) parts.push(`${setup.players.length} Spielerinnen`);
+          if (setup.players.length) parts.push(`${setup.players.length} Kinder`);
           if (Object.keys(setup.geo).length) parts.push(`${Object.keys(setup.geo).length} GPS-Punkte`);
           prepFlash = `Eingelesen: ${parts.join(' und ')} ✓`;
           chime();
@@ -517,7 +517,7 @@ function viewPrepare() {
   app.querySelector('#start').onclick = () => {
     const missing = [];
     if (gpsCount < gpsNeeded) missing.push(gpsCount ? `nur ${gpsCount} von ${gpsNeeded} GPS-Punkten` : 'keine GPS-Punkte');
-    if (!custom) missing.push('keine Spielerinnen eingelesen');
+    if (!custom) missing.push('keine Kinder eingelesen');
     if (missing.length && !confirm(`Trotzdem starten? Es fehlen: ${missing.join(', ')}.`)) return;
     state.prepared = Date.now();
     save();
@@ -534,7 +534,7 @@ function viewCeremony(step) {
   const { name: leader, title } = GAME.leader;
 
   if (step >= order.length) {
-    const text = `Der ${GAME.clan} ehrt seine neuen Kriegerinnen! ${order.map(p => p.warrior).join('! ')}!`;
+    const text = `Der ${GAME.clan} ehrt seine neuen ${groupWord('Kriegerinnen', 'Krieger')}! ${order.map(p => p.warrior).join('! ')}!`;
     app.innerHTML = `
       <div class="card ceremony center reveal" style="margin-top:8vh">
         <h1>⭐ ${GAME.clan} ⭐</h1>
@@ -545,7 +545,7 @@ function viewCeremony(step) {
   }
 
   const p = order[step];
-  const vow = `Ich, ${leader}, ${title} des ${GAME.clan}s, bitte den SternenClan, auf diese Schülerin herabzublicken. Sie hat heute Mut, Klugheit und Treue bewiesen. ${p.apprentice}, versprichst du, das Gesetz der Krieger zu achten und deinen Clan mit deinem Leben zu beschützen?`;
+  const vow = `Ich, ${leader}, ${title} des ${GAME.clan}s, bitte den SternenClan, auf ${gw(p, 'diese Schülerin', 'diesen Schüler')} herabzublicken. ${gw(p, 'Sie', 'Er')} hat heute Mut, Klugheit und Treue bewiesen. ${p.apprentice}, versprichst du, das Gesetz der Krieger zu achten und deinen Clan mit deinem Leben zu beschützen?`;
   const naming = `Dann gebe ich dir mit der Kraft des SternenClans deinen Kriegernamen. ${p.apprentice}, von diesem Augenblick an wirst du ${p.warrior} heißen.`;
 
   app.innerHTML = `
@@ -566,7 +566,7 @@ function viewCeremony(step) {
         <div class="old">${p.apprentice}</div>
         <div class="name">${p.warrior}</div>
       </div>
-      <a class="btn block" href="#/zeremonie/${step + 1}">${step + 1 < order.length ? 'Nächste Schülerin' : 'Abschluss'}</a>`;
+      <a class="btn block" href="#/zeremonie/${step + 1}">${step + 1 < order.length ? gw(order[step + 1], 'Nächste Schülerin', 'Nächster Schüler') : 'Abschluss'}</a>`;
   };
 }
 
@@ -687,29 +687,33 @@ let clanFlash = ''; // Meldung, die nach dem Neuaufbau der Spielleitung angezeig
 const esc = v => String(v ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 function renderClanEditor(box) {
-  const emptyPlayer = role => ({ name: '', apprentice: '', warrior: '', role });
+  const emptyPlayer = role => ({ name: '', apprentice: '', warrior: '', role, gender: 'w' });
   const unusedRole = list => Object.keys(GAME.roles).find(r => !list.some(p => p.role === r)) || Object.keys(GAME.roles)[0];
   let players = getPlayers().map(p => ({ ...p }));
   // Noch niemand eingetragen: 4 leere Zeilen mit verschiedenen Rollen
   if (!players.length) for (let n = 0; n < 4; n++) players.push(emptyPlayer(unusedRole(players)));
-  const roleOptions = selected => Object.entries(GAME.roles)
-    .map(([key, r]) => `<option value="${key}" ${key === selected ? 'selected' : ''}>${r.title}</option>`).join('');
+  const roleOptions = p => Object.entries(GAME.roles)
+    .map(([key, r]) => `<option value="${key}" ${key === p.role ? 'selected' : ''}>${p.gender === 'm' ? r.m : r.title}</option>`).join('');
 
   const draw = (msg = '', bad = false) => {
     box.innerHTML = `
       <h3>Clan einrichten</h3>
-      <p class="muted">Wer ist dabei? Gespeichert wird auf diesem Gerät. Danach „QR für die Spielerinnen“ und am Spiel-Tablet scannen.</p>
+      <p class="muted">Wer ist dabei? Gespeichert wird auf diesem Gerät. Danach „QR für die Kinder“ und am Spiel-Tablet scannen.</p>
       ${players.map((p, i) => `
         <div class="player-row" data-i="${i}">
           <input data-f="name" value="${esc(p.name)}" placeholder="Vorname" aria-label="Vorname">
-          <input data-f="apprentice" value="${esc(p.apprentice)}" placeholder="Schülerin (…pfote)" aria-label="Schülerinnenname">
-          <input data-f="warrior" value="${esc(p.warrior)}" placeholder="Kriegerin" aria-label="Kriegername">
-          <select data-f="role" aria-label="Rolle">${roleOptions(p.role)}</select>
+          <span class="gender" role="radiogroup" aria-label="Mädchen oder Junge">
+            <label title="Mädchen"><input type="radio" name="g${i}" data-f="gender" value="w" ${p.gender !== 'm' ? 'checked' : ''}> w</label>
+            <label title="Junge"><input type="radio" name="g${i}" data-f="gender" value="m" ${p.gender === 'm' ? 'checked' : ''}> m</label>
+          </span>
+          <input data-f="apprentice" value="${esc(p.apprentice)}" placeholder="Schulname (…pfote)" aria-label="Name in der Ausbildung">
+          <input data-f="warrior" value="${esc(p.warrior)}" placeholder="Kriegername" aria-label="Kriegername">
+          <select data-f="role" aria-label="Rolle">${roleOptions(p)}</select>
           <button class="btn ghost small" data-act="dice" title="Namen vorschlagen">🎲</button>
           <button class="btn ghost small" data-act="del" title="Entfernen">✕</button>
         </div>`).join('')}
       <div class="row" style="margin-top:12px">
-        <button class="btn ghost small" data-act="add">+ Mädchen</button>
+        <button class="btn ghost small" data-act="add">+ Kind</button>
         <button class="btn ghost small" data-act="clear">🗑 Alle Namen löschen</button>
         <button class="btn small" data-act="save">Speichern</button>
       </div>
@@ -723,6 +727,7 @@ function renderClanEditor(box) {
     if (!row || !e.target.dataset.f) return;
     const p = players[row.dataset.i];
     p[e.target.dataset.f] = e.target.value.trim();
+    if (e.target.dataset.f === 'gender') draw('Noch nicht gespeichert.'); // Rollentitel umschalten
   });
 
   box.addEventListener('click', e => {
@@ -730,10 +735,10 @@ function renderClanEditor(box) {
     if (!act) return;
     const i = Number(e.target.closest('[data-i]')?.dataset.i);
     if (act === 'dice') {
-      Object.assign(players[i], suggestNames());
+      Object.assign(players[i], suggestNames(undefined, players[i].gender));
       draw();
     } else if (act === 'clear') {
-      if (!confirm('Alle Spielerinnen auf diesem Gerät löschen?')) return;
+      if (!confirm('Alle Kinder auf diesem Gerät löschen?')) return;
       clearPlayers();
       clanFlash = 'Alle Namen gelöscht.';
       route();
@@ -746,11 +751,11 @@ function renderClanEditor(box) {
     } else if (act === 'save') {
       // Komplett leere Zeilen einfach weglassen
       const filled = players.filter(p => p.name || p.apprentice || p.warrior);
-      if (!filled.length) return draw('Mindestens ein Mädchen eintragen.', true);
-      if (filled.some(p => !p.apprentice || !p.warrior)) return draw('Jede braucht einen Schülerinnen- und einen Kriegernamen (🎲 schlägt welche vor).', true);
+      if (!filled.length) return draw('Mindestens ein Kind eintragen.', true);
+      if (filled.some(p => !p.apprentice || !p.warrior)) return draw('Alle brauchen einen Schulnamen (…pfote) und einen Kriegernamen (🎲 schlägt welche vor).', true);
       players = filled;
       savePlayers(players);
-      clanFlash = `Gespeichert: ${players.length} Schülerinnen.`;
+      clanFlash = `Gespeichert: ${players.length} ${players.length === 1 ? 'Kind' : 'Kinder'}.`;
       route(); // Lösungstabelle (Rollen-Code) neu berechnen
     }
   });
@@ -778,7 +783,7 @@ function drawTransfer(el) {
   const fullLink = setupLink({ players, geo });
   el.innerHTML = `
     <div class="row" style="margin-top:12px">
-      <button class="btn small" data-qr="players">🐾 QR für die Spielerinnen</button>
+      <button class="btn small" data-qr="players">🐾 QR für die Kinder</button>
       ${gpsCount ? `<button class="btn ghost small" data-qr="gps">📍 QR für die GPS-Punkte (${gpsCount})</button>` : ''}
       <button class="btn ghost small" id="backup">💾 Sicherung herunterladen</button>
     </div>
@@ -789,7 +794,7 @@ function drawTransfer(el) {
       const isGps = b.dataset.qr === 'gps';
       const link = setupLink(isGps ? { geo } : { players });
       el.querySelector('#qr-out').innerHTML = `
-        <p><b>${isGps ? `${gpsCount} GPS-Punkte` : `${players.length} Spielerinnen`}</b> – auf dem Spiel-Tablet im Startbildschirm „Vorbereitung“ scannen
+        <p><b>${isGps ? `${gpsCount} GPS-Punkte` : `${players.length} Kinder`}</b> – auf dem Spiel-Tablet im Startbildschirm „Vorbereitung“ scannen
           (oder mit der Kamera-App).${isGps ? '' : ' Vorher „Speichern“ nicht vergessen.'}</p>
         <div class="setup-qr big">${qrSvg(link)}</div>
         <button class="btn ghost small" id="copy">Link kopieren</button>`;
@@ -803,7 +808,7 @@ function drawTransfer(el) {
     const date = new Date().toISOString().slice(0, 10);
     const text = [
       `Sicherung ${GAME.title} – ${date}`,
-      `Clan: ${players.length} Schülerinnen · GPS-Punkte: ${gpsCount}`,
+      `Clan: ${players.length} Kinder · GPS-Punkte: ${gpsCount}`,
       '',
       'Wiederherstellen: diesen Link auf dem Spiel-Tablet öffnen und „Übernehmen“ tippen.',
       '',
@@ -829,7 +834,7 @@ function viewSetup(data) {
   app.innerHTML = `
     <div class="card" style="margin-top:10vh">
       <h2>${withClan ? 'Clan übernehmen?' : 'GPS-Punkte übernehmen?'}</h2>
-      ${withClan ? `<p>${setup.players.length} Schülerinnen: ${setup.players.map(p => esc(p.apprentice)).join(', ')}</p>` : ''}
+      ${withClan ? `<p>${setup.players.length} Kinder: ${setup.players.map(p => esc(p.apprentice)).join(', ')}</p>` : ''}
       ${gpsCount ? `<p>GPS-Positionen für ${gpsCount} Stationen.</p>` : ''}
       <p class="muted">${withClan ? 'Der bisherige Clan auf diesem Gerät wird ersetzt.' : 'Der Clan auf diesem Gerät bleibt, wie er ist.'} Der Spielstand bleibt erhalten.</p>
       <button class="btn block" id="take">Übernehmen</button>
