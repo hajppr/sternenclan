@@ -95,13 +95,15 @@ const band = (title, { color, sub } = {}) => `
 // Faltkarten: oben Vorderseite, unten Deko-Rückseite. Die Rückseite steht auf dem Kopf,
 // damit sie nach dem Knicken richtig herum ist.
 // Rückseite steht auf dem Kopf; Schrift einzeln gedreht, Grafiken im SVG gedreht
-const backFace = (sub, title) => `
+// num: Stationsnummer, steht nach dem Knicken über „Spur des“
+const backFace = (sub, title, num = '') => `
     <div class="face back">
       ${forestSvg(true)}
       <div class="band">
         ${eyes(DEFAULT_EYES, true)}
         <div class="cover-title upside-down">${title}</div>
         <div class="caps upside-down">${sub}</div>
+        ${num ? `<div class="back-num upside-down">${num}</div>` : ''}
       </div>
     </div>`;
 
@@ -109,10 +111,10 @@ const stationCards = GAME.stations.map((s, i) => ({ s, num: roman(i + 1) })).fil
   <div class="fold">
     <div class="face front">
       <div class="qr">${qr(`${base}#/s/${s.token}`)}</div>
-      <p class="station-name"><span class="num">${num}</span> ${s.title}</p>
+      <p class="station-name">${s.title}</p>
       <p class="spurcode">${s.token.toUpperCase()}</p>
     </div>
-    ${backFace('Spur des', 'SternenClans')}
+    ${backFace('Spur des', 'SternenClans', num)}
   </div>`).join('');
 
 const noPlayers = '<p class="screen-only-inline"><b>Noch keine Kinder eingetragen.</b> Erst in der App unter Spielleitung → „Clan einrichten“ eintragen und speichern (an diesem Gerät).</p>';

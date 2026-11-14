@@ -84,6 +84,9 @@ function render(page, arg) {
 // Bausteine
 // ---------------------------------------------------------------------------
 
+// „IV 🐾 Die Grenze“ – Nummer und Name optisch getrennt
+const stationLabel = (i, title) => `<span class="num">${roman(i + 1)}</span><span class="sep" aria-hidden="true">🐾</span>${title}`;
+
 function trail(activeId) {
   return `<div class="trail" aria-label="Fortschritt">${stations.map(s => {
     const cls = [state.solved[s.id] && 'done', s.id === activeId && 'here'].filter(Boolean).join(' ');
@@ -121,12 +124,13 @@ function viewHome() {
       <ul class="path">${stations.map((s, i) => `
         <li>
           <span class="dot">${state.solved[s.id] ? '🐾' : i === ci ? '✨' : '·'}</span>
-          <span><span class="num">${roman(i + 1)}</span> ${state.solved[s.id] || i === ci ? s.title : '???'}</span>
+          <span class="num">${roman(i + 1)}</span>
+          <span>${state.solved[s.id] || i === ci ? s.title : '???'}</span>
         </li>`).join('')}
       </ul>
     </div>
     <div class="stack">
-      ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${roman(ci + 1)} · ${current.title}</a>` : ''}
+      ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${stationLabel(ci, current.title)}</a>` : ''}
       ${current && !reachable ? `<div class="card"><p class="muted">Letzter Hinweis:</p><p class="story">${stations[ci - 1].next}</p></div>` : ''}
       ${current && !reachable ? scentButton(current) : ''}
       ${current ? `<a class="btn block ${reachable ? 'ghost' : ''}" href="#/scan">📷 Spur scannen</a>` : ''}
@@ -190,7 +194,7 @@ function viewStation(station) {
     ${skipped ? `<div class="card"><p class="muted">Moment! Die Prüfung „${prev.title}“ habt ihr noch nicht bestanden. Ihr könnt trotzdem weitermachen – <a href="#/s/${prev.token}" style="color:var(--gold)">oder zurückgehen</a>.</p></div>` : ''}
     <div class="card">
       <div class="chip">📍 ${station.place}</div>
-      <h2><span class="num">${roman(idx + 1)}</span> ${station.title}</h2>
+      <h2>${stationLabel(idx, station.title)}</h2>
       <p class="story">${station.story}</p>
     </div>
     <div class="card" id="puzzle"></div>

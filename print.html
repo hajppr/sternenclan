@@ -97,8 +97,6 @@
     .fold .front .qr svg { width: 38mm; height: 38mm; }
     .fold .station-name { margin: 1.5mm 2mm 0; font-family: var(--title); font-weight: 800; font-size: 0.85rem; letter-spacing: 0.04em; color: var(--forest); line-height: 1.15; }
     /* Spurcode nur als Notlösung, falls die Kamera streikt */
-    .fold .station-name .num { font-size: 1.15rem; color: var(--gold-ink); margin-right: 1mm; vertical-align: -0.05em; }
-    body.eco .fold .station-name .num { color: var(--forest); text-shadow: none; }
     .fold .front .spurcode { margin: 0.8mm 0 0; font-size: 0.62rem; color: #888; }
     .fold .back { background: linear-gradient(0deg, #0d1512, var(--forest)); justify-content: space-between; }
     .fold .back .band { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; padding: 3mm; background: radial-gradient(circle at 50% 40%, rgba(212, 166, 74, 0.28), transparent 60%); }
@@ -106,6 +104,8 @@
     .fold .back .eyes { width: 80%; margin-bottom: 3mm; }
     .fold .back .forest { height: 9mm; }
     .fold .back .forest path { fill: #0d1512; }
+    .fold .back .back-num { font-family: var(--title); font-weight: 800; font-size: 1.7rem; line-height: 1; color: var(--gold); text-shadow: 0 1px 0 #000, 0 0 8px rgba(212, 166, 74, 0.5); margin-top: 2mm; }
+    body.eco .fold .back .back-num { color: var(--forest); text-shadow: none; }
     .upside-down { transform: rotate(180deg); }
     body.eco .fold .back { background: #fff; }
     body.eco .fold .back .band { border-bottom: 0; }

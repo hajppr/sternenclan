@@ -270,7 +270,9 @@ select {
 .player-row .gender input { width: auto; min-height: 0; padding: 0; }
 .setup-qr { background: #fff; width: 220px; padding: 8px; border-radius: 10px; margin: 8px 0; }
 .setup-qr.big { width: min(360px, 100%); }
-.num { font-family: Georgia, 'Times New Roman', serif; color: var(--gold); font-weight: 700; letter-spacing: 0.05em; margin-right: 0.2em; }
+.num { font-family: Georgia, 'Times New Roman', serif; color: var(--gold); font-weight: 700; letter-spacing: 0.05em; }
+.sep { display: inline-block; font-size: 0.6em; opacity: 0.55; margin: 0 0.5em; vertical-align: 0.15em; }
+.path .num { width: 2.6em; flex-shrink: 0; font-size: 0.9rem; opacity: 0.85; }
 .prep h3 { margin-top: 0; }
 .prep .ok { color: var(--ok); font-weight: 600; }
 .prep-list { margin: 4px 0 10px; padding-left: 18px; font-size: 0.9rem; }
