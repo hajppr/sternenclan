@@ -29,7 +29,7 @@ Die Stationen 2, 4, 6 und 8 geben je ein **Krallenzeichen** (Ziffer). Zusammen e
 - `privat/` – **nur lokal** (in `.gitignore`): Ablauf und Verstecke mit echten Orten. Hier gehört alles Private hin.
 
 - `js/config.js` – **der gesamte Spielinhalt** (außer den Spielerinnen). Texte, Rätsel, Tipps, Verstecke. Alles mit `ANPASSEN` vor Ort prüfen.
-- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, Rollen – es gibt keine Standardnamen, alles wird hier eingetragen), Lösungen, Verstecke, Stationen überspringen, Spiel zurücksetzen.
+- `#/gm` – Spielleitung (PIN in `config.js`): **Clan einrichten** (wer ist dabei, Namen, Rollen – es gibt keine Standardnamen, alles wird hier eingetragen), Lösungen, Verstecke, Stationen überspringen, Spielstand zurücksetzen (Namen bleiben; zum Löschen „🗑 Alle Namen löschen“).
 - `print.html` – Druckvorlagen: Spielleitungs-Blatt, QR-Karten, Rollenkarten, Beutekarten, Urkunden.
 
 ## Lokal testen
@@ -61,12 +61,12 @@ Hinweis: Bei einem öffentlichen Repo ist der Code (inkl. Lösungen) einsehbar. 
 - [ ] **Strecke mit dem Spiel-Tablet ablaufen** (Standort an, Chrome Standort erlauben): in der Spielleitung an jedem Versteck auf „📍 Position“ tippen. Ungenauer als ±15 m? Kurz warten und nochmal tippen.
 - [ ] Ca. 1 Stunde vorher: QR-Karten, Beutekarten und Truhe verstecken (zweiter Erwachsener?)
 - [ ] Tablet: Seite **im WLAN zu Hause einmal komplett öffnen** (dann läuft sie offline), Lautstärke hoch, Akku voll
-- [ ] Testlauf: einmal komplett durchspielen, dann in `#/gm` „Spiel zurücksetzen“
+- [ ] Testlauf: einmal komplett durchspielen, dann in `#/gm` „Spielstand zurücksetzen“
 - [ ] Taschenlampen, Powerbank, Gefrierbeutel fürs Tablet bei Regen
 
 ## Tablet vorbereiten
 
-Beim ersten Öffnen (und nach „Spiel zurücksetzen“) zeigt die App den Bildschirm **Vorbereitung**:
+Beim ersten Öffnen (und nach „Spielstand zurücksetzen“) zeigt die App den Bildschirm **Vorbereitung**:
 
 1. **📍 GPS-QR scannen**: `privat/GPS-QR-Tablet.pdf` (oder Spielleitung → „QR für die GPS-Punkte“ an dem Gerät, auf dem die Punkte gespeichert sind)
 2. **🐾 Spielerinnen-QR scannen**: am Laptop Spielleitung → Clan einrichten → Speichern → „QR für die Spielerinnen“

@@ -1,7 +1,7 @@
 import { GAME, lockCode } from './config.js';
 import { renderPuzzle } from './puzzles.js';
 import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying, preloadSounds } from './fx.js';
-import { getPlayers, savePlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
+import { getPlayers, savePlayers, clearPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames } from './players.js';
 import { mapSvg } from './map.js';
 import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth } from './geo.js';
 
@@ -618,7 +618,7 @@ function viewGM() {
       <div class="row">
         <a class="btn small" href="print.html" target="_blank">🖨️ Druckvorlagen</a>
         ${preview ? '' : '<button class="btn ghost small" id="preview">🧪 Testmodus</button>'}
-        <button class="btn ghost small" id="reset">Spiel zurücksetzen</button>
+        <button class="btn ghost small" id="reset" title="Löscht nur den Fortschritt – Namen und GPS-Punkte bleiben">Spielstand zurücksetzen</button>
       </div>
     </div>
     <div class="card" id="clan"></div>
@@ -671,7 +671,7 @@ function viewGM() {
     location.reload();
   });
   app.querySelector('#reset').onclick = () => {
-    if (!confirm('Wirklich den ganzen Spielstand auf diesem Gerät löschen?')) return;
+    if (!confirm('Spielstand (Fortschritt) auf diesem Gerät löschen? Namen und GPS-Punkte bleiben erhalten.')) return;
     state = fresh();
     save();
     route();
@@ -710,6 +710,7 @@ function renderClanEditor(box) {
         </div>`).join('')}
       <div class="row" style="margin-top:12px">
         <button class="btn ghost small" data-act="add">+ Mädchen</button>
+        <button class="btn ghost small" data-act="clear">🗑 Alle Namen löschen</button>
         <button class="btn small" data-act="save">Speichern</button>
       </div>
       <p class="feedback ${bad ? 'bad' : 'ok'}">${msg}</p>
@@ -731,6 +732,11 @@ function renderClanEditor(box) {
     if (act === 'dice') {
       Object.assign(players[i], suggestNames());
       draw();
+    } else if (act === 'clear') {
+      if (!confirm('Alle Spielerinnen auf diesem Gerät löschen?')) return;
+      clearPlayers();
+      clanFlash = 'Alle Namen gelöscht.';
+      route();
     } else if (act === 'del') {
       players.splice(i, 1);
       draw('Noch nicht gespeichert.');

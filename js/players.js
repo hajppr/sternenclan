@@ -1,5 +1,5 @@
 // Teilnehmerinnen: werden in der Spielleitung (#/gm) eingetragen, es gibt keine Standardnamen.
-// Gespeichert getrennt vom Spielstand, damit „Spiel zurücksetzen“ den Clan nicht löscht.
+// Gespeichert getrennt vom Spielstand, damit „Spielstand zurücksetzen“ den Clan nicht löscht.
 import { GAME } from './config.js';
 
 const KEY = `${GAME.storageKey}-players`;
@@ -10,6 +10,10 @@ export function getPlayers() {
     if (Array.isArray(saved)) return saved;
   } catch { /* nichts gespeichert */ }
   return [];
+}
+
+export function clearPlayers() {
+  try { localStorage.removeItem(KEY); } catch { /* egal */ }
 }
 
 export function savePlayers(players) {
