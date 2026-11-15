@@ -187,11 +187,11 @@ export const GAME = {
         type: 'traitor',
         messages: [
           'Folgt dem Weg in Richtung Norden, am Obstgarten der Zweibeiner vorbei.',
-          'Ganz in der Nähe der Birke gibt es eine kleine Brücke. Geht über die Brücke in Richtung Sonnenaufgang – dort wartet der Schatz.',
+          'Von der Birke aus seht ihr schon den kleinen See. Geht über die Brücke in Richtung Sonnenaufgang – am anderen Ufer wartet der Schatz.',
           'Wo der Weg in Richtung Sonnenuntergang abbiegt, wacht ein großer Baum über den Schatz des Mondsteins.',
         ],
         fake: 1,
-        reason: 'Richtig! Hier gibt es weit und breit keine Brücke. Diese Botschaft war vom Spion des SchattenClans – er wollte euch in die Irre führen!',
+        reason: 'Richtig! Hier gibt es weit und breit keinen See und keine Brücke. Diese Botschaft war vom Spion des SchattenClans – er wollte euch in die Irre führen!',
       },
       hints: ['Schaut euch gut um: Stimmt alles, was in den Botschaften steht?', 'Eine Botschaft beschreibt etwas, das es hier gar nicht gibt.'],
       digit: 7,
