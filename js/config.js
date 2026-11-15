@@ -137,13 +137,13 @@ export const GAME = {
         question: 'Tragt die Buchstaben der gefangenen Beute in dieser Reihenfolge ein.',
       },
       hints: ['Die Beutekarten sind in der Nähe – sucht an Pfosten, Steinen und im Gras.', 'Es ist ein Baum – ihr werdet ihn bald sehen.'],
-      next: 'Richtig – aber der Clan sucht nicht diese Eiche, sondern eine andere! Geht weiter nach Süden. Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Gegenüber, auf der Seite der Pferdeweide, steht eine Eiche mit zwei Stämmen. Bei ihr findet ihr die nächste Spur.',
+      next: 'Richtig – aber der Clan sucht nicht diese Eiche, sondern eine andere! Geht weiter nach Süden. Dort, wo ein weiterer Donnerweg von rechts kommt, beginnt der Wald. Gegenüber, auf der Seite der Pferdeweide, steht eine Eiche mit drei Stämmen. Bei ihr findet ihr die nächste Spur.',
     },
     {
       id: 'waldrand', token: 'r5vb', title: 'Die Wächter-Eiche', place: 'Gegenüber vom Waldrand',
       map: { x: 355, y: 556, via: [[356, 551]] },
-      gm: { hide: 'QR-Karte an der Zwillingseiche (zwei Stämme, ein Baum direkt daneben) gegenüber vom Waldrand, auf der Seite der Pferdekoppel.', prep: '' },
-      story: 'Zwei Stämme aus einer Wurzel – wie Geschwister. Und dicht daneben ein dritter Baum, als würde er einfach dazugehören. So ist es auch in einem Clan. Von hier aus behält die Wächter-Eiche den Weg in den Wald im Blick. Sie lässt euch nur weiter, wenn ihr den Krallen-Code kennt – und den findet ihr nur, wenn alle ihr Wissen teilen.',
+      gm: { hide: 'QR-Karte an der Drillingseiche (drei Stämme aus einer Wurzel) gegenüber vom Waldrand, auf der Seite der Pferdekoppel.', prep: '' },
+      story: 'Drei Stämme aus einer Wurzel – jeder wächst in seine eigene Richtung, und doch halten sie fest zusammen. So ist es auch in einem Clan. Von hier aus behält die Wächter-Eiche den Weg in den Wald im Blick. Sie lässt euch nur weiter, wenn ihr den Krallen-Code kennt – und den findet ihr nur, wenn alle ihr Wissen teilen.',
       puzzle: {
         type: 'roles',
         order: ['seherin', 'heilerin', 'waechterin', 'faehrte'],
@@ -201,13 +201,13 @@ export const GAME = {
       id: 'mondstein', token: 'z1mo', title: 'Der Schatz des Mondsteins', place: 'Großer Baum an der Ecke',
       map: { x: 486, y: 706 },
       gm: { hide: 'Truhe mit Zahlenschloss am großen Baum genau an der Ecke, wo der Weg nach Westen abbiegt (+ QR-Karte darauf).', prep: 'Truhe vorher verstecken, Urkunden + Überraschung hinein, Zahlenschloss zu!' },
-      story: 'Unter dem großen Baum steht eine alte Truhe – der Schrein des Mondsteins! Auf ihrem Deckel leuchtet das Mondsiegel. Der Mondstein selbst ruht darin, doch die Truhe ist verschlossen. Nur im Lager, im Kreis des ganzen Clans, lässt sie sich öffnen.',
+      story: 'Unter dem großen Baum steht eine alte Truhe – der Schrein des Mondsteins! Auf ihrem Deckel leuchtet das Mondsiegel. Der Mondstein selbst ruht darin, doch die Truhe ist verschlossen – und mit einem uralten Bann belegt: Niemand darf sie von diesem Ort forttragen. Nur im Lager, im Kreis des ganzen Clans, lässt sie sich öffnen.',
       puzzle: {
         type: 'touch',
-        question: 'Die Truhe ist schwer, und das Mondsiegel hält sie am Boden fest. Nur wenn alle gleichzeitig eine Pfote auf das Siegel legen, löst sich der Bann. Legt alle einen Finger auf das leuchtende Siegel und haltet fest!',
+        question: 'Solange der Bann wirkt, darf die Truhe diesen Ort nicht verlassen. Nur wenn alle gleichzeitig eine Pfote auf das Mondsiegel legen, wird der Bann gebrochen. Legt alle einen Finger auf das leuchtende Siegel und haltet fest!',
       },
       hints: ['Wirklich alle müssen gleichzeitig einen Finger auf das leuchtende Siegel legen – und kurz festhalten.'],
-      next: 'Der Bann ist gelöst! Tragt die Truhe gemeinsam ins Lager. Geht am Wäldchen vorbei in Richtung Sonnenuntergang, dann den Donnerweg nach Norden und am Ende wieder zurück ins Lager. Bleibt zusammen – eine echte Clankatze lässt niemanden zurück!',
+      next: 'Der Bann ist gebrochen! Jetzt dürft ihr den Schatz mitnehmen. Tragt die Truhe gemeinsam ins Lager. Geht am Wäldchen vorbei in Richtung Sonnenuntergang, dann den Donnerweg nach Norden und am Ende wieder zurück ins Lager. Bleibt zusammen – eine echte Clankatze lässt niemanden zurück!',
     },
     {
       id: 'heimkehr', token: 'v4lt', title: 'Heimkehr ins Lager', place: 'Zuhause',
