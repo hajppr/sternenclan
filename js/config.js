@@ -17,6 +17,9 @@ export const GAME = {
   // Die Anführerin/der Anführer wird von einem Erwachsenen gespielt.
   leader: { name: 'Lichtstern', title: 'Anführerin' },
 
+  // Blauer Punkt „ihr seid ungefähr hier“ auf der Karte (aus den GPS-Punkten der Spielleitung). false = nur heiß/kalt.
+  showPosition: true,
+
   // Rollen: Jedes Kind bekommt eine ausgedruckte Rollenkarte (print.html).
   // Die Ziffer steht NUR auf der Karte – gebraucht am Waldrand.
   roles: {

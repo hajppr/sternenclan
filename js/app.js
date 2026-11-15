@@ -3,7 +3,7 @@ import { renderPuzzle } from './puzzles.js';
 import { chime, shimmer, fanfare, startMusic, stopMusic, isMusicPlaying, preloadSounds } from './fx.js';
 import { getPlayers, savePlayers, clearPlayers, encodeSetup, decodeSetup, roleOrder, suggestNames, gw, roleTitle, groupWord } from './players.js';
 import { mapSvg } from './map.js';
-import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth } from './geo.js';
+import { hasGeolocation, getGeo, saveGeo, stationGeo, locate, watch, distance, warmth, mapProjector } from './geo.js';
 
 const app = document.getElementById('app');
 const HINT_DELAYS = [60, 180, 300]; // Sekunden nach Ankunft, ab denen Tipp 1/2/3 verfügbar ist
@@ -105,7 +105,7 @@ function render(page, arg) {
   if (page === 'setup' && arg) return viewSetup(arg);
   if (page === 'zeremonie') return viewCeremony(Number(arg) || 0);
   if (page === 'karte') return viewMap();
-  if (page === 'witterung' && stations.some(s => s.id === arg)) return viewScent(stations.find(s => s.id === arg));
+  if (page === 'witterung') return viewMap(); // alter Link, Witterung läuft jetzt auf der Karte
   return viewHome();
 }
 
@@ -163,9 +163,9 @@ function viewHome() {
     <div class="stack">
       ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${stationLabel(ci, current.title)}</a>` : ''}
       ${current && !reachable ? `<div class="card"><p class="muted">Letzter Hinweis:</p><p class="story">${stations[ci - 1].next}</p></div>` : ''}
-      ${current && !reachable ? scentButton(current) : ''}
-      ${current ? `<a class="btn block ${reachable ? 'ghost' : ''}" href="#/scan">📷 Spur scannen</a>` : ''}
-      <a class="btn ghost block" href="#/karte">🗺️ Karte des Territoriums</a>
+      ${current && !reachable ? scentButton(current, true) : ''}
+      ${current ? `<a class="btn block ghost" href="#/scan">📷 Spur scannen</a>` : ''}
+      ${!current || reachable ? '<a class="btn ghost block" href="#/karte">🗺️ Karte des Territoriums</a>' : ''}
       ${!current ? `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>` : ''}
     </div>`;
 }
@@ -265,73 +265,81 @@ function successBlock(station) {
       ${next?.map ? `<a class="map-inline" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: next.id, compact: true })}</a>` : ''}
       <div class="stack" style="margin-top:16px">
         ${next
-          ? `${scentButton(next)}<a class="btn block" href="#/scan">📷 Nächste Spur scannen</a>`
+          ? `${scentButton(next, true)}<a class="btn ghost block" href="#/scan">📷 Nächste Spur scannen</a>`
           : `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>`}
       </div>
     </div>`;
 }
 
-const scentButton = target => (hasGeolocation && stationGeo(target)
-  ? `<a class="btn ghost block" href="#/witterung/${target.id}">🐾 Witterung aufnehmen</a>`
+// Führt zur Karte, auf der die Witterung gleich mitläuft
+const scentButton = (target, primary = false) => (target
+  ? `<a class="btn block ${primary ? '' : 'ghost'}" href="#/karte">🐾 Der Fährte folgen</a>`
   : '');
 
 // ---------------------------------------------------------------------------
-// Karte
+// Karte mit Witterung: heiß/kalt per GPS (ohne Kompass), dazu optional „ihr seid ungefähr hier“
 // ---------------------------------------------------------------------------
 
 function viewMap() {
-  const current = stations[currentIndex()];
+  const ci = currentIndex();
+  const current = stations[ci];
+  const reachable = current && (ci === 0 || state.arrived[current.id]);
+  const goal = current && !reachable && hasGeolocation ? stationGeo(current) : null;
+  const project = hasGeolocation && GAME.showPosition && current ? mapProjector(stations) : null;
+
   app.innerHTML = `
     <h2 class="center">Territorium des ${GAME.clan}s</h2>
-    <div class="card map-card">${mapSvg({ stations, solved: state.solved, targetId: current?.id })}</div>
-    <p class="center muted">🐾 bestandene Prüfung · <b style="color:#c4472c">?</b> nächstes Ziel</p>
+    ${goal ? `
+      <div class="card scent-bar" aria-live="polite">
+        <div class="scent-emoji" id="emoji">👃</div>
+        <div>
+          <h3 id="label">Schnuppert …</h3>
+          <p class="muted" id="detail">Die Spur wird gesucht. Bleibt kurz stehen, das kann draußen einen Moment dauern.</p>
+        </div>
+      </div>` : ''}
+    <div class="card map-card">${mapSvg({ stations, solved: state.solved, targetId: current?.id, compact: !!current, me: !!project })}</div>
+    <p class="center muted">🐾 bestandene Prüfung · <b style="color:#c4472c">?</b> nächstes Ziel${project ? ' · <b style="color:#2b5d8a">●</b> ihr seid ungefähr hier' : ''}</p>
+    ${current && !reachable && ci > 0 ? `<div class="card"><p class="muted">Letzter Hinweis:</p><p class="story">${stations[ci - 1].next}</p></div>` : ''}
     <div class="stack">
-      ${current ? scentButton(current) : ''}
-      <a class="btn block" href="#/scan">📷 Spur scannen</a>
-      <a class="btn ghost block" href="#/">Zurück</a>
-    </div>`;
-}
-
-// ---------------------------------------------------------------------------
-// Witterung aufnehmen: heiß/kalt per GPS (ohne Kompass)
-// ---------------------------------------------------------------------------
-
-function viewScent(target) {
-  const goal = stationGeo(target);
-  app.innerHTML = `
-    <div class="card center scent" style="margin-top:6vh">
-      <div class="chip">Witterung aufnehmen</div>
-      <div class="scent-emoji" id="emoji">👃</div>
-      <h2 id="label">Schnuppert …</h2>
-      <p class="muted" id="detail">Die Spur wird gesucht. Bleibt kurz stehen, das kann draußen einen Moment dauern.</p>
-    </div>
-    <div class="stack">
-      <a class="btn block" href="#/scan">📷 Spur gefunden – scannen</a>
+      ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${stationLabel(ci, current.title)}</a>` : ''}
+      ${current ? `<a class="btn block ${reachable ? 'ghost' : ''}" href="#/scan">📷 ${goal ? 'Spur gefunden – scannen' : 'Spur scannen'}</a>` : ''}
+      ${current ? '<button class="btn ghost block" id="zoom">🗺️ Ganzes Territorium</button>' : ''}
       <a class="btn ghost block" href="#/">Zurück</a>
     </div>`;
 
-  if (!goal || !hasGeolocation) {
-    app.querySelector('#label').textContent = 'Keine Witterung';
-    app.querySelector('#detail').textContent = 'Für dieses Ziel ist keine Position gespeichert.';
-    return;
-  }
+  const svg = app.querySelector('.territory');
+  app.querySelector('#zoom')?.addEventListener('click', e => {
+    const whole = svg.getAttribute('viewBox') !== svg.dataset.full;
+    svg.setAttribute('viewBox', whole ? svg.dataset.full : svg.dataset.focus);
+    e.currentTarget.textContent = whole ? '🔍 Näher heran' : '🗺️ Ganzes Territorium';
+  });
 
+  if (!goal && !project) return;
+  const me = app.querySelector('#me');
+  const $ = id => app.querySelector(`#${id}`);
   let lastLevel = null;
   const stop = watch(pos => {
+    if (project && pos.acc <= 60) {
+      const p = project(pos);
+      me.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+      me.style.display = '';
+    }
+    if (!goal) return;
     const meters = distance(pos, goal);
     const w = warmth(meters);
-    app.querySelector('#emoji').textContent = w.emoji;
-    app.querySelector('#emoji').style.transform = `scale(${0.8 + w.level * 0.18})`;
-    app.querySelector('#label').textContent = w.label;
-    app.querySelector('#detail').textContent = pos.acc > 30
+    $('emoji').textContent = w.emoji;
+    $('emoji').style.transform = `scale(${0.8 + w.level * 0.12})`;
+    $('label').textContent = w.label;
+    $('detail').textContent = pos.acc > 30
       ? `Die Witterung ist schwach (GPS ±${pos.acc} m) – kurz stehen bleiben.`
       : `noch ca. ${Math.round(meters)} m`;
     if (lastLevel != null && w.level > lastLevel) shimmer();
     if (w.level === 5 && lastLevel !== 5) navigator.vibrate?.([100, 60, 100]);
     lastLevel = w.level;
   }, () => {
-    app.querySelector('#label').textContent = 'Keine Witterung';
-    app.querySelector('#detail').textContent = 'Standort nicht verfügbar. Ist „Standort“ am Tablet eingeschaltet und für Chrome erlaubt?';
+    if (!goal) return;
+    $('label').textContent = 'Keine Witterung';
+    $('detail').textContent = 'Standort nicht verfügbar. Ist „Standort“ am Tablet eingeschaltet und für Chrome erlaubt?';
   });
   onLeave(stop);
 }

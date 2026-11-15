@@ -57,3 +57,50 @@ export function warmth(meters) {
   const i = LEVELS.findIndex(l => meters <= l.max);
   return { ...LEVELS[i], level: LEVELS.length - 1 - i };
 }
+
+// GPS → Position auf der gezeichneten Karte. Die Karte ist nicht maßstabsgetreu, deshalb:
+// grobe Ausrichtung (affine Abbildung über alle Stationen mit GPS-Punkt), danach wird der
+// Rest-Versatz der Stationen nach Nähe gewichtet verteilt – an den Stationen stimmt es genau.
+export function mapProjector(stations) {
+  const pts = stations
+    .filter(s => s.map && stationGeo(s))
+    .map(s => ({ geo: stationGeo(s), x: s.map.x, y: s.map.y }));
+  if (pts.length < 3) return null;
+
+  const lat0 = pts.reduce((a, p) => a + p.geo.lat, 0) / pts.length;
+  const lon0 = pts.reduce((a, p) => a + p.geo.lon, 0) / pts.length;
+  const kx = 111320 * Math.cos((lat0 * Math.PI) / 180);
+  const local = g => [(g.lon - lon0) * kx, (g.lat - lat0) * 110540, 1]; // Meter
+
+  const P = pts.map(p => local(p.geo));
+  const fit = key => {
+    const N = [0, 1, 2].map(i => [0, 1, 2].map(j => P.reduce((a, r) => a + r[i] * r[j], 0)));
+    const b = [0, 1, 2].map(i => P.reduce((a, r, n) => a + r[i] * pts[n][key], 0));
+    for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) {
+      const f = N[j][i] / N[i][i];
+      N[j] = N[j].map((v, c) => v - f * N[i][c]);
+      b[j] -= f * b[i];
+    }
+    const x = [0, 0, 0];
+    for (let i = 2; i >= 0; i--) x[i] = (b[i] - (i < 2 ? N[i][i + 1] * x[i + 1] : 0) - (i < 1 ? N[i][2] * x[2] : 0)) / N[i][i];
+    return x;
+  };
+  const ax = fit('x');
+  const ay = fit('y');
+  if (![...ax, ...ay].every(Number.isFinite)) return null;
+  const affine = r => [ax[0] * r[0] + ax[1] * r[1] + ax[2], ay[0] * r[0] + ay[1] * r[1] + ay[2]];
+  const rest = P.map((r, n) => { const [x, y] = affine(r); return [pts[n].x - x, pts[n].y - y]; });
+
+  return geo => {
+    const r = local(geo);
+    const [x, y] = affine(r);
+    let w = 0, dx = 0, dy = 0;
+    for (let n = 0; n < P.length; n++) {
+      const d2 = (r[0] - P[n][0]) ** 2 + (r[1] - P[n][1]) ** 2;
+      if (d2 < 1) return { x: pts[n].x, y: pts[n].y };
+      const wn = 1 / d2;
+      w += wn; dx += wn * rest[n][0]; dy += wn * rest[n][1];
+    }
+    return { x: x + dx / w, y: y + dy / w };
+  };
+}
