@@ -287,8 +287,9 @@ function viewMap() {
   const goal = current && !reachable && hasGeolocation ? stationGeo(current) : null;
   const project = hasGeolocation && GAME.showPosition && current ? mapProjector(stations) : null;
 
-  app.innerHTML = `
-    <h2 class="center">Territorium des ${GAME.clan}s</h2>
+  // Hochformat: alles untereinander. Querformat (Tablet): links Karte, rechts Witterung + Knöpfe (siehe CSS)
+  app.innerHTML = `<div class="map-view">
+    <h2 class="center map-title">Territorium des ${GAME.clan}s</h2>
     ${goal ? `
       <div class="card scent-bar" aria-live="polite">
         <div class="scent-emoji" id="emoji">👃</div>
@@ -297,15 +298,18 @@ function viewMap() {
           <p class="muted" id="detail">Die Spur wird gesucht. Bleibt kurz stehen, das kann draußen einen Moment dauern.</p>
         </div>
       </div>` : ''}
+    <div class="map-main">
     <div class="card map-card">${mapSvg({ stations, solved: state.solved, targetId: current?.id, compact: !!current, me: !!project })}</div>
-    <p class="center muted">🐾 bestandene Prüfung · <b style="color:#c4472c">?</b> nächstes Ziel${project ? ' · <b style="color:#2b5d8a">●</b> ihr seid ungefähr hier' : ''}</p>
-    ${current && !reachable && ci > 0 ? `<div class="card"><p class="muted">Letzter Hinweis:</p><p class="story">${stations[ci - 1].next}</p></div>` : ''}
+    <p class="center muted map-legend">🐾 bestandene Prüfung · <b style="color:#c4472c">?</b> nächstes Ziel${project ? ' · <b style="color:#2b5d8a">●</b> ihr seid ungefähr hier' : ''}</p>
+    </div>
+    ${current && !reachable && ci > 0 ? `<div class="card map-hint"><p class="muted">Letzter Hinweis:</p><p class="story">${stations[ci - 1].next}</p></div>` : ''}
     <div class="stack">
       ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${stationLabel(ci, current.title)}</a>` : ''}
       ${current ? `<a class="btn block ${reachable ? 'ghost' : ''}" href="#/scan">📷 ${goal ? 'Spur gefunden – scannen' : 'Spur scannen'}</a>` : ''}
       ${current ? '<button class="btn ghost block" id="zoom">🗺️ Ganzes Territorium</button>' : ''}
       <a class="btn ghost block" href="#/">Zurück</a>
-    </div>`;
+    </div>
+  </div>`;
 
   const svg = app.querySelector('.territory');
   app.querySelector('#zoom')?.addEventListener('click', e => {

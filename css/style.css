@@ -319,6 +319,29 @@ select {
 .scent-bar h3 { margin: 0 0 4px; }
 .scent-bar p { margin: 0; }
 .scent-bar .scent-emoji { font-size: 2.8rem; line-height: 1; flex: 0 0 auto; width: 1.3em; text-align: center; transition: transform 0.6s; }
+/* Kartenansicht: im Querformat (Tablet) Karte links in voller Höhe, rechts Witterung, Hinweis, Knöpfe */
+@media (orientation: landscape) and (min-width: 900px) {
+  .app:has(.map-view) { max-width: 1400px; padding-bottom: 16px; }
+  .map-view {
+    display: grid;
+    grid-template-columns: auto minmax(300px, 1fr);
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: "map title" "map scent" "map hint" "map buttons";
+    column-gap: 20px;
+    align-items: start;
+  }
+  .map-view .map-title { grid-area: title; text-align: left; margin-top: 4px; }
+  .map-view .scent-bar { grid-area: scent; position: static; }
+  .map-view .map-hint { grid-area: hint; }
+  .map-view .map-hint .story { font-size: 1.05rem; margin: 0; }
+  .map-view > .stack { grid-area: buttons; }
+  .map-view .map-main { grid-area: map; }
+  .map-view .map-card { margin: 0; }
+  /* Höhe statt Breite begrenzen, damit die Karte ohne Scrollen ganz zu sehen ist */
+  .map-view .territory { height: calc(100dvh - 88px); width: auto; max-width: 62vw; }
+  .map-view .map-legend { margin: 6px 0 0; font-size: 0.85rem; }
+}
+
 .me-pulse { animation: pulse 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
 
 /* Mondstein heben (Multitouch) */
