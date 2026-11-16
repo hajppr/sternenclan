@@ -103,12 +103,12 @@ export const GAME = {
         tolerance: 1,
       },
       hints: ['Wenn ihr nicht mitgezählt habt: Schaut den Weg zurück und zählt noch einmal.', 'Zählt auch die Laterne, an der ihr gerade steht.'],
-      next: 'Biegt ab in Richtung Mittagssonne (Süden). Zu eurer Linken beginnt das offene Land, zu eurer Rechten wächst eine Hecke. Dort, wo die Hecke endet, hat sich die nächste Spur versteckt.',
+      next: 'Biegt ab in Richtung Mittagssonne (Süden). Zu eurer Linken beginnt das offene Land, zu eurer Rechten wächst eine Hecke. Kurz bevor ein weiterer Donnerweg kommt, hat die Hecke eine Lücke – dahinter schlafen viele Monster. Dort hat sich die nächste Spur versteckt.',
     },
     {
-      id: 'grenze', token: 'w8tn', title: 'Die Grenze', place: 'Am Ende der Hecke',
+      id: 'grenze', token: 'w8tn', title: 'Die Grenze', place: 'An der Lücke in der Hecke',
       map: { x: 396, y: 245 },
-      gm: { hide: 'QR-Karte versteckt in der Hecke auf der rechten Straßenseite, dort wo die Hecke endet.', prep: 'Tablet-Lautstärke voll aufdrehen.' },
+      gm: { hide: 'QR-Karte in der Hecke auf der rechten Straßenseite, an der Lücke kurz vor der nächsten Straße (dahinter der Parkplatz).', prep: 'Tablet-Lautstärke voll aufdrehen.' },
       story: 'Hier beginnt das offene Land. Die Eule ist die Wächterin der Grenze – sie verrät euch, ob ihr weitergehen dürft. Seid ganz still und hört genau hin.',
       puzzle: {
         type: 'owl',
