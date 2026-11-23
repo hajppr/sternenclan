@@ -403,13 +403,17 @@ select {
   .slot .glyph { font-size: 1.5rem; }
 }
 
-/* Station im Hochformat: alles untereinander, Tipps wie gewohnt unter dem Rätsel */
-.station-view { display: flex; flex-direction: column; }
-.station-view > .st-body, .st-body > .st-side, .st-body > .st-main { display: contents; }
-.station-view #puzzle { order: 1; }
-.station-view #after { order: 2; }
-.station-view #hints { order: 3; }
-.station-view #footer { order: 4; }
+/* Station: erst die Geschichte, dann die Aufgabe – jeweils allein und mittig */
+.st-go { display: flex; justify-content: flex-end; margin-top: 20px; }
+.st-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 28px; }
+.st-links .paper-fallback { margin: 0; }
+.st-links .paper-fallback[open] { flex-basis: 100%; }
+/* Rat des SternenClans: Überschrift und Knopf in einer Zeile, erhaltene Tipps darunter */
+.hint-card { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.hint-card h3 { margin: 0; }
+.hint-card .btn { flex: 1; min-width: 240px; min-height: 48px; }
+.hint-card .hint { flex-basis: 100%; margin: 0; }
+.link-btn { background: none; border: 0; padding: 8px; color: var(--muted); font: inherit; font-size: 0.9rem; text-decoration: underline; cursor: pointer; }
 
 /* ---------------------------------------------------------------------------
    Querformat (Spiel-Tablet 2000 × 1200): möglichst alles ohne Scrollen auf einen Blick.
@@ -432,19 +436,16 @@ select {
   /* Station: links Geschichte + Tipps, rechts das Rätsel.
      Fortschritt bleibt oben, Geschichte + Rätsel stehen mittig im Rest des Bildschirms */
   .station-view { flex: 1; display: flex; flex-direction: column; margin: 0 !important; }
-  .station-view > .st-body {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-    column-gap: 20px;
-    align-items: start;
-    margin-block: auto;
-  }
-  .st-body > .st-side, .st-body > .st-main { display: block; }
-  .station-view .story { font-size: 1.15rem; }
+  .st-stage { width: 100%; max-width: 940px; margin: auto; }
+  .st-story { padding: 32px 44px !important; }
+  .st-story h2 { font-size: 2.1rem; }
+  .st-story .story { font-size: 1.5rem; line-height: 1.55; }
+  .st-go .btn { min-height: 64px; padding: 12px 34px; font-size: 1.15rem; }
+  #puzzle { padding: 24px 34px 10px !important; }
+  .hint-card { padding: 10px 20px !important; }
+  #puzzle h3 { font-size: 1.5rem; color: var(--gold); }
+  #puzzle .story { font-size: 1.35rem; }
   .paper-fallback { margin-top: 8px; }
-  /* Gelöst: Geschichte und Rätsel weg, nur noch der Glückwunsch mittig (Karte kommt auf der Kartenseite) */
-  .station-view.is-solved > .st-body { display: none; }
-  .station-view #after:has(.success) { margin-block: auto; }
   .success { width: 100%; max-width: 820px; margin-inline: auto; padding: 28px 40px !important; }
   .success .story { font-size: 1.3rem !important; }
   .success .btn { min-height: 64px; font-size: 1.15rem; }
@@ -454,13 +455,11 @@ select {
   /* Rätsel kompakter: Antworten nebeneinander, Krankheit und Kraut in einer Zeile */
   .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
   .options .option { margin-top: 0; text-align: center; justify-content: center; }
-  /* Clan-Wissen: Antworten untereinander, Seite schmaler und mittig */
-  .station-view:not(.is-solved):has(.quiz-step) { width: 100%; max-width: 1100px; margin-inline: auto !important; }
-  .station-view:has(.quiz-step) > .st-body { column-gap: 32px; }
+  /* Clan-Wissen, Kräuterkunde: Antworten untereinander (bei vielen zweispaltig) */
   .quiz-step .options { grid-template-columns: 1fr; margin-top: 18px; gap: 12px; }
   .quiz-step.many .options { grid-template-columns: 1fr 1fr; }
   .quiz-step .option { min-height: 68px; font-size: 1.25rem; }
-  .quiz-step .quiz-q { font-size: 1.7rem; }
+  #puzzle .quiz-step .quiz-q { font-size: 1.8rem; }
   /* Jagdtraining: große Beutefotos und Eingabefelder */
   .slots:has(.prey-photo) { gap: 14px; margin: 22px 0 6px; }
   .slots:has(.prey-photo) .word { gap: 14px; margin-right: 0; }
@@ -478,7 +477,7 @@ select {
   .slots:has(.role-label) .slot { gap: 10px; min-width: 150px; }
   .slot .role-label { font-size: 1.25rem; font-weight: 600; }
   .slots:has(.role-label) .slot input { width: 110px; min-height: 96px; font-size: 2.8rem; border-radius: 16px; }
-  .touchstone { width: min(300px, calc(100dvh - 400px)); min-width: 200px; margin: 8px auto; }
+  .touchstone { width: min(270px, calc(100dvh - 420px)); min-width: 200px; margin: 8px auto; }
   .parchment { padding: 14px 18px; margin-top: 10px; }
 
   /* Kartenansicht: Karte links in voller Höhe, rechts Witterung, Hinweis, Knöpfe */

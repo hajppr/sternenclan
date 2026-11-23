@@ -20,7 +20,7 @@ const preview = (() => {
 const store = preview ? sessionStorage : localStorage;
 const STATE_KEY = preview ? `${GAME.storageKey}-preview` : GAME.storageKey;
 
-const fresh = () => ({ startedAt: null, solved: {}, hints: {}, arrived: {} });
+const fresh = () => ({ startedAt: null, solved: {}, hints: {}, arrived: {}, read: {} });
 
 function load() {
   try {
@@ -191,65 +191,73 @@ function viewIntro(step) {
 // Station
 // ---------------------------------------------------------------------------
 
+// Jede Station in zwei Schritten, jeweils groß in der Mitte: erst die Geschichte, nach „Weiter“ die Aufgabe.
+// Nach dem Lösen nur noch der Glückwunsch. Ob die Geschichte schon gelesen wurde, merkt sich der Spielstand
+// (nach dem Neuladen geht es also direkt mit der Aufgabe weiter).
 function viewStation(station) {
   const idx = stations.indexOf(station);
   if (!state.startedAt) state.startedAt = Date.now();
   if (!state.arrived[station.id]) state.arrived[station.id] = Date.now();
+  state.read ||= {};
   save();
 
   const prev = stations[idx - 1];
   const skipped = !preview && prev && !state.solved[prev.id];
 
-  // Hochformat: alles untereinander. Querformat (Tablet): links Geschichte + Tipps, rechts das Rätsel;
-  // nach dem Lösen füllt der Erfolg (Text links, Karte rechts) den Bildschirm (siehe CSS)
-  app.innerHTML = `<div class="station-view">
-    ${trail(station.id)}
-    <div class="st-body">
-    <div class="st-side">
-      ${skipped ? `<div class="card"><p class="muted">Moment! Die Prüfung „${prev.title}“ habt ihr noch nicht bestanden. Ihr könnt trotzdem weitermachen – <a href="#/s/${prev.token}" style="color:var(--gold)">oder zurückgehen</a>.</p></div>` : ''}
-      <div class="card">
+  app.innerHTML = `<div class="station-view">${trail(station.id)}<div class="st-stage"></div></div>`;
+  const view = app.querySelector('.station-view');
+  const stage = app.querySelector('.st-stage');
+
+  const show = html => {
+    view.querySelector('.trail').outerHTML = trail(station.id); // Pfote für die gerade bestandene Prüfung
+    stage.innerHTML = html;
+    stage.classList.remove('quiz-in');
+    void stage.offsetWidth;
+    stage.classList.add('quiz-in');
+    window.scrollTo(0, 0);
+  };
+
+  const showStory = () => {
+    show(`
+      ${skipped ? `<div class="card"><p class="muted" style="margin:0">Moment! Die Prüfung „${prev.title}“ habt ihr noch nicht bestanden. Ihr könnt trotzdem weitermachen – <a href="#/s/${prev.token}" style="color:var(--gold)">oder zurückgehen</a>.</p></div>` : ''}
+      <div class="card st-story">
         <div class="chip">📍 ${station.place}</div>
         <h2>${stationLabel(idx, station.title)}</h2>
         <p class="story">${station.story}</p>
-      </div>
-      <div id="hints"></div>
-    </div>
-    <div class="st-main">
-      <div class="card" id="puzzle"></div>
-      <div id="footer"></div>
-    </div>
-    </div>
-    <div id="after"></div>
-  </div>`;
-
-  const view = app.querySelector('.station-view');
-  const after = app.querySelector('#after');
-  const hintBox = app.querySelector('#hints');
-  const showAfter = () => {
-    const solved = !!state.solved[station.id];
-    view.classList.toggle('is-solved', solved);
-    view.querySelector('.trail').outerHTML = trail(station.id); // Pfote für die gerade bestandene Prüfung
-    after.innerHTML = solved ? successBlock(station) : '';
-    hintBox.innerHTML = '';
-    if (!solved) renderHints(hintBox, station);
+        <div class="st-go"><button class="btn" id="to-task">Weiter zur Prüfung</button></div>
+      </div>`);
+    stage.querySelector('#to-task').onclick = () => {
+      state.read[station.id] = Date.now();
+      save();
+      showTask();
+    };
   };
 
-  renderPuzzle(app.querySelector('#puzzle'), station, {
-    footer: app.querySelector('#footer'),
-    solved: !!state.solved[station.id],
-    state,
-    onSolved() {
-      if (state.solved[station.id]) return;
-      state.solved[station.id] = Date.now();
-      save();
-      chime();
-      navigator.vibrate?.([80, 40, 160]);
-      showAfter();
-      if (matchMedia('(orientation: landscape) and (min-width: 900px)').matches) window.scrollTo({ top: 0, behavior: 'smooth' });
-      else after.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    },
-  });
-  showAfter();
+  const showTask = () => {
+    show(`
+      <div class="card" id="puzzle"></div>
+      <div id="hints"></div>
+      <div class="st-links"><button class="link-btn" id="to-story">📜 Geschichte noch einmal lesen</button><div id="footer"></div></div>`);
+    stage.querySelector('#to-story').onclick = showStory;
+    renderHints(stage.querySelector('#hints'), station);
+    renderPuzzle(stage.querySelector('#puzzle'), station, {
+      footer: stage.querySelector('#footer'),
+      solved: false,
+      state,
+      onSolved() {
+        if (state.solved[station.id]) return;
+        state.solved[station.id] = Date.now();
+        save();
+        chime();
+        navigator.vibrate?.([80, 40, 160]);
+        show(successBlock(station));
+      },
+    });
+  };
+
+  if (state.solved[station.id]) show(successBlock(station));
+  else if (state.read[station.id]) showTask();
+  else showStory();
 }
 
 // Erst nur Glückwunsch, Krallenzeichen und Hinweis – die Karte (mit Witterung) kommt auf der Kartenseite
@@ -350,7 +358,7 @@ function renderHints(root, station) {
   if (!hints.length) return;
 
   const box = document.createElement('div');
-  box.className = 'card';
+  box.className = 'card hint-card';
   root.append(box);
 
   const draw = () => {
@@ -375,7 +383,7 @@ function renderHints(root, station) {
 
   draw();
   const timer = setInterval(() => {
-    if (state.solved[station.id]) return clearInterval(timer);
+    if (state.solved[station.id] || !box.isConnected) return clearInterval(timer);
     if (box.querySelector('button[disabled]')) draw();
   }, 1000);
   onLeave(() => clearInterval(timer));
