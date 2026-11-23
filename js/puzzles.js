@@ -6,7 +6,7 @@ import { roleOrder, getPlayers, roleLabel } from './players.js';
 const TRY_AGAIN = [
   'Hmm, das stimmt noch nicht.',
   'Der SternenClan schweigt … versucht es noch einmal.',
-  'Fast! Schaut noch einmal genau hin.',
+  'Fast! Denkt noch einmal genau nach.',
   'Eine echte Clankatze gibt nicht auf!',
 ];
 
