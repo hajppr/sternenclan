@@ -252,6 +252,7 @@ function viewStation(station) {
   const showAfter = () => {
     const solved = !!state.solved[station.id];
     view.classList.toggle('is-solved', solved);
+    view.querySelector('.trail').outerHTML = trail(station.id); // Pfote für die gerade bestandene Prüfung
     after.innerHTML = solved ? successBlock(station) : '';
     hintBox.innerHTML = '';
     if (!solved) renderHints(hintBox, station);
@@ -275,22 +276,18 @@ function viewStation(station) {
   showAfter();
 }
 
+// Erst nur Glückwunsch, Krallenzeichen und Hinweis – die Karte (mit Witterung) kommt auf der Kartenseite
 function successBlock(station) {
   const next = stations[stations.indexOf(station) + 1];
-  // Querformat: Text oben links, Knöpfe unten links, Karte rechts in voller Höhe (siehe CSS)
   return `
-    <div class="card success ${next?.map ? 'has-map' : ''}">
-      <div class="success-text">
-        <h2>Prüfung bestanden!</h2>
-        ${station.puzzle.reason ? `<p class="success-reason">${station.puzzle.reason}</p>` : ''}
-        ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut – der SternenClan verrät es kein zweites Mal!</p>` : ''}
-        ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>` : ''}
-      </div>
-      ${next?.map ? `<a class="map-inline" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: next.id, compact: true })}</a>` : ''}
-      <div class="stack success-buttons" style="margin-top:16px">
-        ${next
-          ? `${scentButton(next, true)}<a class="btn ghost block" href="#/scan">📷 Nächste Spur scannen</a>`
-          : `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>`}
+    <div class="card success">
+      <h2>Prüfung bestanden!</h2>
+      ${station.puzzle.reason ? `<p class="success-reason">${station.puzzle.reason}</p>` : ''}
+      ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut – der SternenClan verrät es kein zweites Mal!</p>` : ''}
+      ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>` : ''}
+      ${next ? '' : `<p class="story" style="margin-top:12px">Die Truhe ist offen und der Mondstein leuchtet! ${GAME.leader.name} ruft den ganzen Clan zusammen – es ist Zeit für eure Kriegerzeremonie.</p>`}
+      <div class="stack" style="margin-top:20px">
+        ${next ? scentButton(next, true) : `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>`}
       </div>
     </div>`;
 }

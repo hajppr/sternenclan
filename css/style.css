@@ -425,26 +425,13 @@ select {
   .st-body > .st-side, .st-body > .st-main { display: block; }
   .station-view .story { font-size: 1.15rem; }
   .paper-fallback { margin-top: 8px; }
-  /* Gelöst: Geschichte und Rätsel weg, der Erfolg mit Karte füllt den Bildschirm */
-  .station-view.is-solved:has(.success.has-map) > .st-body { display: none; }
-  .station-view #after:has(.success) { margin-bottom: auto; }
-  .station-view #after:has(.success.has-map) { margin-top: auto; }
-  .success:not(.has-map) { max-width: 760px; margin-inline: auto; }
-
-  /* Erfolg: Text oben links, Knöpfe unten links, Karte rechts in voller Höhe */
-  .success.has-map {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-rows: 1fr auto;
-    grid-template-areas: "text map" "buttons map";
-    column-gap: 24px;
-    margin: 0;
-  }
-  .success.has-map .success-text { grid-area: text; align-self: center; }
-  .success.has-map .success-buttons { grid-area: buttons; }
-  .success.has-map .map-inline { grid-area: map; margin: 0; padding: 0; }
-  .success.has-map .territory { width: min(56vw, calc((100dvh - 120px) * 1.25)); height: auto; }
-  .success .claw { font-size: 3.4rem; margin: 0; }
+  /* Gelöst: Geschichte und Rätsel weg, nur noch der Glückwunsch mittig (Karte kommt auf der Kartenseite) */
+  .station-view.is-solved > .st-body { display: none; }
+  .station-view #after:has(.success) { margin-block: auto; }
+  .success { width: 100%; max-width: 820px; margin-inline: auto; padding: 28px 40px !important; }
+  .success .story { font-size: 1.3rem !important; }
+  .success .btn { min-height: 64px; font-size: 1.15rem; }
+  .success .claw { font-size: 4rem; margin: 0; }
   .success .muted { margin-bottom: 0.4em; }
 
   /* Rätsel kompakter: Antworten nebeneinander, Krankheit und Kraut in einer Zeile */
