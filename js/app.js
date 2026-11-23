@@ -143,32 +143,8 @@ function viewHome() {
     return;
   }
 
-  const ci = currentIndex();
-  const current = stations[ci];
-  const reachable = current && (ci === 0 || state.arrived[current.id]);
-  app.innerHTML = `<div class="home-view ${current ? 'has-map' : ''}">
-    <h1 class="center">${GAME.title}</h1>
-    ${trail(current?.id)}
-    ${current ? `<a class="card map-card" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: current.id, compact: true })}</a>` : ''}
-    <div class="card">
-      <h3>Euer Weg</h3>
-      <ul class="path">${stations.map((s, i) => `
-        <li>
-          <span class="dot">${state.solved[s.id] ? '🐾' : i === ci ? '✨' : '·'}</span>
-          <span class="num">${roman(i + 1)}</span>
-          <span>${state.solved[s.id] || i === ci ? s.title : '???'}</span>
-        </li>`).join('')}
-      </ul>
-    </div>
-    <div class="stack">
-      ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${stationLabel(ci, current.title)}</a>` : ''}
-      ${current && !reachable ? `<div class="card"><p class="muted">Letzter Hinweis:</p><p class="story">${stations[ci - 1].next}</p></div>` : ''}
-      ${current && !reachable ? scentButton(current, true) : ''}
-      ${current ? `<a class="btn block ghost" href="#/scan">📷 Spur scannen</a>` : ''}
-      ${!current || reachable ? '<a class="btn ghost block" href="#/karte">🗺️ Karte des Territoriums</a>' : ''}
-      ${!current ? `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>` : ''}
-    </div>
-  </div>`;
+  // Während des Spiels ist die Kartenseite der Startpunkt (z. B. nach dem Neuöffnen der App)
+  return viewMap();
 }
 
 // ---------------------------------------------------------------------------
@@ -328,7 +304,7 @@ function viewMap() {
       ${reachable ? `<a class="btn block" href="#/s/${current.token}">Weiter: ${stationLabel(ci, current.title)}</a>` : ''}
       ${current ? `<a class="btn block ${reachable ? 'ghost' : ''}" href="#/scan">📷 ${goal ? 'Spur gefunden – scannen' : 'Spur scannen'}</a>` : ''}
       ${current ? '<button class="btn ghost block" id="zoom">🗺️ Ganzes Territorium</button>' : ''}
-      <a class="btn ghost block" href="#/">Zurück</a>
+      ${!current ? `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>` : ''}
     </div>
   </div>`;
 
@@ -439,7 +415,7 @@ function viewScan() {
       </form>
       <p class="feedback bad" id="manualmsg"></p>
     </div>
-    <a class="btn ghost block" href="#/">Zurück</a>
+    <a class="btn ghost block" href="#/karte">Zurück zur Karte</a>
     </div>
   </div>`;
 
