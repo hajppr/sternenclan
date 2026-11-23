@@ -505,6 +505,13 @@ select {
   .scan-view > .scan-side { grid-area: side; }
 
   .ceremony { margin-top: 3vh !important; }
+
+  /* Testmodus: Leiste einzeilig und der Inhalt endet darüber statt darunter */
+  .preview-bar { padding: 4px 12px calc(4px + env(safe-area-inset-bottom)); }
+  .preview-bar .btn { min-height: 40px; }
+  .preview-info { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 2px 14px; }
+  .preview-end { margin-top: 0; }
+  body:has(.preview-bar) .app { padding-bottom: 64px; }
 }
 
 /* Falls das Tablet mit doppelter Pixeldichte rechnet (nur ca. 1000 × 600 Punkte): alles etwas kleiner */
