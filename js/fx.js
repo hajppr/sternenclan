@@ -154,6 +154,9 @@ export const hiss = safe(() => {
   src.stop(now + 0.55);
 });
 
+// Einzelne richtige Antwort (Clan-Wissen): kurzer Zweiklang nach oben, kleiner als der Erfolg
+export const ding = safe(() => harp([880, 1318.51], { spacing: 0.1, gain: 0.26 }));
+
 // Tipp: zwei leise hohe Saiten
 export const shimmer = safe(() => harp([1760, 2349.32], { spacing: 0.12, gain: 0.14 }));
 

@@ -1,6 +1,6 @@
 // Rätseltypen. Jeder Typ bekommt den Container, die Station und ctx = { solved, state, onSolved }.
 import { GAME } from './config.js';
-import { hiss, owlCalls } from './fx.js';
+import { hiss, owlCalls, ding } from './fx.js';
 import { roleOrder, getPlayers, roleLabel } from './players.js';
 
 const TRY_AGAIN = [
@@ -149,6 +149,8 @@ const types = {
             return fail(btn, feedback);
           }
           btn.classList.add('right');
+          ding();
+          navigator.vibrate?.(40);
           step.querySelectorAll('[data-o]').forEach(b => { b.disabled = true; });
           feedback.className = 'feedback ok';
           feedback.textContent = 'Richtig!';
