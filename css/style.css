@@ -509,6 +509,7 @@ select {
     column-gap: 20px;
     align-items: center;
   }
+  .intro-view { width: 100%; max-width: 1080px; margin-inline: auto; column-gap: 32px; }
   .intro-view > h2 { grid-area: title; }
   .intro-view > .intro-players { grid-area: players; }
   .intro-view > .intro-go { grid-area: go; }
