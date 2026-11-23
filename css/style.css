@@ -444,6 +444,12 @@ select {
   [data-q] { margin-bottom: 14px !important; }
   .pair { display: grid; grid-template-columns: 1fr minmax(220px, 0.8fr); gap: 12px; align-items: center; }
   .pair p { margin: 0 !important; }
+  /* Jagdtraining: große Beutefotos und Eingabefelder */
+  .slots:has(.prey-photo) { gap: 14px; margin: 22px 0 6px; }
+  .slots:has(.prey-photo) .word { gap: 14px; margin-right: 0; }
+  .slots:has(.prey-photo) .slot { gap: 10px; }
+  .slot .prey-photo { width: 130px; height: 130px; border-width: 3px; }
+  .slots:has(.prey-photo) .slot input { width: 110px; min-height: 96px; font-size: 2.8rem; border-radius: 16px; }
   .touchstone { width: min(300px, calc(100dvh - 400px)); min-width: 200px; margin: 8px auto; }
   .parchment { padding: 14px 18px; margin-top: 10px; }
 
