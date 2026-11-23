@@ -189,7 +189,16 @@ select {
 
 .option { display: block; width: 100%; text-align: left; margin-top: 8px; justify-content: flex-start; }
 .option.picked { border-color: var(--gold); background: var(--gold-soft); color: var(--gold); }
-.option.wrong { border-color: var(--bad); }
+.option.wrong { border-color: var(--bad); color: var(--bad); }
+.option.right { border-color: var(--ok); color: var(--ok); background: rgba(127, 209, 139, 0.15); }
+.option.right[disabled] { opacity: 1; }
+.quiz-count { margin: 0 0 4px; font-size: 0.9rem; }
+.quiz-step .quiz-q { font-size: 1.35rem; margin-bottom: 4px; }
+.quiz-in { animation: quiz-in 0.35s ease-out; }
+@keyframes quiz-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: none; }
+}
 
 .parchment {
   background: var(--parchment);
@@ -441,7 +450,9 @@ select {
   /* Rätsel kompakter: Antworten nebeneinander, Krankheit und Kraut in einer Zeile */
   .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
   .options .option { margin-top: 0; text-align: center; justify-content: center; }
-  [data-q] { margin-bottom: 14px !important; }
+  .quiz-step .options { margin-top: 18px; gap: 14px; }
+  .quiz-step .option { min-height: 80px; font-size: 1.25rem; }
+  .quiz-step .quiz-q { font-size: 1.7rem; }
   .pair { display: grid; grid-template-columns: 1fr minmax(220px, 0.8fr); gap: 12px; align-items: center; }
   .pair p { margin: 0 !important; }
   /* Jagdtraining: große Beutefotos und Eingabefelder */

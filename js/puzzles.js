@@ -125,35 +125,43 @@ const types = {
       : `<details style="margin-top:12px" open><summary class="muted">Pfotenschrift-Tafel</summary>${table}</details>`);
   },
 
+  // Eine Frage nach der anderen: richtige Antwort → kurz grün, dann die nächste Frage; falsche → rot, nochmal
   quiz(el, p, ctx) {
-    const picks = p.questions.map(() => null);
-    el.innerHTML = `<h3>Clan-Wissen</h3>${p.questions.map((q, qi) => `
-      <div class="stack" style="margin-bottom:18px" data-q="${qi}">
-        <p class="story" style="margin:0">${qi + 1}. ${q.q}</p>
-        <div class="options">${q.options.map((o, oi) => `<button class="btn ghost option" data-o="${oi}">${o}</button>`).join('')}</div>
-      </div>`).join('')}
-      <button class="btn block" id="check">Prüfen</button>
-      <p class="feedback"></p>`;
+    const total = p.questions.length;
+    let qi = 0;
+    el.innerHTML = `<h3>Clan-Wissen</h3><div class="quiz-step"></div><p class="feedback"></p>`;
+    const step = el.querySelector('.quiz-step');
+    const feedback = el.querySelector('.feedback');
 
-    el.querySelectorAll('[data-q]').forEach(block => {
-      const qi = Number(block.dataset.q);
-      block.querySelectorAll('[data-o]').forEach(btn => {
+    const draw = () => {
+      const q = p.questions[qi];
+      step.innerHTML = `
+        <p class="muted quiz-count">Frage ${qi + 1} von ${total}</p>
+        <p class="story quiz-q">${q.q}</p>
+        <div class="options">${q.options.map((o, oi) => `<button class="btn ghost option" data-o="${oi}">${o}</button>`).join('')}</div>`;
+      step.classList.remove('quiz-in');
+      void step.offsetWidth;
+      step.classList.add('quiz-in');
+      step.querySelectorAll('[data-o]').forEach(btn => {
         btn.onclick = () => {
-          picks[qi] = Number(btn.dataset.o);
-          block.querySelectorAll('[data-o]').forEach(b => b.classList.remove('picked', 'wrong'));
-          btn.classList.add('picked');
+          if (Number(btn.dataset.o) !== q.answer) {
+            btn.classList.add('wrong');
+            return fail(btn, feedback);
+          }
+          btn.classList.add('right');
+          step.querySelectorAll('[data-o]').forEach(b => { b.disabled = true; });
+          feedback.className = 'feedback ok';
+          feedback.textContent = 'Richtig!';
+          setTimeout(() => {
+            feedback.textContent = '';
+            qi += 1;
+            if (qi < total) draw();
+            else ctx.onSolved();
+          }, 900);
         };
       });
-    });
-
-    el.querySelector('#check').onclick = () => {
-      const feedback = el.querySelector('.feedback');
-      if (picks.includes(null)) return fail(el.querySelector('#check'), feedback, 'Beantwortet erst alle Fragen.', { silent: true });
-      const wrong = picks.map((pick, i) => pick !== p.questions[i].answer);
-      if (!wrong.includes(true)) return ctx.onSolved();
-      wrong.forEach((w, i) => w && el.querySelector(`[data-q="${i}"] .picked`)?.classList.add('wrong'));
-      fail(el.querySelector('#check'), feedback, `${wrong.filter(w => !w).length} von ${picks.length} richtig. Die rot markierten stimmen noch nicht.`);
     };
+    draw();
   },
 
   number(el, p, ctx) {
