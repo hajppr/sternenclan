@@ -211,6 +211,18 @@ select {
   50% { transform: translate(calc(-50% + 8px), -50%) rotate(var(--r)); }
   75% { transform: translate(calc(-50% - 4px), -50%) rotate(var(--r)); }
 }
+/* Ruf der Eule: erst groß die Eule, nach dem ersten Lauschen kleiner, darunter Frage und Zahlen */
+.owl-stage { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 10px 0 6px; }
+.owl-pic { font-size: 9rem; line-height: 1; filter: drop-shadow(0 0 24px rgba(255, 246, 216, 0.25)); transition: font-size 0.4s; }
+.owl-pic.calling { animation: owl-call 1.1s ease-in-out infinite; }
+@keyframes owl-call {
+  0%, 100% { transform: rotate(0) scale(1); }
+  30% { transform: rotate(-6deg) scale(1.06); }
+  60% { transform: rotate(5deg) scale(1.03); }
+}
+.owl-stage .btn { min-width: 320px; min-height: 64px; font-size: 1.15rem; }
+.owl-asked .owl-stage { flex-direction: row; justify-content: center; gap: 28px; padding: 0; }
+.owl-asked .owl-pic { font-size: 4.5rem; }
 .quiz-count { margin: 0 0 4px; font-size: 0.9rem; }
 .quiz-step .quiz-q { font-size: 1.35rem; margin-bottom: 4px; }
 .quiz-in { animation: quiz-in 0.35s ease-out; }

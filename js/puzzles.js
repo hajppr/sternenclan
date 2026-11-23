@@ -212,23 +212,35 @@ const types = {
     else answerForm(el, { question: p.question, numeric: true, onSolved: ctx.onSolved, check: ok });
   },
 
+  // Erst nur die Eule und „Lauschen“; Frage und Antworten erscheinen nach dem ersten Lauschen
   owl(el, p, ctx) {
     el.innerHTML = `
       <h3>Ruf der Eule</h3>
-      <button class="btn block" id="listen">👂 Lauschen</button>`;
+      <div class="owl-stage">
+        <div class="owl-pic" aria-hidden="true">🦉</div>
+        <button class="btn" id="listen">👂 Lauschen</button>
+      </div>
+      <div class="owl-answer"></div>`;
     const listen = el.querySelector('#listen');
+    const pic = el.querySelector('.owl-pic');
+    const answer = el.querySelector('.owl-answer');
+    const check = v => Number(v) === p.calls;
     listen.onclick = () => {
       const ms = owlCalls(p.calls);
       listen.disabled = true;
       listen.textContent = '🦉 Psst … zählt mit!';
+      pic.classList.add('calling');
       setTimeout(() => {
         listen.disabled = false;
         listen.textContent = '👂 Noch einmal lauschen';
+        pic.classList.remove('calling');
       }, ms);
+      if (answer.childElementCount) return;
+      el.classList.add('owl-asked');
+      answer.classList.add('quiz-in');
+      if (p.choices) numberChoices(answer, { question: p.question, choices: p.choices, check, onSolved: ctx.onSolved });
+      else answerForm(answer, { question: p.question, numeric: true, onSolved: ctx.onSolved, check });
     };
-    const check = v => Number(v) === p.calls;
-    if (p.choices) numberChoices(el, { question: p.question, choices: p.choices, check, onSolved: ctx.onSolved });
-    else answerForm(el, { question: p.question, numeric: true, onSolved: ctx.onSolved, check });
   },
 
   prey(el, p, ctx) {
