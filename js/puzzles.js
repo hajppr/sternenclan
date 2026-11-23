@@ -93,6 +93,48 @@ function slotInput(el, words, { numeric = false, onSolved }) {
   });
 }
 
+// Eine Frage nach der anderen (Clan-Wissen, Kräuterkunde): richtige Antwort → kurz grün + Ton,
+// dann die nächste Frage; falsche → rot, nochmal. steps: [{ q, options, answer }]
+function stepByStep(el, { label, steps, onSolved, okText = 'Richtig!' }) {
+  el.insertAdjacentHTML('beforeend', `<div class="quiz-step"></div><p class="feedback"></p>`);
+  const step = el.querySelector('.quiz-step');
+  const feedback = el.querySelector('.feedback');
+  let qi = 0;
+
+  const draw = () => {
+    const q = steps[qi];
+    step.classList.toggle('many', q.options.length > 3);
+    step.innerHTML = `
+      <p class="muted quiz-count">${label} ${qi + 1} von ${steps.length}</p>
+      <p class="story quiz-q">${q.q}</p>
+      <div class="options">${q.options.map((o, oi) => `<button class="btn ghost option" data-o="${oi}">${o}</button>`).join('')}</div>`;
+    step.classList.remove('quiz-in');
+    void step.offsetWidth;
+    step.classList.add('quiz-in');
+    step.querySelectorAll('[data-o]').forEach(btn => {
+      btn.onclick = () => {
+        if (Number(btn.dataset.o) !== q.answer) {
+          btn.classList.add('wrong');
+          return fail(btn, feedback);
+        }
+        btn.classList.add('right');
+        ding();
+        navigator.vibrate?.(40);
+        step.querySelectorAll('[data-o]').forEach(b => { b.disabled = true; });
+        feedback.className = 'feedback ok';
+        feedback.textContent = okText;
+        setTimeout(() => {
+          feedback.textContent = '';
+          qi += 1;
+          if (qi < steps.length) draw();
+          else onSolved();
+        }, 900);
+      };
+    });
+  };
+  draw();
+}
+
 // Zahlen zum Antippen, kreuz und quer verstreut (Laternen, Eulenrufe)
 function numberChoices(el, { question, choices, check, onSolved }) {
   el.insertAdjacentHTML('beforeend', `
@@ -154,45 +196,9 @@ const types = {
       : `<details style="margin-top:12px" open><summary class="muted">Pfotenschrift-Tafel</summary>${table}</details>`);
   },
 
-  // Eine Frage nach der anderen: richtige Antwort → kurz grün, dann die nächste Frage; falsche → rot, nochmal
   quiz(el, p, ctx) {
-    const total = p.questions.length;
-    let qi = 0;
-    el.innerHTML = `<h3>Clan-Wissen</h3><div class="quiz-step"></div><p class="feedback"></p>`;
-    const step = el.querySelector('.quiz-step');
-    const feedback = el.querySelector('.feedback');
-
-    const draw = () => {
-      const q = p.questions[qi];
-      step.innerHTML = `
-        <p class="muted quiz-count">Frage ${qi + 1} von ${total}</p>
-        <p class="story quiz-q">${q.q}</p>
-        <div class="options">${q.options.map((o, oi) => `<button class="btn ghost option" data-o="${oi}">${o}</button>`).join('')}</div>`;
-      step.classList.remove('quiz-in');
-      void step.offsetWidth;
-      step.classList.add('quiz-in');
-      step.querySelectorAll('[data-o]').forEach(btn => {
-        btn.onclick = () => {
-          if (Number(btn.dataset.o) !== q.answer) {
-            btn.classList.add('wrong');
-            return fail(btn, feedback);
-          }
-          btn.classList.add('right');
-          ding();
-          navigator.vibrate?.(40);
-          step.querySelectorAll('[data-o]').forEach(b => { b.disabled = true; });
-          feedback.className = 'feedback ok';
-          feedback.textContent = 'Richtig!';
-          setTimeout(() => {
-            feedback.textContent = '';
-            qi += 1;
-            if (qi < total) draw();
-            else ctx.onSolved();
-          }, 900);
-        };
-      });
-    };
-    draw();
+    el.innerHTML = `<h3>Clan-Wissen</h3>`;
+    stepByStep(el, { label: 'Frage', steps: p.questions, onSolved: ctx.onSolved });
   },
 
   number(el, p, ctx) {
@@ -233,33 +239,20 @@ const types = {
     slotInput(el, [roleOrder(p.order).map(r => ({ label: `<span class="role-label">${roleLabel(r)}</span>`, aria: roleLabel(r), expected: GAME.roles[r].digit }))], { numeric: true, onSolved: ctx.onSolved });
   },
 
+  // Eine kranke Katze nach der anderen, die Kräuter als Knöpfe (Reihenfolge einmal gemischt, dann fest)
   match(el, p, ctx) {
-    const herbs = p.info.map(([name]) => name);
+    const herbs = shuffle(p.info.map(([name]) => name));
     el.innerHTML = `
       <h3>Kräuterkunde</h3>
       ${p.printed
         ? `<p class="paper-note">📜 Lest im Vorrat der Heilerin nach!</p>${paperFallback(ctx, herbList(p.info))}`
-        : herbList(p.info)}
-      <div class="stack" style="margin-top:18px">${p.pairs.map(([patient], i) => `
-        <div class="pair">
-          <p style="margin:0 0 6px">${patient}</p>
-          <select data-i="${i}">
-            <option value="">– Kraut wählen –</option>
-            ${shuffle(herbs).map(h => `<option>${h}</option>`).join('')}
-          </select>
-        </div>`).join('')}
-      </div>
-      <button class="btn block" id="check" style="margin-top:16px">Heilen!</button>
-      <p class="feedback"></p>`;
-
-    el.querySelector('#check').onclick = () => {
-      const selects = [...el.querySelectorAll('select')];
-      const feedback = el.querySelector('.feedback');
-      if (selects.some(s => !s.value)) return fail(el.querySelector('#check'), feedback, 'Jede Katze braucht ein Kraut.', { silent: true });
-      const right = selects.filter(s => s.value === p.pairs[s.dataset.i][1]).length;
-      if (right === selects.length) return ctx.onSolved();
-      fail(el.querySelector('#check'), feedback, `${right} von ${selects.length} Katzen geht es besser. Die anderen brauchen ein anderes Kraut.`);
-    };
+        : herbList(p.info)}`;
+    stepByStep(el, {
+      label: 'Katze',
+      okText: 'Der Katze geht es schon besser!',
+      steps: p.pairs.map(([patient, herb]) => ({ q: patient, options: herbs, answer: herbs.indexOf(herb) })),
+      onSolved: ctx.onSolved,
+    });
   },
 
   traitor(el, p, ctx) {

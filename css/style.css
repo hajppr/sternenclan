@@ -458,10 +458,9 @@ select {
   .station-view:not(.is-solved):has(.quiz-step) { width: 100%; max-width: 1100px; margin-inline: auto !important; }
   .station-view:has(.quiz-step) > .st-body { column-gap: 32px; }
   .quiz-step .options { grid-template-columns: 1fr; margin-top: 18px; gap: 12px; }
+  .quiz-step.many .options { grid-template-columns: 1fr 1fr; }
   .quiz-step .option { min-height: 68px; font-size: 1.25rem; }
   .quiz-step .quiz-q { font-size: 1.7rem; }
-  .pair { display: grid; grid-template-columns: 1fr minmax(220px, 0.8fr); gap: 12px; align-items: center; }
-  .pair p { margin: 0 !important; }
   /* Jagdtraining: große Beutefotos und Eingabefelder */
   .slots:has(.prey-photo) { gap: 14px; margin: 22px 0 6px; }
   .slots:has(.prey-photo) .word { gap: 14px; margin-right: 0; }
