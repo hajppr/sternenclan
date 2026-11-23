@@ -93,6 +93,32 @@ function slotInput(el, words, { numeric = false, onSolved }) {
   });
 }
 
+// Zahlen zum Antippen, kreuz und quer verstreut (Laternen, Eulenrufe)
+function numberChoices(el, { question, choices, check, onSolved }) {
+  el.insertAdjacentHTML('beforeend', `
+    <p class="story" style="margin-top:16px">${question}</p>
+    <div class="number-choices">${choices.map((n, i) => {
+      const [x, y, r, size] = SCATTER[i % SCATTER.length];
+      return `<button class="btn ghost option" data-n="${n}" style="--x:${x}%;--y:${y}%;--r:${r}deg;--s:${size}px">${n}</button>`;
+    }).join('')}</div>
+    <p class="feedback"></p>`);
+  const buttons = [...el.querySelectorAll('[data-n]')];
+  const feedback = el.querySelector('.feedback');
+  buttons.forEach(btn => {
+    btn.onclick = () => {
+      if (!check(btn.dataset.n)) {
+        btn.classList.add('wrong');
+        return fail(btn, feedback);
+      }
+      btn.classList.add('right');
+      buttons.forEach(b => { b.disabled = true; });
+      feedback.className = 'feedback ok';
+      feedback.textContent = 'Richtig!';
+      setTimeout(onSolved, 700);
+    };
+  });
+}
+
 // Info liegt ausgedruckt bei der Station – in der App nur als zugeklappte Notlösung ganz unten auf der Seite
 function paperFallback(ctx, html) {
   ctx.footer.innerHTML = `
@@ -172,32 +198,8 @@ const types = {
   number(el, p, ctx) {
     const ok = v => p.answer == null || Math.abs(Number(v) - p.answer) <= (p.tolerance || 0);
     el.innerHTML = `<h3>Kriegerblick</h3>`;
-    if (!p.choices) {
-      answerForm(el, { question: p.question, numeric: true, onSolved: ctx.onSolved, check: ok });
-      return;
-    }
-    // Zahlen zum Antippen statt Eingabefeld
-    el.insertAdjacentHTML('beforeend', `
-      <p class="story">${p.question}</p>
-      <div class="number-choices">${p.choices.map((n, i) => {
-        const [x, y, r, size] = SCATTER[i % SCATTER.length];
-        return `<button class="btn ghost option" data-n="${n}" style="--x:${x}%;--y:${y}%;--r:${r}deg;--s:${size}px">${n}</button>`;
-      }).join('')}</div>
-      <p class="feedback"></p>`);
-    const feedback = el.querySelector('.feedback');
-    el.querySelectorAll('[data-n]').forEach(btn => {
-      btn.onclick = () => {
-        if (!ok(btn.dataset.n)) {
-          btn.classList.add('wrong');
-          return fail(btn, feedback);
-        }
-        btn.classList.add('right');
-        el.querySelectorAll('[data-n]').forEach(b => { b.disabled = true; });
-        feedback.className = 'feedback ok';
-        feedback.textContent = 'Richtig!';
-        setTimeout(ctx.onSolved, 700);
-      };
-    });
+    if (p.choices) numberChoices(el, { question: p.question, choices: p.choices, check: ok, onSolved: ctx.onSolved });
+    else answerForm(el, { question: p.question, numeric: true, onSolved: ctx.onSolved, check: ok });
   },
 
   owl(el, p, ctx) {
@@ -214,12 +216,9 @@ const types = {
         listen.textContent = '👂 Noch einmal lauschen';
       }, ms);
     };
-    answerForm(el, {
-      question: p.question,
-      numeric: true,
-      onSolved: ctx.onSolved,
-      check: v => Number(v) === p.calls,
-    });
+    const check = v => Number(v) === p.calls;
+    if (p.choices) numberChoices(el, { question: p.question, choices: p.choices, check, onSolved: ctx.onSolved });
+    else answerForm(el, { question: p.question, numeric: true, onSolved: ctx.onSolved, check });
   },
 
   prey(el, p, ctx) {

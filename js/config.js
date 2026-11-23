@@ -115,6 +115,8 @@ export const GAME = {
         type: 'owl',
         calls: 7,
         question: 'Wie oft hat die Eule gerufen?',
+        // Zahlen zum Antippen, kreuz und quer verteilt (Reihenfolge wie hier)
+        choices: [6, 9, 4, 7, 5, 8],
       },
       hints: ['Ihr dürft so oft lauschen, wie ihr wollt. Zählt mit den Fingern mit!', 'Es sind mehr als fünf und weniger als zehn Rufe.'],
       digit: 9,
