@@ -192,8 +192,23 @@ select {
 .option.wrong { border-color: var(--bad); color: var(--bad); }
 .option.right { border-color: var(--ok); color: var(--ok); background: rgba(127, 209, 139, 0.15); }
 .option.right[disabled] { opacity: 1; }
-.number-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
-.number-choices .option { margin: 0; min-height: 84px; justify-content: center; text-align: center; font: 700 2.2rem var(--serif); }
+/* Zahlen kreuz und quer verstreut (Position/Drehung/Größe kommen aus puzzles.js) */
+.number-choices { position: relative; height: 290px; margin: 8px 0 4px; }
+.number-choices .option {
+  position: absolute; left: var(--x); top: var(--y);
+  width: var(--s); height: var(--s); min-height: 0; margin: 0; padding: 0;
+  border-radius: 50%; border-width: 2px;
+  justify-content: center; text-align: center; font: 700 2.4rem var(--serif);
+  transform: translate(-50%, -50%) rotate(var(--r));
+  background: rgba(242, 181, 68, 0.06);
+}
+.number-choices .option:active { transform: translate(-50%, -50%) rotate(var(--r)) scale(0.94); }
+.number-choices .option.shake { animation: shake-tilted 0.4s; }
+@keyframes shake-tilted {
+  25% { transform: translate(calc(-50% - 8px), -50%) rotate(var(--r)); }
+  50% { transform: translate(calc(-50% + 8px), -50%) rotate(var(--r)); }
+  75% { transform: translate(calc(-50% - 4px), -50%) rotate(var(--r)); }
+}
 .quiz-count { margin: 0 0 4px; font-size: 0.9rem; }
 .quiz-step .quiz-q { font-size: 1.35rem; margin-bottom: 4px; }
 .quiz-in { animation: quiz-in 0.35s ease-out; }

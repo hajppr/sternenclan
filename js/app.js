@@ -627,7 +627,7 @@ function answerOf(s) {
   switch (p.type) {
     case 'cipher': return p.message;
     case 'quiz': return p.questions.map(q => q.options[q.answer]).join(' · ');
-    case 'number': return p.answer == null ? '<span class="warn">fehlt! (bis dahin zählt jede Zahl)</span>' : `${p.answer} (±${p.tolerance || 0})`;
+    case 'number': return p.answer == null ? '<span class="warn">fehlt! (bis dahin zählt jede Zahl)</span>' : `${p.answer}${p.tolerance ? ` (±${p.tolerance})` : ""}`;
     case 'owl': return `${p.calls} Rufe`;
     case 'touch': return 'alle Finger gleichzeitig auf das Siegel';
     case 'prey': return p.prey.map(x => x.letter).join('');

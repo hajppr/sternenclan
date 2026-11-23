@@ -93,16 +93,15 @@ export const GAME = {
       map: { x: 404, y: 176, via: [[306, 151]] },
       gm: {
         hide: 'QR-Karte am blauen Schild bzw. beim großen Stein, wo unsere Straße endet.',
-        prep: 'Lösung: 4 Laternen (zur Auswahl stehen 7, 2, 9, 4, 12, 6).',
+        prep: 'Lösung: 4 Laternen (zur Auswahl stehen 2 bis 7).',
       },
       story: 'Ihr habt den Zweibeinerort durchquert. Nachts wachen hier die Laternen der Zweibeiner über den Donnerweg – und am Tag dieser große Stein. Eine gute Clankatze hat Augen für alles, was um sie herum geschieht.',
       puzzle: {
         type: 'number',
         question: 'Wie viele Laternen der Zweibeiner habt ihr auf dem Weg vom Lager bis hierher gezählt?',
         answer: 4,
-        tolerance: 1,
-        // Zahlen zum Antippen (Reihenfolge wie hier). 3 und 5 bewusst nicht dabei: Wer sich um eine verzählt hat, landet trotzdem bei der 4.
-        choices: [7, 2, 9, 4, 12, 6],
+        // Zahlen zum Antippen, kreuz und quer verteilt (Reihenfolge wie hier). Nur die 4 ist richtig.
+        choices: [6, 3, 7, 2, 5, 4],
       },
       hints: ['Wenn ihr nicht mitgezählt habt: Schaut den Weg zurück und zählt noch einmal.', 'Zählt auch die Laterne, an der ihr gerade steht.'],
       next: 'Biegt ab in Richtung Mittagssonne (Süden). Zu eurer Linken beginnt das offene Land, zu eurer Rechten wächst eine Hecke. Kurz bevor ein weiterer Donnerweg kommt, hat die Hecke eine Lücke – dahinter schlafen viele Monster. Dort hat sich die nächste Spur versteckt.',

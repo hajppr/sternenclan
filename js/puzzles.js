@@ -14,6 +14,9 @@ const norm = s => String(s).toLowerCase()
   .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
   .replace(/[^a-z0-9]/g, '');
 
+// Kreuz und quer: Position (links %, oben %), Drehung (Grad), Größe (px) je Zahlenknopf
+const SCATTER = [[10, 30, -9, 100], [27, 75, 7, 86], [44, 24, -4, 110], [61, 70, 11, 92], [77, 27, -12, 96], [91, 72, 5, 104]];
+
 const shuffle = arr => arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
 
 function fail(el, feedback, text, { silent = false } = {}) {
@@ -176,7 +179,10 @@ const types = {
     // Zahlen zum Antippen statt Eingabefeld
     el.insertAdjacentHTML('beforeend', `
       <p class="story">${p.question}</p>
-      <div class="number-choices">${p.choices.map(n => `<button class="btn ghost option" data-n="${n}">${n}</button>`).join('')}</div>
+      <div class="number-choices">${p.choices.map((n, i) => {
+        const [x, y, r, size] = SCATTER[i % SCATTER.length];
+        return `<button class="btn ghost option" data-n="${n}" style="--x:${x}%;--y:${y}%;--r:${r}deg;--s:${size}px">${n}</button>`;
+      }).join('')}</div>
       <p class="feedback"></p>`);
     const feedback = el.querySelector('.feedback');
     el.querySelectorAll('[data-n]').forEach(btn => {
