@@ -228,6 +228,7 @@ function viewStation(station) {
   // nach dem Lösen füllt der Erfolg (Text links, Karte rechts) den Bildschirm (siehe CSS)
   app.innerHTML = `<div class="station-view">
     ${trail(station.id)}
+    <div class="st-body">
     <div class="st-side">
       ${skipped ? `<div class="card"><p class="muted">Moment! Die Prüfung „${prev.title}“ habt ihr noch nicht bestanden. Ihr könnt trotzdem weitermachen – <a href="#/s/${prev.token}" style="color:var(--gold)">oder zurückgehen</a>.</p></div>` : ''}
       <div class="card">
@@ -240,6 +241,7 @@ function viewStation(station) {
     <div class="st-main">
       <div class="card" id="puzzle"></div>
       <div id="footer"></div>
+    </div>
     </div>
     <div id="after"></div>
   </div>`;

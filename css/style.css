@@ -379,7 +379,7 @@ select {
 
 /* Station im Hochformat: alles untereinander, Tipps wie gewohnt unter dem Rätsel */
 .station-view { display: flex; flex-direction: column; }
-.station-view > .st-side, .station-view > .st-main { display: contents; }
+.station-view > .st-body, .st-body > .st-side, .st-body > .st-main { display: contents; }
 .station-view #puzzle { order: 1; }
 .station-view #after { order: 2; }
 .station-view #hints { order: 3; }
@@ -392,28 +392,34 @@ select {
 @media (orientation: landscape) and (min-width: 900px) {
   .app { padding-bottom: 16px; }
   .app:has(.station-view, .home-view, .map-view, .intro-view, .scan-view) { max-width: 1400px; }
+  /* Inhalt senkrecht mittig: automatische Ränder statt justify-content,
+     damit lange Seiten (Spielleitung) oben nicht abgeschnitten werden */
+  .app { min-height: 100dvh; display: flex; flex-direction: column; }
+  .app > :first-child { margin-top: auto !important; }
+  .app > :last-child { margin-bottom: auto !important; }
+  .app > [style*="padding-top"] { padding-top: 0 !important; }
   h1 { font-size: 1.9rem; }
   .card:not(.map-card) { padding: 16px 20px; }
   .trail { margin: 0 0 12px; }
   .trail span { width: 30px; height: 30px; }
 
-  /* Station: links Geschichte + Tipps, rechts das Rätsel */
-  .station-view {
+  /* Station: links Geschichte + Tipps, rechts das Rätsel.
+     Fortschritt bleibt oben, Geschichte + Rätsel stehen mittig im Rest des Bildschirms */
+  .station-view { flex: 1; display: flex; flex-direction: column; margin: 0 !important; }
+  .station-view > .st-body {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-    grid-template-areas: "trail trail" "side main" "after after";
     column-gap: 20px;
     align-items: start;
+    margin-block: auto;
   }
-  .station-view > .trail { grid-area: trail; }
-  .station-view > .st-side { grid-area: side; display: block; }
-  .station-view > .st-main { grid-area: main; display: block; }
-  .station-view > #after { grid-area: after; }
+  .st-body > .st-side, .st-body > .st-main { display: block; }
   .station-view .story { font-size: 1.15rem; }
   .paper-fallback { margin-top: 8px; }
   /* Gelöst: Geschichte und Rätsel weg, der Erfolg mit Karte füllt den Bildschirm */
-  .station-view.is-solved:has(.success.has-map) > .st-side,
-  .station-view.is-solved:has(.success.has-map) > .st-main { display: none; }
+  .station-view.is-solved:has(.success.has-map) > .st-body { display: none; }
+  .station-view #after:has(.success) { margin-bottom: auto; }
+  .station-view #after:has(.success.has-map) { margin-top: auto; }
   .success:not(.has-map) { max-width: 760px; margin-inline: auto; }
 
   /* Erfolg: Text oben links, Knöpfe unten links, Karte rechts in voller Höhe */
@@ -445,10 +451,10 @@ select {
   .home-view.has-map {
     display: grid;
     grid-template-columns: auto minmax(380px, 1fr);
-    grid-template-rows: auto auto auto 1fr;
-    grid-template-areas: "map title" "map trail" "map path" "map buttons";
+    grid-template-rows: 1fr auto auto auto auto 1fr;
+    grid-template-areas: "map ." "map title" "map trail" "map path" "map buttons" "map .";
+    align-items: center;
     column-gap: 20px;
-    align-items: start;
   }
   .home-view.has-map > h1 { grid-area: title; margin-top: 4px; padding-right: 48px; font-size: 1.7rem; }
   .home-view.has-map > .trail { grid-area: trail; }
@@ -463,10 +469,10 @@ select {
   .map-view {
     display: grid;
     grid-template-columns: auto minmax(300px, 1fr);
-    grid-template-rows: auto auto auto 1fr;
-    grid-template-areas: "map title" "map scent" "map hint" "map buttons";
+    grid-template-rows: 1fr auto auto auto auto 1fr;
+    grid-template-areas: "map ." "map title" "map scent" "map hint" "map buttons" "map .";
+    align-items: center;
     column-gap: 20px;
-    align-items: start;
   }
   .map-view .map-title { grid-area: title; text-align: left; margin-top: 4px; padding-right: 48px; }
   .map-view .scent-bar { grid-area: scent; position: static; }
