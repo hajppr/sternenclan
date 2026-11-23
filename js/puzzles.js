@@ -185,10 +185,9 @@ export const PAW_SCRIPT = {
   S: '🦊', T: '🐇', U: '🌰', V: '🍄', W: '⚡', X: '🌊', Y: '🐿️', Z: '🦔',
 };
 
-// Das Pfoten-Emoji ist auf dem dunklen Hintergrund kaum zu sehen → in der App als helle gezeichnete Pfote
-// (auf der gedruckten Tafel bleibt das Emoji, dort ist es auf hellem Papier gut erkennbar)
-const PAW_GLYPH = `<svg class="paw-glyph" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16.5" rx="5.2" ry="4.4"/><ellipse cx="5" cy="10.5" rx="2.2" ry="2.8" transform="rotate(-20 5 10.5)"/><ellipse cx="9.3" cy="6" rx="2.2" ry="2.9" transform="rotate(-8 9.3 6)"/><ellipse cx="14.7" cy="6" rx="2.2" ry="2.9" transform="rotate(8 14.7 6)"/><ellipse cx="19" cy="10.5" rx="2.2" ry="2.8" transform="rotate(20 19 10.5)"/></svg>`;
-const glyph = g => (g === '🐾' ? PAW_GLYPH : g);
+// Das Pfoten-Emoji ist auf dem dunklen Hintergrund kaum zu sehen → gleiches Emoji wie auf der
+// gedruckten Tafel, nur per Farbfilter aufgehellt (siehe .paw-emoji in style.css)
+const glyph = g => (g === '🐾' ? '<span class="paw-emoji">🐾</span>' : g);
 
 const types = {
   cipher(el, p, ctx) {
