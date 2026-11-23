@@ -450,6 +450,12 @@ select {
   .slots:has(.prey-photo) .slot { gap: 10px; }
   .slot .prey-photo { width: 130px; height: 130px; border-width: 3px; }
   .slots:has(.prey-photo) .slot input { width: 110px; min-height: 96px; font-size: 2.8rem; border-radius: 16px; }
+  /* Krallen-Code: große Rollennamen und Eingabefelder */
+  .slots:has(.role-label) { margin: 22px 0 6px; }
+  .slots:has(.role-label) .word { gap: 14px; margin-right: 0; }
+  .slots:has(.role-label) .slot { gap: 10px; min-width: 150px; }
+  .slot .role-label { font-size: 1.25rem; font-weight: 600; }
+  .slots:has(.role-label) .slot input { width: 110px; min-height: 96px; font-size: 2.8rem; border-radius: 16px; }
   .touchstone { width: min(300px, calc(100dvh - 400px)); min-width: 200px; margin: 8px auto; }
   .parchment { padding: 14px 18px; margin-top: 10px; }
 
