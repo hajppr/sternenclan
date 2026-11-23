@@ -192,6 +192,8 @@ select {
 .option.wrong { border-color: var(--bad); color: var(--bad); }
 .option.right { border-color: var(--ok); color: var(--ok); background: rgba(127, 209, 139, 0.15); }
 .option.right[disabled] { opacity: 1; }
+.number-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+.number-choices .option { margin: 0; min-height: 84px; justify-content: center; text-align: center; font: 700 2.2rem var(--serif); }
 .quiz-count { margin: 0 0 4px; font-size: 0.9rem; }
 .quiz-step .quiz-q { font-size: 1.35rem; margin-bottom: 4px; }
 .quiz-in { animation: quiz-in 0.35s ease-out; }

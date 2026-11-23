@@ -167,12 +167,30 @@ const types = {
   },
 
   number(el, p, ctx) {
+    const ok = v => p.answer == null || Math.abs(Number(v) - p.answer) <= (p.tolerance || 0);
     el.innerHTML = `<h3>Kriegerblick</h3>`;
-    answerForm(el, {
-      question: p.question,
-      numeric: true,
-      onSolved: ctx.onSolved,
-      check: v => p.answer == null || Math.abs(Number(v) - p.answer) <= (p.tolerance || 0),
+    if (!p.choices) {
+      answerForm(el, { question: p.question, numeric: true, onSolved: ctx.onSolved, check: ok });
+      return;
+    }
+    // Zahlen zum Antippen statt Eingabefeld
+    el.insertAdjacentHTML('beforeend', `
+      <p class="story">${p.question}</p>
+      <div class="number-choices">${p.choices.map(n => `<button class="btn ghost option" data-n="${n}">${n}</button>`).join('')}</div>
+      <p class="feedback"></p>`);
+    const feedback = el.querySelector('.feedback');
+    el.querySelectorAll('[data-n]').forEach(btn => {
+      btn.onclick = () => {
+        if (!ok(btn.dataset.n)) {
+          btn.classList.add('wrong');
+          return fail(btn, feedback);
+        }
+        btn.classList.add('right');
+        el.querySelectorAll('[data-n]').forEach(b => { b.disabled = true; });
+        feedback.className = 'feedback ok';
+        feedback.textContent = 'Richtig!';
+        setTimeout(ctx.onSolved, 700);
+      };
     });
   },
 
