@@ -130,7 +130,7 @@ const types = {
     el.innerHTML = `<h3>Clan-Wissen</h3>${p.questions.map((q, qi) => `
       <div class="stack" style="margin-bottom:18px" data-q="${qi}">
         <p class="story" style="margin:0">${qi + 1}. ${q.q}</p>
-        ${q.options.map((o, oi) => `<button class="btn ghost option" data-o="${oi}">${o}</button>`).join('')}
+        <div class="options">${q.options.map((o, oi) => `<button class="btn ghost option" data-o="${oi}">${o}</button>`).join('')}</div>
       </div>`).join('')}
       <button class="btn block" id="check">Prüfen</button>
       <p class="feedback"></p>`;
@@ -208,7 +208,7 @@ const types = {
         ? `<p class="paper-note">📜 Lest im Vorrat der Heilerin nach!</p>${paperFallback(ctx, herbList(p.info))}`
         : herbList(p.info)}
       <div class="stack" style="margin-top:18px">${p.pairs.map(([patient], i) => `
-        <div>
+        <div class="pair">
           <p style="margin:0 0 6px">${patient}</p>
           <select data-i="${i}">
             <option value="">– Kraut wählen –</option>

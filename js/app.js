@@ -146,7 +146,7 @@ function viewHome() {
   const ci = currentIndex();
   const current = stations[ci];
   const reachable = current && (ci === 0 || state.arrived[current.id]);
-  app.innerHTML = `
+  app.innerHTML = `<div class="home-view ${current ? 'has-map' : ''}">
     <h1 class="center">${GAME.title}</h1>
     ${trail(current?.id)}
     ${current ? `<a class="card map-card" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: current.id, compact: true })}</a>` : ''}
@@ -167,7 +167,8 @@ function viewHome() {
       ${current ? `<a class="btn block ghost" href="#/scan">📷 Spur scannen</a>` : ''}
       ${!current || reachable ? '<a class="btn ghost block" href="#/karte">🗺️ Karte des Territoriums</a>' : ''}
       ${!current ? `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>` : ''}
-    </div>`;
+    </div>
+  </div>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -190,16 +191,19 @@ function viewIntro(step) {
     return;
   }
 
-  app.innerHTML = `
+  app.innerHTML = `<div class="intro-view">
     <h2 class="center">Die ${groupWord('Schülerinnen', 'Schüler')} des ${GAME.clan}s</h2>
-    <div class="card">
+    <div class="card intro-players">
       <ul class="path">${getPlayers().map(p => {
         const r = GAME.roles[p.role];
         return `<li><span class="dot">✦</span><span><b>${p.apprentice}</b> <span class="muted">(${p.name})</span><br><small class="muted">${roleTitle(p)} – ${r.text}</small></span></li>`;
       }).join('')}</ul>
     </div>
-    <div class="card"><p class="story">„${GAME.prophecy}“</p></div>
-    <button class="btn block" id="go">Wir sind bereit!</button>`;
+    <div class="intro-go">
+      <div class="card"><p class="story">„${GAME.prophecy}“</p></div>
+      <button class="btn block" id="go">Wir sind bereit!</button>
+    </div>
+  </div>`;
   app.querySelector('#go').onclick = () => {
     state.startedAt = Date.now();
     save();
@@ -220,22 +224,35 @@ function viewStation(station) {
   const prev = stations[idx - 1];
   const skipped = !preview && prev && !state.solved[prev.id];
 
-  app.innerHTML = `
+  // Hochformat: alles untereinander. Querformat (Tablet): links Geschichte + Tipps, rechts das Rätsel;
+  // nach dem Lösen füllt der Erfolg (Text links, Karte rechts) den Bildschirm (siehe CSS)
+  app.innerHTML = `<div class="station-view">
     ${trail(station.id)}
-    ${skipped ? `<div class="card"><p class="muted">Moment! Die Prüfung „${prev.title}“ habt ihr noch nicht bestanden. Ihr könnt trotzdem weitermachen – <a href="#/s/${prev.token}" style="color:var(--gold)">oder zurückgehen</a>.</p></div>` : ''}
-    <div class="card">
-      <div class="chip">📍 ${station.place}</div>
-      <h2>${stationLabel(idx, station.title)}</h2>
-      <p class="story">${station.story}</p>
+    <div class="st-side">
+      ${skipped ? `<div class="card"><p class="muted">Moment! Die Prüfung „${prev.title}“ habt ihr noch nicht bestanden. Ihr könnt trotzdem weitermachen – <a href="#/s/${prev.token}" style="color:var(--gold)">oder zurückgehen</a>.</p></div>` : ''}
+      <div class="card">
+        <div class="chip">📍 ${station.place}</div>
+        <h2>${stationLabel(idx, station.title)}</h2>
+        <p class="story">${station.story}</p>
+      </div>
+      <div id="hints"></div>
     </div>
-    <div class="card" id="puzzle"></div>
+    <div class="st-main">
+      <div class="card" id="puzzle"></div>
+      <div id="footer"></div>
+    </div>
     <div id="after"></div>
-    <div id="footer"></div>`;
+  </div>`;
 
+  const view = app.querySelector('.station-view');
   const after = app.querySelector('#after');
+  const hintBox = app.querySelector('#hints');
   const showAfter = () => {
-    after.innerHTML = state.solved[station.id] ? successBlock(station) : '';
-    if (!state.solved[station.id]) renderHints(after, station);
+    const solved = !!state.solved[station.id];
+    view.classList.toggle('is-solved', solved);
+    after.innerHTML = solved ? successBlock(station) : '';
+    hintBox.innerHTML = '';
+    if (!solved) renderHints(hintBox, station);
   };
 
   renderPuzzle(app.querySelector('#puzzle'), station, {
@@ -249,7 +266,8 @@ function viewStation(station) {
       chime();
       navigator.vibrate?.([80, 40, 160]);
       showAfter();
-      after.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (matchMedia('(orientation: landscape) and (min-width: 900px)').matches) window.scrollTo({ top: 0, behavior: 'smooth' });
+      else after.scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
   });
   showAfter();
@@ -257,13 +275,17 @@ function viewStation(station) {
 
 function successBlock(station) {
   const next = stations[stations.indexOf(station) + 1];
+  // Querformat: Text oben links, Knöpfe unten links, Karte rechts in voller Höhe (siehe CSS)
   return `
-    <div class="card success">
-      <h2>Prüfung bestanden!</h2>
-      ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut – der SternenClan verrät es kein zweites Mal!</p>` : ''}
-      ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>` : ''}
+    <div class="card success ${next?.map ? 'has-map' : ''}">
+      <div class="success-text">
+        <h2>Prüfung bestanden!</h2>
+        ${station.puzzle.reason ? `<p class="success-reason">${station.puzzle.reason}</p>` : ''}
+        ${station.digit != null ? `<p class="muted">Ihr habt ein Krallenzeichen erhalten:</p><div class="claw">${station.digit}</div><p class="muted">Merkt es euch gut – der SternenClan verrät es kein zweites Mal!</p>` : ''}
+        ${station.next ? `<p class="story" style="margin-top:12px">${station.next}</p>` : ''}
+      </div>
       ${next?.map ? `<a class="map-inline" href="#/karte">${mapSvg({ stations, solved: state.solved, targetId: next.id, compact: true })}</a>` : ''}
-      <div class="stack" style="margin-top:16px">
+      <div class="stack success-buttons" style="margin-top:16px">
         ${next
           ? `${scentButton(next, true)}<a class="btn ghost block" href="#/scan">📷 Nächste Spur scannen</a>`
           : `<a class="btn block" href="#/zeremonie">⭐ Zur Kriegerzeremonie</a>`}
@@ -405,9 +427,10 @@ function goToToken(text) {
 }
 
 function viewScan() {
-  app.innerHTML = `
+  app.innerHTML = `<div class="scan-view">
     <h2 class="center">Spur aufnehmen</h2>
     <div class="scanner"><video playsinline muted></video></div>
+    <div class="scan-side">
     <p class="center muted" id="scanmsg">Haltet den QR-Code in den Rahmen.</p>
     <div class="card">
       <form id="manual" class="row">
@@ -417,7 +440,9 @@ function viewScan() {
       </form>
       <p class="feedback bad" id="manualmsg"></p>
     </div>
-    <a class="btn ghost block" href="#/">Zurück</a>`;
+    <a class="btn ghost block" href="#/">Zurück</a>
+    </div>
+  </div>`;
 
   app.querySelector('#manual').onsubmit = e => {
     e.preventDefault();
